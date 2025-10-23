@@ -3,39 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📚 জুবায়ের স্যার এর সাম্প্রতিক ক্যাপসুল বুক স্টল</title>
+  <title>📚 কিড্ডো বুক স্টল</title>
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #121420, #1b1e30);
-      color: #fff;
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top, #1c1f2e, #0f111a);
+      color: #fff;
+      min-height: 100vh;
       text-align: center;
     }
 
     header {
-      background: #00e6a8;
+      background: linear-gradient(90deg, #00ffa6, #00c4ff);
       color: #000;
-      padding: 20px 10px;
+      padding: 25px 10px;
       border-radius: 0 0 30px 30px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
 
     header h1 {
-      font-size: 26px;
-      margin: 0;
+      font-size: 22px;
+      font-weight: 700;
     }
 
     header p {
       margin-top: 6px;
-      color: #222;
       font-size: 14px;
+      color: #111;
     }
 
     .shop {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
       gap: 20px;
       padding: 30px 15px;
       max-width: 900px;
@@ -43,11 +47,13 @@
     }
 
     .book {
-      background: #22253b;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 0 15px rgba(0,255,200,0.15);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 20px 10px;
+      box-shadow: 0 0 10px rgba(0,255,200,0.15);
+      transition: all 0.3s ease;
     }
 
     .book:hover {
@@ -55,51 +61,52 @@
       box-shadow: 0 0 25px rgba(0,255,200,0.4);
     }
 
-    .book img {
-      width: 100%;
-      height: 210px;
-      object-fit: cover;
+    .emoji {
+      font-size: 48px;
+      display: block;
+      margin-bottom: 10px;
     }
 
     .book h3 {
-      margin: 12px 0 4px;
       font-size: 18px;
-      color: #00e6a8;
+      color: #00ffc6;
+      margin-bottom: 6px;
     }
 
     .book p {
-      color: #aaa;
       font-size: 13px;
-      margin-bottom: 8px;
+      color: #bbb;
+      margin-bottom: 15px;
     }
 
     .btn {
-      background: #00e6a8;
+      background: linear-gradient(90deg, #00ffc6, #00b4ff);
       color: #000;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-weight: 600;
+      padding: 9px 18px;
+      border-radius: 25px;
+      font-weight: bold;
       text-decoration: none;
       display: inline-block;
-      margin-bottom: 14px;
-      transition: background 0.2s;
+      font-size: 14px;
+      transition: all 0.3s ease;
     }
 
     .btn:hover {
-      background: #00b88b;
+      background: linear-gradient(90deg, #00c4ff, #00ffa6);
+      transform: scale(1.05);
     }
 
     .download-all {
       margin: 30px 0;
-      background: linear-gradient(90deg, #ffcc00, #ff8800);
+      background: linear-gradient(90deg, #ffd200, #ff8800);
       color: #000;
-      font-size: 17px;
+      font-size: 16px;
       padding: 12px 25px;
-      border-radius: 30px;
-      font-weight: bold;
+      border-radius: 35px;
+      font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 0 15px rgba(255, 153, 0, 0.3);
-      transition: transform 0.2s ease;
+      box-shadow: 0 0 20px rgba(255,180,0,0.3);
+      transition: all 0.2s ease;
     }
 
     .download-all:hover {
@@ -107,7 +114,7 @@
     }
 
     footer {
-      margin: 40px 0 20px;
+      margin: 40px 0 25px;
       color: #888;
       font-size: 13px;
     }
@@ -117,44 +124,46 @@
 
   <header>
     <h1>📚 জুবায়ের স্যার এর সাম্প্রতিক ক্যাপসুল (১–৫)</h1>
-    <p>একটা Book Stall এর অভিজ্ঞতা নিন — যার দরকার সেটি ডাউনলোড করুন অথবা সবগুলো একসাথে নিন!</p>
+    <p>যে বই দরকার সেটি নিন 📖 অথবা সবগুলো একসাথে ডাউনলোড করুন!</p>
   </header>
 
   <div class="shop">
+
     <div class="book">
-      <img src="https://i.ibb.co/8dQkpvB/book1.jpg" alt="ক্যাপসুল ১">
-      <h3>📗 ক্যাপসুল ১</h3>
+      <span class="emoji">📗</span>
+      <h3>ক্যাপসুল ১</h3>
       <p>সাম্প্রতিক গুরুত্বপূর্ণ প্রশ্নাবলি</p>
-      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf" class="btn" download>Download</a>
+      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf" class="btn" download>Download</a>
     </div>
 
     <div class="book">
-      <img src="https://i.ibb.co/zSrxfYm/book2.jpg" alt="ক্যাপসুল ২">
-      <h3>📘 ক্যাপসুল ২</h3>
+      <span class="emoji">📘</span>
+      <h3>ক্যাপসুল ২</h3>
       <p>চলমান ঘটনা বিশ্লেষণ</p>
       <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf" class="btn" download>Download</a>
     </div>
 
     <div class="book">
-      <img src="https://i.ibb.co/TPg0KQk/book3.jpg" alt="ক্যাপসুল ৩">
-      <h3>📙 ক্যাপসুল ৩</h3>
+      <span class="emoji">📙</span>
+      <h3>ক্যাপসুল ৩</h3>
       <p>বিশেষ নোট ও তথ্য</p>
-      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf" class="btn" download>Download</a>
+      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf" class="btn" download>Download</a>
     </div>
 
     <div class="book">
-      <img src="https://i.ibb.co/8jPZfCy/book4.jpg" alt="ক্যাপসুল ৪">
-      <h3>📕 ক্যাপসুল ৪</h3>
+      <span class="emoji">📕</span>
+      <h3>ক্যাপসুল ৪</h3>
       <p>চলতি ঘটনাবলির সারসংক্ষেপ</p>
-      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AA.pdf" class="btn" download>Download</a>
+      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AA.pdf" class="btn" download>Download</a>
     </div>
 
     <div class="book">
-      <img src="https://i.ibb.co/pnL2ZBq/book5.jpg" alt="ক্যাপসুল ৫">
-      <h3>📒 ক্যাপসুল ৫</h3>
+      <span class="emoji">📒</span>
+      <h3>ক্যাপসুল ৫</h3>
       <p>গুরুত্বপূর্ণ ম্যাগাজিন টাইপ তথ্য</p>
-      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AB.pdf" class="btn" download>Download</a>
+      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AB.pdf" class="btn" download>Download</a>
     </div>
+
   </div>
 
   <button class="download-all" id="downloadAll">⬇️ সবগুলো ডাউনলোড করুন</button>
@@ -177,7 +186,7 @@
         a.download = "";
         a.target = "_blank";
         document.body.appendChild(a);
-        setTimeout(() => a.click(), i * 1000); // ১ সেকেন্ড ব্যবধান
+        setTimeout(() => a.click(), i * 1000);
       });
     });
   </script>
