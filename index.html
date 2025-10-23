@@ -3,112 +3,171 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📘 সাম্প্রতিক ক্যাপসুল ডাউনলোড</title>
+  <title>📚 জুবায়ের স্যার এর সাম্প্রতিক ক্যাপসুল বুক স্টল</title>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #1a1c2b, #23263a);
+      background: linear-gradient(135deg, #121420, #1b1e30);
       color: #fff;
+      margin: 0;
+      padding: 0;
       text-align: center;
-      padding: 20px;
     }
-    h1 {
-      font-size: 24px;
-      margin-bottom: 10px;
-      color: #00e6a8;
-    }
-    p {
-      color: #ccc;
-      margin-bottom: 30px;
-    }
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
-      justify-items: center;
-      max-width: 700px;
-      margin: auto;
-    }
-    .card {
-      background: #2e3149;
-      padding: 18px;
-      border-radius: 14px;
-      box-shadow: 0 0 12px rgba(0, 255, 188, 0.2);
-      width: 100%;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 20px rgba(0, 255, 188, 0.4);
-    }
-    .btn {
-      display: inline-block;
+
+    header {
       background: #00e6a8;
       color: #000;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 25px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-      margin-top: 10px;
-      text-decoration: none;
+      padding: 20px 10px;
+      border-radius: 0 0 30px 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
+
+    header h1 {
+      font-size: 26px;
+      margin: 0;
+    }
+
+    header p {
+      margin-top: 6px;
+      color: #222;
+      font-size: 14px;
+    }
+
+    .shop {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 20px;
+      padding: 30px 15px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .book {
+      background: #22253b;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0,255,200,0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .book:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 25px rgba(0,255,200,0.4);
+    }
+
+    .book img {
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+    }
+
+    .book h3 {
+      margin: 12px 0 4px;
+      font-size: 18px;
+      color: #00e6a8;
+    }
+
+    .book p {
+      color: #aaa;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .btn {
+      background: #00e6a8;
+      color: #000;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 14px;
+      transition: background 0.2s;
+    }
+
     .btn:hover {
       background: #00b88b;
     }
-    .all-btn {
-      margin-top: 30px;
+
+    .download-all {
+      margin: 30px 0;
       background: linear-gradient(90deg, #ffcc00, #ff8800);
       color: #000;
-      font-size: 18px;
+      font-size: 17px;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(255, 153, 0, 0.3);
+      transition: transform 0.2s ease;
     }
+
+    .download-all:hover {
+      transform: scale(1.05);
+    }
+
     footer {
-      margin-top: 40px;
+      margin: 40px 0 20px;
       color: #888;
       font-size: 13px;
     }
   </style>
 </head>
 <body>
-  <h1>📘 জুবায়ের স্যার এর সাম্প্রতিক ক্যাপসুল ১–৫</h1>
-  <p>যার যেটা দরকার সেটি ডাউনলোড করুন, অথবা নিচের বাটনে ক্লিক করে সবগুলো ডাউনলোড করুন একসাথে!</p>
 
-  <div class="container">
-    <div class="card">
+  <header>
+    <h1>📚 জুবায়ের স্যার এর সাম্প্রতিক ক্যাপসুল (১–৫)</h1>
+    <p>একটা Book Stall এর অভিজ্ঞতা নিন — যার দরকার সেটি ডাউনলোড করুন অথবা সবগুলো একসাথে নিন!</p>
+  </header>
+
+  <div class="shop">
+    <div class="book">
+      <img src="https://i.ibb.co/8dQkpvB/book1.jpg" alt="ক্যাপসুল ১">
       <h3>📗 ক্যাপসুল ১</h3>
-      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf" download class="btn">Download</a>
+      <p>সাম্প্রতিক গুরুত্বপূর্ণ প্রশ্নাবলি</p>
+      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf" class="btn" download>Download</a>
     </div>
-    <div class="card">
+
+    <div class="book">
+      <img src="https://i.ibb.co/zSrxfYm/book2.jpg" alt="ক্যাপসুল ২">
       <h3>📘 ক্যাপসুল ২</h3>
-      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf" download class="btn">Download</a>
+      <p>চলমান ঘটনা বিশ্লেষণ</p>
+      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf" class="btn" download>Download</a>
     </div>
-    <div class="card">
+
+    <div class="book">
+      <img src="https://i.ibb.co/TPg0KQk/book3.jpg" alt="ক্যাপসুল ৩">
       <h3>📙 ক্যাপসুল ৩</h3>
-      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf" download class="btn">Download</a>
+      <p>বিশেষ নোট ও তথ্য</p>
+      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf" class="btn" download>Download</a>
     </div>
-    <div class="card">
+
+    <div class="book">
+      <img src="https://i.ibb.co/8jPZfCy/book4.jpg" alt="ক্যাপসুল ৪">
       <h3>📕 ক্যাপসুল ৪</h3>
-      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AA.pdf6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf" download class="btn">Download</a>
+      <p>চলতি ঘটনাবলির সারসংক্ষেপ</p>
+      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AA.pdf" class="btn" download>Download</a>
     </div>
-    <div class="card">
+
+    <div class="book">
+      <img src="https://i.ibb.co/pnL2ZBq/book5.jpg" alt="ক্যাপসুল ৫">
       <h3>📒 ক্যাপসুল ৫</h3>
-      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AB.pdf%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AA.pdf6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf" download class="btn">Download</a>
+      <p>গুরুত্বপূর্ণ ম্যাগাজিন টাইপ তথ্য</p>
+      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AB.pdf" class="btn" download>Download</a>
     </div>
   </div>
 
-  <button class="btn all-btn" id="downloadAll">⬇️ সবগুলো ডাউনলোড করুন</button>
+  <button class="download-all" id="downloadAll">⬇️ সবগুলো ডাউনলোড করুন</button>
 
   <footer>© ২০২৫ | তৈরি করেছেন ❤️ Kamrul</footer>
 
   <script>
-    // এখানে আপনার ফাইলগুলোর আসল লিংক দিন ↓↓↓
     const files = [
-      "https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf",
-      "https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf",
-      "https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf",
-      "https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AA.pdf6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf",
-      "https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AB.pdf%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AA.pdf6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf"
+      "https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf",
+      "https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf",
+      "https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf",
+      "https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AA.pdf",
+      "https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AB.pdf"
     ];
 
     document.getElementById("downloadAll").addEventListener("click", () => {
@@ -116,11 +175,12 @@
         const a = document.createElement("a");
         a.href = url;
         a.download = "";
-        a.style.display = "none";
+        a.target = "_blank";
         document.body.appendChild(a);
-        setTimeout(() => a.click(), i * 800); // ৮০০ মিলিসেকেন্ড ব্যবধান
+        setTimeout(() => a.click(), i * 1000); // ১ সেকেন্ড ব্যবধান
       });
     });
   </script>
+
 </body>
-  </html>
+</html>
