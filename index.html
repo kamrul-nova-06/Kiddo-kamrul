@@ -1,484 +1,105 @@
-<!DOCTYPE html>
-<html lang="bn">
+<!DOCTYPE html><html lang="bn">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>📚 Kiddo Book Stall</title>
 <style>
-  :root{
-    --bg:#0b1020; --card:#0f1726; --muted:#9fb0c4;
-    --accent1:#00e6a8; --accent2:#00a8ff; --warm:#ffb020;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0; font-family: "Poppins", Inter, system-ui, sans-serif;
-    background: linear-gradient(180deg,var(--bg),#06101a);
-    color:#eaf4ff; min-height:100vh; display:flex; flex-direction:column;
-  }
+/* ====== Global ====== */
+body {margin:0;padding:0;font-family: 'Poppins', sans-serif;background:#f4f7ff;color:#222;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;}/* ====== Header ====== */ header{background:#6C63FF;color:#fff;padding:20px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.1);} header h1{margin:0;font-size:26px;} header p{margin:5px 0 0;font-size:14px;color:#e0e0ff;}
 
-  /* Header */
-  header{
-    padding:18px 14px; text-align:center;
-    background: linear-gradient(90deg,var(--accent1),var(--accent2));
-    color:#001; font-weight:800; font-size:18px;
-    border-bottom-left-radius:18px; border-bottom-right-radius:18px;
-    box-shadow:0 8px 30px rgba(0,0,0,0.45);
-    position:relative;
-    user-select:none;
-  }
-  header small{ display:block; font-weight:700; color:#032; margin-top:6px; font-size:12px; opacity:0.95;}
+/* ====== Books Grid ====== */ .books-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;padding:20px;max-width:1000px;margin:auto;} .book-card{background:#fff;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,0.1);overflow:hidden;transition:0.3s;} .book-card:hover{transform:translateY(-6px);box-shadow:0 8px 20px rgba(0,0,0,0.15);} .book-card img{width:100%;height:200px;object-fit:cover;} .book-card h3{margin:10px 0 4px;padding:0 10px;color:#6C63FF;} .book-card p{margin:0 0 10px;padding:0 10px;font-size:13px;color:#555;} .book-card button{background:#6C63FF;color:#fff;border:none;padding:8px 15px;border-radius:20px;margin:0 10px 10px;transition:0.2s;} .book-card button:hover{background:#574fd6;}
 
-  main{ flex:1; width:100%; max-width:980px; margin:16px auto; padding:12px; box-sizing:border-box; }
+/* ====== Admin Login Overlay ====== */ #adminLogin{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;justify-content:center;align-items:center;display:none;z-index:999;} #adminLogin div{background:#fff;padding:25px;border-radius:12px;text-align:center;width:300px;} #adminLogin input{width:90%;padding:8px;margin:10px 0;border-radius:6px;border:1px solid #ccc;} #adminLogin button{background:#6C63FF;color:#fff;border:none;padding:8px 20px;border-radius:8px;}
 
-  .intro{
-    text-align:center; margin-bottom:14px; color:var(--muted);
-    font-size:14px;
-  }
+/* ====== Admin Panel ====== */ #adminPanel{position:fixed;top:0;right:0;width:0%;height:100%;background:#fff;overflow:auto;transition:0.3s;box-shadow:-2px 0 12px rgba(0,0,0,0.2);z-index:998;padding:20px;} #adminPanel.active{width:350px;} #adminPanel h2{color:#6C63FF;margin-top:0;} #adminPanel button{margin:5px 0;} .admin-book{display:flex;justify-content:space-between;align-items:center;background:#f1f1f1;padding:8px 10px;margin:5px 0;border-radius:8px;} .admin-book span{font-weight:500;}
 
-  .grid{
-    display:grid; gap:12px;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  }
+/* ====== Footer ====== */ footer{text-align:center;color:#888;padding:20px;margin-top:20px;font-size:13px;}
 
-  .card{
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border-radius:14px; padding:14px; display:flex; flex-direction:column; gap:8px;
-    min-height:170px; align-items:center; box-shadow:0 10px 30px rgba(0,0,0,0.6);
-    transition: transform .18s ease, box-shadow .18s ease;
-    border: 1px solid rgba(255,255,255,0.03);
-  }
-  .card:hover{ transform: translateY(-6px); box-shadow:0 20px 50px rgba(0,0,0,0.7); }
-  .emoji{ font-size:44px }
-  .title{ color:var(--accent1); font-weight:800; font-size:15px; text-align:center; }
-  .desc{ color:var(--muted); font-size:13px; text-align:center; flex:1; display:flex; align-items:center; justify-content:center; padding:0 6px; }
-
-  .row{ display:flex; gap:8px; align-items:center; justify-content:center; width:100%; margin-top:6px; }
-  .btn{
-    background: linear-gradient(90deg,var(--accent1),var(--accent2));
-    color:#001; padding:9px 12px; border-radius:999px; font-weight:800; border:none; cursor:pointer;
-    display:inline-flex; gap:8px; align-items:center; text-decoration:none;
-  }
-  .btn.ghost{ background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--muted); padding:8px 10px; font-weight:700; }
-
-  .status{ text-align:center; color:var(--muted); margin-top:12px; font-size:13px; }
-
-  footer{ text-align:center; padding:12px 10px; color:var(--muted); font-size:13px; margin-top:12px }
-
-  /* Admin panel (slide-in) */
-  #adminPanel{
-    position:fixed; right:14px; top:88px; width:94%; max-width:420px; z-index:120;
-    background: linear-gradient(180deg,#071422,#091827); border-radius:12px; padding:12px;
-    box-shadow:0 18px 50px rgba(0,0,0,0.7); color:#dfeeff; display:none;
-  }
-  #adminPanel h4{ margin:0 0 8px; font-size:16px }
-  .admin-row{ display:flex; gap:8px; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px dashed rgba(255,255,255,0.03) }
-  .admin-list{ max-height:56vh; overflow:auto; margin-top:8px; padding-right:6px }
-
-  .small-btn{ padding:8px 10px; border-radius:8px; font-weight:700; background:transparent; color:#dfeeff; border:1px solid rgba(255,255,255,0.04); cursor:pointer; }
-
-  /* Modal */
-  .modal-backdrop{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.6); z-index:220; }
-  .modal{ background:linear-gradient(180deg,#0b1620,#07101a); padding:16px; border-radius:12px; width:92%; max-width:520px; color:#eaf4ff; box-shadow:0 12px 40px rgba(0,0,0,0.6); }
-  .row-input{ display:flex; gap:8px; margin-top:10px; }
-  input[type="text"], input[type="password"], textarea{
-    flex:1; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02); color:#eaf4ff;
-  }
-  .muted{ color:var(--muted); font-size:13px; margin-top:8px; }
-
-  @media (max-width:420px){
-    .emoji{ font-size:40px }
-  }
 </style>
 </head>
-<body>
-
-<header id="siteHeader" title="Long-press here to open admin login">
-  📚 Kiddo Book Stall
-  <small>জুবায়ের স্যার এর সাম্প্রতিক ক্যাপসুল (১–৫) — long-press header to login</small>
-</header>
-
-<main>
-  <div class="intro">আপনার প্রয়োজনীয় ক্যাপসুল বেছে Download করুন — প্রতিটা ডাউনলোড হলে কাউন্ট বাড়বে (Admin এ দেখা যাবে)</div>
-
-  <div class="grid" id="grid"></div>
-
-  <div class="status" id="status">প্রস্তুত — ৫টি ফাইল</div>
-</main>
-
-<!-- Admin slide panel -->
-<div id="adminPanel" aria-hidden="true">
-  <h4>🔐 Admin Dashboard</h4>
-  <div class="admin-row"><div>মোট Downloads</div><div id="totalDownloads">0</div></div>
-  <div class="admin-row"><div>ফাইল সংখ্যা</div><div id="totalBooks">0</div></div>
-
-  <div style="margin-top:8px; font-weight:800">📚 Books</div>
-  <div class="admin-list" id="adminBookList"></div>
-
-  <div style="margin-top:10px; display:flex; gap:8px; align-items:center;">
-    <button id="openAdd" class="small-btn">➕ Add New</button>
-    <button id="closeAdmin" class="small-btn" style="margin-left:auto">🔒 Hide</button>
+<body><header>
+<h1>📚 Kiddo Book Stall</h1>
+<p>নতুন ক্যাপসুল বুক ডাউনলোড করুন</p>
+</header><div class="books-grid" id="booksGrid">
+  <!-- Books loaded by JS -->
+</div><!-- Admin Login Overlay --><div id="adminLogin">
+  <div>
+    <h3>Admin Login</h3>
+    <input type="password" id="adminPass" placeholder="Enter Password">
+    <br>
+    <button onclick="loginAdmin()">Login</button>
   </div>
-</div>
-
-<!-- Modal -->
-<div class="modal-backdrop" id="modalBackdrop">
-  <div class="modal" id="modalContent"></div>
-</div>
-
-<footer>© ২০২৫ • তৈরি করেছেন ❤️ Kamrul</footer>
-
-<script>
-/*
-  Kiddo Book Stall — final version
-  - Long-press header (1.2s) to open admin login modal (password input masked)
-  - Default admin password (in code) is used to initialize storage but NOT shown anywhere.
-  - Admin can add/edit/delete books and change admin password.
-  - Downloads open raw links in new tab to avoid CORS; each download increments counts + total.
-  - No "Download All" button as requested.
-*/
-
-/* ---------- Configuration ---------- */
-const DEFAULT_ADMIN_PASS = 'kiddo2025'; // initial password (not shown). Change here if you want.
-const KEY_BOOKS = 'kiddo_kiddo_books_v2';
-const KEY_STATS = 'kiddo_kiddo_stats_v2';
-const KEY_ADMIN = 'kiddo_kiddo_admin_v2';
-
-/* ---------- Helper functions ---------- */
-function genId(){ return 'b_'+Math.random().toString(36).slice(2,9); }
-function save(key, obj){ localStorage.setItem(key, JSON.stringify(obj)); }
-function load(key){ const s = localStorage.getItem(key); return s ? JSON.parse(s) : null; }
-function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, (m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
-function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
-
-/* ---------- Default books (using your supplied links as-is) ---------- */
-const DEFAULT_BOOKS = [
-  { id: genId(), emoji:'📗', title:'ক্যাপসুল ১', desc:'সাম্প্রতিক গুরুত্বপূর্ণ প্রশ্নাবলি', url:'https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf', downloads:0 },
-  { id: genId(), emoji:'📘', title:'ক্যাপসুল ২', desc:'চলমান ঘটনা বিশ্লেষণ', url:'https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf', downloads:0 },
-  { id: genId(), emoji:'📙', title:'ক্যাপসুল ৩', desc:'বিশেষ নোট ও তথ্য', url:'https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf', downloads:0 },
-  { id: genId(), emoji:'📕', title:'ক্যাপসুল ৪', desc:'চলতি ঘটনাবলির সারসংক্ষেপ', url:'https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AA.pdf5%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf', downloads:0 },
-  { id: genId(), emoji:'📒', title:'ক্যাপসুল ৫', desc:'গুরুত্বপূর্ণ ম্যাগাজিন টাইপ তথ্য', url:'https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AB.pdf%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AA.pdf5%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf', downloads:0 }
+</div><!-- Admin Panel --><div id="adminPanel">
+<h2>Admin Dashboard</h2>
+<div id="adminBooksList"></div>
+<h3>Add New Book</h3>
+<input type="text" id="newBookName" placeholder="Book Name"><br>
+<input type="text" id="newBookDesc" placeholder="Description"><br>
+<input type="text" id="newBookLink" placeholder="Drive Link"><br>
+<button onclick="addBook()">Add Book</button>
+<button onclick="closeAdmin()">Close Panel</button>
+</div><footer>© ২০২৫ | তৈরি করেছেন ❤️ Kamrul</footer><script>
+// ====== Books Data ======
+let books = [
+  {name:'ক্যাপসুল ১',desc:'সাম্প্রতিক গুরুত্বপূর্ণ প্রশ্নাবলি',link:'https://drive.google.com/uc?export=download&id=1364e2UqYcPFNo8rdICeEn01eYIxi4lkJ'},
+  {name:'ক্যাপসুল ২',desc:'চলমান ঘটনা বিশ্লেষণ',link:'https://drive.google.com/uc?export=download&id=15YhW44ultCzrcAeV9FeG5XAAFCPRbG5s'},
+  {name:'ক্যাপসুল ৩',desc:'বিশেষ নোট ও তথ্য',link:'https://drive.google.com/uc?export=download&id=19w9xH7T3ysEq9TL0oz1OIBnTSLzxYQb1'},
+  {name:'ক্যাপসুল ৪',desc:'চলতি ঘটনাবলির সারসংক্ষেপ',link:'https://drive.google.com/uc?export=download&id=19HZzTPrDqpkwMhEtp3qPUmjAjW4l_FRn'},
+  {name:'ক্যাপসুল ৫',desc:'গুরুত্বপূর্ণ ম্যাগাজিন টাইপ তথ্য',link:'https://drive.google.com/uc?export=download&id=1oTDD2USORNRy_O_2I5s5XWfY4tJJTVYY'}
 ];
 
-/* ---------- Storage init ---------- */
-let books = load(KEY_BOOKS) || DEFAULT_BOOKS.slice();
-let stats = load(KEY_STATS) || { totalDownloads: 0 };
-let admin = load(KEY_ADMIN) || { passHash: null }; // passHash will be set below if null
-
-// initialize admin passHash in storage (hashed) if not present
-(function ensureAdminPass(){
-  if(!admin.passHash){
-    // simple hash (SHA-256) of DEFAULT_ADMIN_PASS stored to avoid plain-text in storage
-    hashString(DEFAULT_ADMIN_PASS).then(h=>{
-      admin.passHash = h;
-      save(KEY_ADMIN, admin);
-    });
-  }
-})();
-
-/* ---------- DOM refs ---------- */
-const grid = document.getElementById('grid');
-const statusEl = document.getElementById('status');
-const totalDownloadsEl = document.getElementById('totalDownloads');
-const totalBooksEl = document.getElementById('totalBooks');
-const adminPanel = document.getElementById('adminPanel');
-const adminBookList = document.getElementById('adminBookList');
-const modalBackdrop = document.getElementById('modalBackdrop');
-const modalContent = document.getElementById('modalContent');
-
-/* ---------- Render functions ---------- */
 function renderBooks(){
-  grid.innerHTML = '';
-  books.forEach(b=>{
-    const card = document.createElement('div'); card.className='card';
-    card.innerHTML = `
-      <div class="emoji">${escapeHtml(b.emoji || '📕')}</div>
-      <div class="title">${escapeHtml(b.title)}</div>
-      <div class="desc">${escapeHtml(b.desc)}</div>
-      <div class="row">
-        <button class="btn" data-id="${b.id}" data-action="download">⬇️ ডাউনলোড</button>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-  statusEl.textContent = `প্রস্তুত — ${books.length} ফাইল`;
-  totalBooksEl.textContent = books.length;
-  totalDownloadsEl.textContent = stats.totalDownloads || 0;
-  renderAdminList();
-}
-
-function renderAdminList(){
-  adminBookList.innerHTML = '';
-  books.forEach(b=>{
-    const row = document.createElement('div'); row.className='admin-row';
-    row.innerHTML = `
-      <div style="flex:1;min-width:0">
-        <div style="font-weight:800">${escapeHtml(b.title)} <span style="color:var(--muted);font-weight:600;font-size:12px">(${b.downloads||0})</span></div>
-        <div style="font-size:12px;color:var(--muted);margin-top:6px">${escapeHtml(b.desc)}</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:6px;word-break:break-all">${escapeHtml(b.url)}</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:6px;margin-left:8px">
-        <button class="small-btn" data-action="edit" data-id="${b.id}">✏️ Edit</button>
-        <button class="small-btn" data-action="delete" data-id="${b.id}">🗑️ Delete</button>
-      </div>
-    `;
-    adminBookList.appendChild(row);
+  const grid = document.getElementById('booksGrid');
+  grid.innerHTML='';
+  books.forEach((b,i)=>{
+    let div = document.createElement('div');
+    div.className='book-card';
+    div.innerHTML=`<h3>📗 ${b.name}</h3><p>${b.desc}</p><button onclick="window.open('${b.link}','_blank')">Download</button>`;
+    grid.appendChild(div);
   });
 }
-
-/* ---------- Download behavior (open in new tab & record) ---------- */
-function openInNewTab(url){
-  const a = document.createElement('a');
-  a.href = url;
-  a.target = '_blank';
-  a.rel = 'noopener noreferrer';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-}
-
-function recordDownload(bookId){
-  const b = books.find(x=>x.id===bookId);
-  if(!b) return;
-  b.downloads = (b.downloads || 0) + 1;
-  stats.totalDownloads = (stats.totalDownloads || 0) + 1;
-  save(KEY_BOOKS, books);
-  save(KEY_STATS, stats);
-  renderBooks();
-}
-
-/* event delegation for download buttons */
-grid.addEventListener('click', (e)=>{
-  const btn = e.target.closest('button[data-action="download"]');
-  if(!btn) return;
-  const id = btn.dataset.id;
-  const b = books.find(x=>x.id===id);
-  if(!b){ alert('File not found'); return; }
-  openInNewTab(b.url);
-  recordDownload(id);
-  showToast(`${b.title} খুলে দেয়া হয়েছে (ডাউনলোড/ওপেন)`);
-});
-
-/* ---------- Admin long-press login (header) ---------- */
-const header = document.getElementById('siteHeader');
-let pressTimer = null;
-function startPress(){
-  clearTimeout(pressTimer);
-  pressTimer = setTimeout(()=> {
-    showLoginModal();
-  }, 1200);
-}
-function cancelPress(){ clearTimeout(pressTimer); }
-
-header.addEventListener('touchstart', startPress);
-header.addEventListener('mousedown', startPress);
-header.addEventListener('touchend', cancelPress);
-header.addEventListener('mouseup', cancelPress);
-header.addEventListener('mouseleave', cancelPress);
-
-/* ---------- Modal helpers ---------- */
-function showModal(html){
-  modalContent.innerHTML = html;
-  modalBackdrop.style.display = 'flex';
-}
-function hideModal(){ modalBackdrop.style.display = 'none'; modalContent.innerHTML=''; }
-
-/* ---------- Login modal ---------- */
-function showLoginModal(){
-  const html = `
-    <h3>🔐 Admin Login</h3>
-    <div class="muted">পাসওয়ার্ড লিখুন (অপশন: Admin password change হবে Dashboard থেকে)</div>
-    <div class="row-input" style="margin-top:12px">
-      <input id="adminPass" type="password" placeholder="Admin password">
-      <button id="loginBtn" class="small-btn">Login</button>
-    </div>
-    <div class="muted" style="margin-top:8px">(আপনি যদি পাস ভুল মনে করেন, Dashboard থেকে পাসওয়ার্ড চেঞ্জ করুন)</div>
-  `;
-  showModal(html);
-  document.getElementById('loginBtn').addEventListener('click', async ()=>{
-    const val = document.getElementById('adminPass').value || '';
-    const stored = load(KEY_ADMIN) || {};
-    const storedHash = stored.passHash || await hashString(DEFAULT_ADMIN_PASS);
-    const valHash = await hashString(val);
-    if(valHash === storedHash){
-      hideModal();
-      openAdminPanel();
-      showToast('Admin authenticated — Dashboard খুলে দেয়া হলো');
-    } else {
-      alert('পাসওয়ার্ড ভুল');
-    }
-  });
-}
-
-/* ---------- Admin panel open/close ---------- */
-function openAdminPanel(){
-  adminPanel.style.display = 'block';
-  adminPanel.setAttribute('aria-hidden','false');
-}
-document.getElementById('closeAdmin').addEventListener('click', ()=> {
-  adminPanel.style.display = 'none';
-  adminPanel.setAttribute('aria-hidden','true');
-});
-
-/* ---------- Admin list actions (edit/delete) ---------- */
-adminBookList.addEventListener('click', (ev)=>{
-  const btn = ev.target.closest('button');
-  if(!btn) return;
-  const id = btn.dataset.id;
-  const action = btn.dataset.action;
-  if(action === 'delete'){
-    if(confirm('আপনি কি নিশ্চিত মুছে ফেলতে চান?')){
-      books = books.filter(x=>x.id !== id);
-      save(KEY_BOOKS, books);
-      renderBooks();
-      showToast('বই মুছে দেওয়া হয়েছে');
-    }
-  } else if(action === 'edit'){
-    const book = books.find(x=>x.id===id);
-    if(book) showEditModal(book);
-  }
-});
-
-/* ---------- Add new book ---------- */
-document.getElementById('openAdd').addEventListener('click', ()=> showAddModal());
-
-function showAddModal(){
-  const html = `
-    <h3>➕ Add New Book</h3>
-    <div class="row-input" style="margin-top:10px">
-      <input id="newTitle" placeholder="Title (বাংলা)">
-    </div>
-    <div class="row-input" style="margin-top:8px">
-      <input id="newEmoji" placeholder="Emoji (e.g., 📗)">
-      <input id="newDesc" placeholder="Short description">
-    </div>
-    <div class="row-input" style="margin-top:8px">
-      <input id="newURL" placeholder="Raw file URL (https://raw.githubusercontent.com/...)">
-    </div>
-    <div style="margin-top:10px; display:flex; gap:8px">
-      <button id="saveNew" class="small-btn">Save</button>
-      <button id="cancelNew" class="small-btn">Cancel</button>
-    </div>
-  `;
-  showModal(html);
-  document.getElementById('cancelNew').addEventListener('click', hideModal);
-  document.getElementById('saveNew').addEventListener('click', ()=>{
-    const title = document.getElementById('newTitle').value.trim();
-    const emoji = document.getElementById('newEmoji').value.trim() || '📕';
-    const desc = document.getElementById('newDesc').value.trim() || '';
-    const url = document.getElementById('newURL').value.trim();
-    if(!title || !url){ alert('Title এবং URL দিতে হবে'); return; }
-    const nb = { id: genId(), emoji, title, desc, url, downloads:0 };
-    books.unshift(nb);
-    save(KEY_BOOKS, books);
-    renderBooks();
-    hideModal();
-    showToast('নতুন বই যোগ করা হয়েছে');
-  });
-}
-
-/* ---------- Edit modal ---------- */
-function showEditModal(book){
-  const html = `
-    <h3>✏️ Edit Book</h3>
-    <div class="row-input" style="margin-top:10px">
-      <input id="eTitle" value="${escapeHtml(book.title)}">
-    </div>
-    <div class="row-input" style="margin-top:8px">
-      <input id="eEmoji" value="${escapeHtml(book.emoji||'')}">
-      <input id="eDesc" value="${escapeHtml(book.desc||'')}">
-    </div>
-    <div class="row-input" style="margin-top:8px">
-      <input id="eURL" value="${escapeHtml(book.url||'')}">
-    </div>
-    <div style="margin-top:10px; display:flex; gap:8px">
-      <button id="saveEdit" class="small-btn">Save</button>
-      <button id="cancelEdit" class="small-btn">Cancel</button>
-      <button id="changePass" class="small-btn" style="margin-left:auto">🔑 Change Pass</button>
-    </div>
-  `;
-  showModal(html);
-  document.getElementById('cancelEdit').addEventListener('click', hideModal);
-  document.getElementById('saveEdit').addEventListener('click', ()=>{
-    const title = document.getElementById('eTitle').value.trim();
-    const emoji = document.getElementById('eEmoji').value.trim() || '📕';
-    const desc = document.getElementById('eDesc').value.trim() || '';
-    const url = document.getElementById('eURL').value.trim();
-    if(!title || !url){ alert('Title এবং URL দিতে হবে'); return; }
-    const idx = books.findIndex(x=>x.id===book.id);
-    if(idx>=0){
-      books[idx].title = title; books[idx].emoji = emoji; books[idx].desc = desc; books[idx].url = url;
-      save(KEY_BOOKS, books);
-      renderBooks();
-      hideModal();
-      showToast('বই আপডেট করা হয়েছে');
-    }
-  });
-  document.getElementById('changePass').addEventListener('click', ()=> {
-    hideModal();
-    showChangePassModal();
-  });
-}
-
-/* ---------- Change admin password modal ---------- */
-function showChangePassModal(){
-  const html = `
-    <h3>🔑 Change Admin Password</h3>
-    <div class="muted">নতুন পাসওয়ার্ড লিখুন (সেভ করলে পুরনো পাসওয়ার্ড আর কাজ করবে না)</div>
-    <div class="row-input" style="margin-top:10px">
-      <input id="newPass" type="password" placeholder="New password">
-      <input id="confirmPass" type="password" placeholder="Confirm">
-    </div>
-    <div style="margin-top:10px; display:flex; gap:8px">
-      <button id="savePass" class="small-btn">Save</button>
-      <button id="cancelPass" class="small-btn">Cancel</button>
-    </div>
-  `;
-  showModal(html);
-  document.getElementById('cancelPass').addEventListener('click', hideModal);
-  document.getElementById('savePass').addEventListener('click', async ()=>{
-    const p = document.getElementById('newPass').value;
-    const c = document.getElementById('confirmPass').value;
-    if(!p || p.length < 4){ alert('পাসওয়ার্ড কমপক্ষে 4 অক্ষর হবে'); return; }
-    if(p !== c){ alert('পাসওয়ার্ড মিলছে না'); return; }
-    const h = await hashString(p);
-    admin.passHash = h;
-    save(KEY_ADMIN, admin);
-    hideModal();
-    showToast('Admin password আপডেট হয়েছে');
-  });
-}
-
-/* ---------- Utility: SHA-256 hash for password ---------- */
-async function hashString(str){
-  const enc = new TextEncoder().encode(str);
-  const buf = await crypto.subtle.digest('SHA-256', enc);
-  const hex = Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-  return hex;
-}
-
-/* ---------- Toast ---------- */
-function showToast(msg, t=2200){
-  const el = document.createElement('div');
-  el.textContent = msg;
-  el.style.position='fixed'; el.style.left='12px'; el.style.bottom='12px';
-  el.style.background='rgba(0,0,0,0.6)'; el.style.color='#fff'; el.style.padding='10px 12px';
-  el.style.borderRadius='8px'; el.style.fontSize='13px'; el.style.zIndex=9999;
-  document.body.appendChild(el);
-  setTimeout(()=>{ el.style.transition='opacity 300ms'; el.style.opacity='0'; }, t-300);
-  setTimeout(()=> el.remove(), t);
-}
-
-/* ---------- Save/load helpers ---------- */
-function save(key, obj){ localStorage.setItem(key, JSON.stringify(obj)); }
-function load(key){ try{ const s = localStorage.getItem(key); return s ? JSON.parse(s) : null; }catch(e){ return null; } }
-
-/* ---------- Initial render ---------- */
 renderBooks();
 
-/* ---------- Helpful note: open admin quickly with ?admin=1 ---------- */
-if(location.search.indexOf('admin=1') !== -1){
-  showLoginModal();
+// ====== Admin Login ======
+let longPressTimer;
+document.body.addEventListener('mousedown',()=>{longPressTimer=setTimeout(()=>{
+  document.getElementById('adminLogin').style.display='flex';
+},2000);});
+document.body.addEventListener('mouseup',()=>{clearTimeout(longPressTimer);});
+
+function loginAdmin(){
+  const pass=document.getElementById('adminPass').value;
+  if(pass==='kiddo'){
+    document.getElementById('adminLogin').style.display='none';
+    document.getElementById('adminPanel').classList.add('active');
+    renderAdminBooks();
+  }else{alert('Wrong Password');}
 }
-</script>
-</body>
+function closeAdmin(){document.getElementById('adminPanel').classList.remove('active');}
+
+// ====== Admin Functions ======
+function renderAdminBooks(){
+  const list=document.getElementById('adminBooksList');
+  list.innerHTML='';
+  books.forEach((b,i)=>{
+    let div=document.createElement('div');
+    div.className='admin-book';
+    div.innerHTML=`<span>${b.name}</span><button onclick="deleteBook(${i})">Delete</button>`;
+    list.appendChild(div);
+  });
+}
+function deleteBook(i){
+  if(confirm('Are you sure to delete this book?')){books.splice(i,1);renderBooks();renderAdminBooks();}
+}
+function addBook(){
+  const name=document.getElementById('newBookName').value;
+  const desc=document.getElementById('newBookDesc').value;
+  const link=document.getElementById('newBookLink').value.replace('/view?usp=drivesdk','').replace('/view?usp=sharing','').replace('file/d/','uc?export=download&id=');
+  if(name && link){books.push({name:name,desc:desc,link:link});renderBooks();renderAdminBooks();
+  document.getElementById('newBookName').value='';document.getElementById('newBookDesc').value='';document.getElementById('newBookLink').value='';}
+  else{alert('Fill all fields');}
+}
+</script></body>
 </html>
