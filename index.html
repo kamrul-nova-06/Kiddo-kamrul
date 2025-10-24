@@ -1633,5 +1633,22 @@ window.onerror = function (message, source, lineno, colno, error) {
   alert("Error: " + message);
 };
     </script>
+    <script>
+window.onerror = function (message, source, lineno, colno, error) {
+  const errorBox = document.createElement("div");
+  errorBox.style.position = "fixed";
+  errorBox.style.bottom = "0";
+  errorBox.style.left = "0";
+  errorBox.style.width = "100%";
+  errorBox.style.background = "#EF4444";
+  errorBox.style.color = "white";
+  errorBox.style.padding = "10px";
+  errorBox.style.fontSize = "14px";
+  errorBox.style.zIndex = "9999";
+  errorBox.innerText = "⚠️ Error: " + message;
+  document.body.appendChild(errorBox);
+  console.error("🔥 Error details:", message, source, lineno, colno, error);
+};
+    </script>
 </body>
 </html>
