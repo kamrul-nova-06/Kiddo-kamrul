@@ -6,6 +6,10 @@
     <title>📚 কিড্ডো বুক স্টল</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -236,6 +240,7 @@
             font-size: 0.95rem;
             border: none;
             cursor: pointer;
+            text-decoration: none;
         }
 
         .book-card .download-btn:hover {
@@ -625,8 +630,8 @@
             box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
         }
 
-        /* Fingerprint Auth */
-        .fingerprint-auth {
+        /* Security Modal */
+        .security-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -640,11 +645,11 @@
             padding: 20px;
         }
 
-        .fingerprint-auth.active {
+        .security-modal.active {
             display: flex;
         }
 
-        .fingerprint-content {
+        .security-content {
             background: white;
             padding: 40px;
             border-radius: 20px;
@@ -654,31 +659,96 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
-        .fingerprint-icon {
+        .security-icon {
             font-size: 4rem;
             color: var(--primary);
             margin-bottom: 20px;
         }
 
-        .fingerprint-content h3 {
+        .security-content h3 {
             color: var(--primary);
             margin-bottom: 15px;
             font-size: 1.5rem;
         }
 
-        .fingerprint-content p {
+        .security-content p {
             color: #64748b;
             margin-bottom: 25px;
             line-height: 1.6;
         }
 
-        .fingerprint-buttons {
+        .security-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .security-option {
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .security-option:hover {
+            border-color: var(--primary);
+            background: #f8fafc;
+        }
+
+        .security-option.active {
+            border-color: var(--primary);
+            background: #dbeafe;
+        }
+
+        .option-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .option-text {
+            text-align: left;
+            flex: 1;
+        }
+
+        .option-text h4 {
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .option-text p {
+            font-size: 0.9rem;
+            margin: 0;
+            color: #64748b;
+        }
+
+        .security-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .security-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .security-buttons {
             display: flex;
             gap: 15px;
             justify-content: center;
         }
 
-        .fingerprint-buttons button {
+        .security-buttons button {
             padding: 12px 25px;
             border: none;
             border-radius: 10px;
@@ -688,22 +758,22 @@
             flex: 1;
         }
 
-        .fingerprint-buttons .auth-btn {
+        .security-buttons .auth-btn {
             background: var(--gradient);
             color: white;
         }
 
-        .fingerprint-buttons .auth-btn:hover {
+        .security-buttons .auth-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
         }
 
-        .fingerprint-buttons .cancel-btn {
+        .security-buttons .cancel-btn {
             background: #e2e8f0;
             color: #64748b;
         }
 
-        .fingerprint-buttons .cancel-btn:hover {
+        .security-buttons .cancel-btn:hover {
             background: #cbd5e1;
         }
 
@@ -787,8 +857,12 @@
                 padding: 25px;
             }
             
-            .fingerprint-content {
+            .security-content {
                 padding: 30px 25px;
+            }
+            
+            .security-buttons {
+                flex-direction: column;
             }
         }
 
@@ -809,10 +883,6 @@
             
             .admin-header h2 {
                 font-size: 1.4rem;
-            }
-            
-            .fingerprint-buttons {
-                flex-direction: column;
             }
         }
     </style>
@@ -899,19 +969,56 @@
         </div>
     </div>
 
-    <!-- Fingerprint Authentication -->
-    <div class="fingerprint-auth" id="fingerprintAuth">
-        <div class="fingerprint-content">
-            <div class="fingerprint-icon">
-                <i class="fas fa-fingerprint"></i>
+    <!-- Security Modal -->
+    <div class="security-modal" id="securityModal">
+        <div class="security-content">
+            <div class="security-icon">
+                <i class="fas fa-shield-alt"></i>
             </div>
-            <h3>ফিঙ্গারপ্রিন্ট যাচাই</h3>
-            <p>অ্যাডমিন প্যানেলে প্রবেশ করতে আপনার ফিঙ্গারপ্রিন্ট দিয়ে যাচাই করুন</p>
-            <div class="fingerprint-buttons">
-                <button class="auth-btn" id="authSuccess">
-                    <i class="fas fa-check"></i> যাচাই করুন
-                </button>
-                <button class="cancel-btn" id="authCancel">
+            <h3>সিকিউরিটি যাচাই</h3>
+            <p>অ্যাডমিন প্যানেলে প্রবেশ করতে নিরাপত্তা যাচাই করুন</p>
+            
+            <div class="security-options">
+                <div class="security-option" id="fingerprintOption">
+                    <div class="option-icon">
+                        <i class="fas fa-fingerprint"></i>
+                    </div>
+                    <div class="option-text">
+                        <h4>ফিঙ্গারপ্রিন্ট</h4>
+                        <p>আপনার ফিঙ্গারপ্রিন্ট দিয়ে যাচাই করুন</p>
+                    </div>
+                </div>
+                <div class="security-option" id="passwordOption">
+                    <div class="option-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="option-text">
+                        <h4>পাসওয়ার্ড</h4>
+                        <p>পাসওয়ার্ড দিয়ে যাচাই করুন</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="fingerprintAuth" style="display: none;">
+                <p>ফিঙ্গারপ্রিন্ট সেন্সরে আঙ্গুল রাখুন</p>
+                <div class="security-buttons">
+                    <button class="auth-btn" id="fingerprintSuccess">
+                        <i class="fas fa-check"></i> ফিঙ্গারপ্রিন্ট যাচাই
+                    </button>
+                </div>
+            </div>
+
+            <div id="passwordAuth" style="display: none;">
+                <input type="password" class="security-input" id="adminPassword" placeholder="অ্যাডমিন পাসওয়ার্ড দিন">
+                <div class="security-buttons">
+                    <button class="auth-btn" id="passwordSuccess">
+                        <i class="fas fa-check"></i> পাসওয়ার্ড যাচাই
+                    </button>
+                </div>
+            </div>
+
+            <div class="security-buttons" id="mainButtons">
+                <button class="cancel-btn" id="securityCancel">
                     <i class="fas fa-times"></i> বাতিল
                 </button>
             </div>
@@ -919,49 +1026,23 @@
     </div>
 
     <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDLogJ9_NzTAkt2cRF1ex1amEu-e9rH8EA",
+            authDomain: "kiddo-kamrul.firebaseapp.com",
+            projectId: "kiddo-kamrul",
+            storageBucket: "kiddo-kamrul.firebasestorage.app",
+            messagingSenderId: "714264902093",
+            appId: "1:714264902093:web:628164446feacd1eebec84",
+            measurementId: "G-4BXFG50W7Q"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
         // Sample books data with descriptions
-        let books = [
-            {
-                title: "সাম্প্রতিক ক্যাপসুল - ১", 
-                link: "https://drive.google.com/uc?export=download&id=1364e2UqYcPFNo8rdICeEn01eYIxi4lkJ", 
-                downloads: 0, 
-                emoji: "📕", 
-                year: "২০২৪", 
-                description: "এই ক্যাপসুলে রয়েছে সাম্প্রতিক পরীক্ষার জন্য গুরুত্বপূর্ণ প্রশ্নোত্তর, যা শিক্ষার্থীদের প্রস্তুতিতে সহায়ক হবে।"
-            },
-            {
-                title: "সাম্প্রতিক ক্যাপসুল - ২", 
-                link: "https://drive.google.com/uc?export=download&id=15YhW44ultCzrcAeV9FeG5XAAFCPRbG5s", 
-                downloads: 0, 
-                emoji: "📗", 
-                year: "২০২৪", 
-                description: "গুরুত্বপূর্ণ টপিকস সম্বলিত এই ক্যাপসুলে রয়েছে বিগত বছরের প্রশ্ন বিশ্লেষণ এবং সমাধান কৌশল।"
-            },
-            {
-                title: "সাম্প্রতিক ক্যাপসুল - ৩", 
-                link: "https://drive.google.com/uc?export=download&id=19w9xH7T3ysEq9TL0oz1OIBnTSLzxYQb1", 
-                downloads: 0, 
-                emoji: "📘", 
-                year: "২০২৪", 
-                description: "পরীক্ষার প্রস্তুতির শেষ মুহূর্তের রিভিশনের জন্য এই ক্যাপসুলে রয়েছে সংক্ষিপ্ত এবং কার্যকরী নোটস।"
-            },
-            {
-                title: "সাম্প্রতিক ক্যাপসুল - ৪", 
-                link: "https://drive.google.com/uc?export=download&id=19HZzTPrDqpkwMhEtp3qPUmjAjW4l_FRn", 
-                downloads: 0, 
-                emoji: "📙", 
-                year: "২০২৪", 
-                description: "গাণিতিক সমস্যা সমাধানের কৌশল এবং শর্টকাট মেথড নিয়ে তৈরি এই বিশেষ ক্যাপসুল।"
-            },
-            {
-                title: "সাম্প্রতিক ক্যাপসুল - ৫", 
-                link: "https://drive.google.com/uc?export=download&id=14WTRJWqXF883Wms-e97ubxBV7UibLMYL", 
-                downloads: 0, 
-                emoji: "📓", 
-                year: "২০২৪", 
-                description: "সকল বিষয়ের একত্রিত সংকলন এই ক্যাপসুলে, যা সম্পূর্ণ সিলেবাস কভার করে এবং সময় বাঁচাতে সাহায্য করে।"
-            }
-        ];
+        let books = [];
 
         // Emojis for book covers
         const emojis = ["📕", "📗", "📘", "📙", "📓", "📔", "📒", "📖", "📚", "🔖"];
@@ -980,18 +1061,86 @@
         const editModal = document.getElementById("editModal");
         const editBookForm = document.getElementById("editBookForm");
         const closeEditModal = document.getElementById("closeEditModal");
+        const securityModal = document.getElementById("securityModal");
+        const fingerprintOption = document.getElementById("fingerprintOption");
+        const passwordOption = document.getElementById("passwordOption");
         const fingerprintAuth = document.getElementById("fingerprintAuth");
-        const authSuccess = document.getElementById("authSuccess");
-        const authCancel = document.getElementById("authCancel");
+        const passwordAuth = document.getElementById("passwordAuth");
+        const fingerprintSuccess = document.getElementById("fingerprintSuccess");
+        const passwordSuccess = document.getElementById("passwordSuccess");
+        const securityCancel = document.getElementById("securityCancel");
+        const adminPassword = document.getElementById("adminPassword");
         const madeBy = document.getElementById("madeBy");
 
         // Current book being edited
         let currentEditIndex = -1;
         let isAdminLoggedIn = false;
+        let currentAuthMethod = '';
 
         // Function to get a random emoji
         function getRandomEmoji() { 
             return emojis[Math.floor(Math.random() * emojis.length)]; 
+        }
+
+        // Load books from Firebase
+        async function loadBooksFromFirebase() {
+            try {
+                const snapshot = await db.collection('books').get();
+                books = [];
+                snapshot.forEach(doc => {
+                    books.push({ id: doc.id, ...doc.data() });
+                });
+                renderBooks();
+                updateStats();
+            } catch (error) {
+                console.error("Error loading books:", error);
+                // If Firebase fails, use default books
+                loadDefaultBooks();
+            }
+        }
+
+        // Load default books if Firebase fails
+        function loadDefaultBooks() {
+            books = [
+                {
+                    title: "সাম্প্রতিক ক্যাপসুল - ১", 
+                    link: "https://drive.google.com/uc?export=download&id=1364e2UqYcPFNo8rdICeEn01eYIxi4lkJ", 
+                    downloads: 0, 
+                    emoji: "📕", 
+                    year: "২০২৪", 
+                    description: "এই ক্যাপসুলে রয়েছে সাম্প্রতিক পরীক্ষার জন্য গুরুত্বপূর্ণ প্রশ্নোত্তর, যা শিক্ষার্থীদের প্রস্তুতিতে সহায়ক হবে।"
+                },
+                {
+                    title: "সাম্প্রতিক ক্যাপসুল - ২", 
+                    link: "https://drive.google.com/uc?export=download&id=15YhW44ultCzrcAeV9FeG5XAAFCPRbG5s", 
+                    downloads: 0, 
+                    emoji: "📗", 
+                    year: "২০২৪", 
+                    description: "গুরুত্বপূর্ণ টপিকস সম্বলিত এই ক্যাপসুলে রয়েছে বিগত বছরের প্রশ্ন বিশ্লেষণ এবং সমাধান কৌশল।"
+                }
+            ];
+            renderBooks();
+            updateStats();
+        }
+
+        // Save books to Firebase
+        async function saveBooksToFirebase() {
+            try {
+                // Clear existing books
+                const snapshot = await db.collection('books').get();
+                const batch = db.batch();
+                snapshot.forEach(doc => {
+                    batch.delete(doc.ref);
+                });
+                await batch.commit();
+
+                // Add all books
+                for (const book of books) {
+                    await db.collection('books').add(book);
+                }
+            } catch (error) {
+                console.error("Error saving books:", error);
+            }
         }
 
         // Function to render books in the grid
@@ -1006,9 +1155,9 @@
                     <h3>${book.title}</h3>
                     ${book.description ? `<div class="book-description">${book.description}</div>` : '<div class="book-description"></div>'}
                     <div>
-                        <button class="download-btn" onclick="incrementDownload(${i})">
+                        <a href="${book.link}" class="download-btn" target="_blank" onclick="incrementDownload(${i})">
                             <i class="fas fa-download"></i> ডাউনলোড করুন
-                        </button>
+                        </a>
                         <div class="download-count">
                             <i class="fas fa-download"></i> ${book.downloads} বার ডাউনলোড
                         </div>
@@ -1019,11 +1168,10 @@
         }
 
         // Function to increment download count
-        function incrementDownload(index) {
+        async function incrementDownload(index) {
             books[index].downloads += 1;
             updateStats();
-            // Open download link in new tab
-            window.open(books[index].link, '_blank');
+            await saveBooksToFirebase();
         }
 
         // Function to update statistics
@@ -1077,7 +1225,7 @@
         }
 
         // Function to save edited book
-        function saveEditedBook(e) {
+        async function saveEditedBook(e) {
             e.preventDefault();
             
             if (currentEditIndex === -1) return;
@@ -1095,6 +1243,7 @@
                 
                 renderBooks();
                 renderAdminBooks();
+                await saveBooksToFirebase();
                 closeEditModalFunc();
                 
                 alert('বইটি সফলভাবে আপডেট করা হয়েছে!');
@@ -1102,12 +1251,13 @@
         }
 
         // Function to delete a book
-        function deleteBook(index) {
+        async function deleteBook(index) {
             if (confirm("আপনি কি নিশ্চিত যে আপনি এই বইটি মুছতে চান?")) {
                 books.splice(index, 1);
                 renderBooks();
                 renderAdminBooks();
                 updateStats();
+                await saveBooksToFirebase();
                 alert('বইটি সফলভাবে মুছে ফেলা হয়েছে!');
             }
         }
@@ -1124,7 +1274,7 @@
         }
 
         // Event listener for adding new book
-        addBookForm.addEventListener('submit', function(e) {
+        addBookForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             const title = document.getElementById('newBookTitle').value.trim();
             const link = document.getElementById('newBookLink').value.trim();
@@ -1145,6 +1295,7 @@
                 renderBooks(); 
                 renderAdminBooks(); 
                 updateStats(); 
+                await saveBooksToFirebase();
                 addBookForm.reset();
                 linkConverter.classList.remove('active');
                 
@@ -1189,26 +1340,72 @@
             adminIndicator.classList.remove('active');
         }
 
-        // Fingerprint authentication
-        function showFingerprintAuth() {
-            fingerprintAuth.classList.add('active');
+        // Security authentication
+        function showSecurityModal() {
+            securityModal.classList.add('active');
+            resetSecurityOptions();
         }
 
-        function hideFingerprintAuth() {
-            fingerprintAuth.classList.remove('active');
+        function hideSecurityModal() {
+            securityModal.classList.remove('active');
+            resetSecurityOptions();
+        }
+
+        function resetSecurityOptions() {
+            fingerprintOption.classList.remove('active');
+            passwordOption.classList.remove('active');
+            fingerprintAuth.style.display = 'none';
+            passwordAuth.style.display = 'none';
+            document.getElementById('mainButtons').style.display = 'flex';
+            adminPassword.value = '';
+        }
+
+        function selectFingerprintAuth() {
+            resetSecurityOptions();
+            fingerprintOption.classList.add('active');
+            fingerprintAuth.style.display = 'block';
+            document.getElementById('mainButtons').style.display = 'none';
+            currentAuthMethod = 'fingerprint';
+        }
+
+        function selectPasswordAuth() {
+            resetSecurityOptions();
+            passwordOption.classList.add('active');
+            passwordAuth.style.display = 'block';
+            document.getElementById('mainButtons').style.display = 'none';
+            currentAuthMethod = 'password';
+        }
+
+        function authenticate() {
+            if (currentAuthMethod === 'fingerprint') {
+                // Simulate fingerprint authentication
+                setTimeout(() => {
+                    isAdminLoggedIn = true;
+                    hideSecurityModal();
+                    openAdminPanel();
+                }, 1000);
+            } else if (currentAuthMethod === 'password') {
+                const password = adminPassword.value.trim();
+                if (password === 'kiddo123') {
+                    isAdminLoggedIn = true;
+                    hideSecurityModal();
+                    openAdminPanel();
+                } else {
+                    alert('ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।');
+                }
+            }
         }
 
         // Event listeners
-        madeBy.addEventListener('click', showFingerprintAuth);
+        madeBy.addEventListener('click', showSecurityModal);
         document.getElementById('closeAdmin').addEventListener('click', closeAdminPanel);
         closeEditModal.addEventListener('click', closeEditModalFunc);
         editBookForm.addEventListener('submit', saveEditedBook);
-        authSuccess.addEventListener('click', function() {
-            isAdminLoggedIn = true;
-            hideFingerprintAuth();
-            openAdminPanel();
-        });
-        authCancel.addEventListener('click', hideFingerprintAuth);
+        fingerprintOption.addEventListener('click', selectFingerprintAuth);
+        passwordOption.addEventListener('click', selectPasswordAuth);
+        fingerprintSuccess.addEventListener('click', authenticate);
+        passwordSuccess.addEventListener('click', authenticate);
+        securityCancel.addEventListener('click', hideSecurityModal);
 
         // Close modal when clicking outside
         editModal.addEventListener('click', function(e) {
@@ -1217,15 +1414,21 @@
             }
         });
 
-        fingerprintAuth.addEventListener('click', function(e) {
-            if (e.target === fingerprintAuth) {
-                hideFingerprintAuth();
+        securityModal.addEventListener('click', function(e) {
+            if (e.target === securityModal) {
+                hideSecurityModal();
+            }
+        });
+
+        // Enter key for password authentication
+        adminPassword.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                authenticate();
             }
         });
 
         // Initialize the app
-        renderBooks();
-        updateStats();
+        loadBooksFromFirebase();
     </script>
 </body>
 </html>
