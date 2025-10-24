@@ -1646,9 +1646,25 @@ window.onerror = function (message, source, lineno, colno, error) {
 };
     </script>
     <script>
-db.collection('books').get().then(snapshot => {
-  alert("Books found: " + snapshot.size);
-}).catch(e => alert("Error: " + e.message));
+// Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDLogJ9_NzTAkt2cRF1ex1amEu-e9rH8EA",
+  authDomain: "kiddo-kamrul.firebaseapp.com",
+  projectId: "kiddo-kamrul",
+  storageBucket: "kiddo-kamrul.firebasestorage.app",
+  messagingSenderId: "714264902093",
+  appId: "1:714264902093:web:628164446feacd1eebec84",
+  measurementId: "G-4BXFG50W7Q"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// ✅ Test Firestore connection
+db.collection('books').get()
+  .then(snapshot => alert("Books found: " + snapshot.size))
+  .catch(e => alert("Error: " + e.message));
     </script>
 </body>
 </html>
