@@ -37,7 +37,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
@@ -125,20 +125,31 @@
             margin-top: 20px;
         }
 
+        /* Desktop - 4 books per row */
+        @media (min-width: 1024px) {
+            .book-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Tablet - 3 books per row */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .book-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
         .book-card {
             background: var(--card-bg);
             border-radius: 20px;
-            padding: 25px;
+            padding: 20px;
             box-shadow: var(--shadow);
             display: flex;
             flex-direction: column;
-            align-items: center;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.5);
-            height: 320px;
-            justify-content: space-between;
         }
 
         .book-card::before {
@@ -156,22 +167,52 @@
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
+        .book-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, var(--accent), #ff4d6d);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+            box-shadow: 0 3px 8px rgba(255, 107, 139, 0.3);
+        }
+
         .book-card .emoji {
-            font-size: 70px;
+            font-size: 60px;
             margin-bottom: 15px;
-            height: 80px;
+            height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .book-card h3 {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin-bottom: 10px;
             color: var(--primary);
             text-align: center;
             font-weight: 600;
             line-height: 1.4;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .book-description {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 15px;
+            text-align: center;
+            line-height: 1.4;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .book-card .download-btn {
@@ -184,7 +225,7 @@
             font-weight: 600;
             transition: all 0.3s ease;
             width: 100%;
-            margin-top: 15px;
+            margin-top: auto;
             box-shadow: 0 4px 10px rgba(0, 210, 168, 0.3);
         }
 
@@ -196,10 +237,11 @@
 
         .book-card .download-count {
             margin-top: 10px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #666;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 5px;
         }
 
@@ -318,7 +360,7 @@
             gap: 15px;
         }
 
-        .admin-form input {
+        .admin-form input, .admin-form textarea {
             flex: 1 1 300px;
             padding: 15px;
             border-radius: 12px;
@@ -328,7 +370,12 @@
             transition: all 0.3s ease;
         }
 
-        .admin-form input:focus {
+        .admin-form textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .admin-form input:focus, .admin-form textarea:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(106, 90, 249, 0.2);
         }
@@ -374,13 +421,29 @@
             transform: translateX(5px);
         }
 
-        .admin-book-item span {
+        .admin-book-item .book-info {
             flex: 1;
-            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .admin-book-item .book-title {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .admin-book-item .book-year {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .admin-book-item .book-actions {
+            display: flex;
+            gap: 10px;
         }
 
         .admin-book-item button {
-            background: var(--accent);
             border: none;
             padding: 8px 15px;
             border-radius: 8px;
@@ -393,7 +456,20 @@
             gap: 5px;
         }
 
-        .admin-book-item button:hover {
+        .admin-book-item .edit-btn {
+            background: var(--primary);
+        }
+
+        .admin-book-item .edit-btn:hover {
+            background: #5a4fd8;
+            transform: scale(1.05);
+        }
+
+        .admin-book-item .delete-btn {
+            background: var(--accent);
+        }
+
+        .admin-book-item .delete-btn:hover {
             background: #ff4d6d;
             transform: scale(1.05);
         }
@@ -426,15 +502,30 @@
             margin-top: 40px;
             color: rgba(255, 255, 255, 0.7);
             font-size: 0.9rem;
+            line-height: 1.6;
         }
 
         /* Responsive Styles */
-        @media (max-width: 768px) {
+        @media (max-width: 767px) {
             .book-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
             }
-
+            
+            .book-card {
+                padding: 15px;
+            }
+            
+            .book-card .emoji {
+                font-size: 50px;
+                height: 60px;
+            }
+            
+            .book-card h3 {
+                font-size: 1rem;
+                min-height: 40px;
+            }
+            
             header h1 {
                 font-size: 2rem;
             }
@@ -447,8 +538,24 @@
                 flex-direction: column;
             }
 
-            .admin-form input {
+            .admin-form input, .admin-form textarea {
                 flex: 1 1 100%;
+            }
+            
+            .admin-book-item {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .admin-book-item .book-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .admin-book-item button {
+                flex: 1;
+                justify-content: center;
             }
         }
 
@@ -465,11 +572,6 @@
                 flex-direction: column;
                 gap: 15px;
                 text-align: center;
-            }
-            
-            .book-card {
-                height: 300px;
-                padding: 20px;
             }
         }
     </style>
@@ -522,6 +624,8 @@
                 <form id="addBookForm" class="admin-form">
                     <input type="text" placeholder="বইয়ের নাম" required id="newBookTitle">
                     <input type="url" placeholder="গুগল ড্রাইভ লিংক" required id="newBookLink">
+                    <input type="text" placeholder="বইয়ের বছর (যেমন: ২০২৪)" id="newBookYear">
+                    <textarea placeholder="বইয়ের বিবরণ (ঐচ্ছিক)" id="newBookDescription"></textarea>
                     <button type="submit"><i class="fas fa-plus"></i> যোগ করুন</button>
                 </form>
                 <div class="link-converter" id="linkConverter">
@@ -540,11 +644,11 @@
     <script>
         // Sample books data
         let books = [
-            {title: "সাম্প্রতিক ক্যাপসুল - ১", link: "https://drive.google.com/uc?export=download&id=1364e2UqYcPFNo8rdICeEn01eYIxi4lkJ", downloads: 0, emoji: "📕"},
-            {title: "সাম্প্রতিক ক্যাপসুল - ২", link: "https://drive.google.com/uc?export=download&id=15YhW44ultCzrcAeV9FeG5XAAFCPRbG5s", downloads: 0, emoji: "📗"},
-            {title: "সাম্প্রতিক ক্যাপসুল - ৩", link: "https://drive.google.com/uc?export=download&id=19w9xH7T3ysEq9TL0oz1OIBnTSLzxYQb1", downloads: 0, emoji: "📘"},
-            {title: "সাম্প্রতিক ক্যাপসুল - ৪", link: "https://drive.google.com/uc?export=download&id=19HZzTPrDqpkwMhEtp3qPUmjAjW4l_FRn", downloads: 0, emoji: "📙"},
-            {title: "সাম্প্রতিক ক্যাপসুল - ৫", link: "https://drive.google.com/uc?export=download&id=14WTRJWqXF883Wms-e97ubxBV7UibLMYL", downloads: 0, emoji: "📓"}
+            {title: "সাম্প্রতিক ক্যাপসুল - ১", link: "https://drive.google.com/uc?export=download&id=1364e2UqYcPFNo8rdICeEn01eYIxi4lkJ", downloads: 0, emoji: "📕", year: "২০২৪", description: "সাম্প্রতিক পরীক্ষার জন্য প্রস্তুতিমূলক ক্যাপসুল"},
+            {title: "সাম্প্রতিক ক্যাপসুল - ২", link: "https://drive.google.com/uc?export=download&id=15YhW44ultCzrcAeV9FeG5XAAFCPRbG5s", downloads: 0, emoji: "📗", year: "২০২৪", description: "গুরুত্বপূর্ণ টপিকস সম্বলিত ক্যাপসুল"},
+            {title: "সাম্প্রতিক ক্যাপসুল - ৩", link: "https://drive.google.com/uc?export=download&id=19w9xH7T3ysEq9TL0oz1OIBnTSLzxYQb1", downloads: 0, emoji: "📘", year: "২০২৪", description: "পরীক্ষার প্রস্তুতির শেষ মুহূর্তের রিভিশন"},
+            {title: "সাম্প্রতিক ক্যাপসুল - ৪", link: "https://drive.google.com/uc?export=download&id=19HZzTPrDqpkwMhEtp3qPUmjAjW4l_FRn", downloads: 0, emoji: "📙", year: "২০২৪", description: "গাণিতিক সমস্যা সমাধানের কৌশল"},
+            {title: "সাম্প্রতিক ক্যাপসুল - ৫", link: "https://drive.google.com/uc?export=download&id=14WTRJWqXF883Wms-e97ubxBV7UibLMYL", downloads: 0, emoji: "📓", year: "২০২৪", description: "সকল বিষয়ের একত্রিত সংকলন"}
         ];
 
         // Emojis for book covers
@@ -574,8 +678,10 @@
                 const card = document.createElement('div');
                 card.className = 'book-card';
                 card.innerHTML = `
+                    ${book.year ? `<div class="book-badge">${book.year}</div>` : ''}
                     <div class="emoji">${book.emoji || getRandomEmoji()}</div>
                     <h3>${book.title}</h3>
+                    ${book.description ? `<div class="book-description">${book.description}</div>` : '<div class="book-description"></div>'}
                     <div>
                         <a href="${book.link}" class="download-btn" target="_blank" onclick="incrementDownload(${i})">
                             <i class="fas fa-download"></i> ডাউনলোড করুন
@@ -609,13 +715,38 @@
                 const item = document.createElement('div');
                 item.className = 'admin-book-item';
                 item.innerHTML = `
-                    <span>${book.title}</span>
-                    <button onclick="deleteBook(${i})">
-                        <i class="fas fa-trash"></i> মুছুন
-                    </button>
+                    <div class="book-info">
+                        <div class="book-title">${book.title}</div>
+                        ${book.year ? `<div class="book-year">${book.year}</div>` : ''}
+                    </div>
+                    <div class="book-actions">
+                        <button class="edit-btn" onclick="editBook(${i})">
+                            <i class="fas fa-edit"></i> এডিট
+                        </button>
+                        <button class="delete-btn" onclick="deleteBook(${i})">
+                            <i class="fas fa-trash"></i> মুছুন
+                        </button>
+                    </div>
                 `;
                 adminBookList.appendChild(item);
             });
+        }
+
+        // Function to edit a book
+        function editBook(index) {
+            const book = books[index];
+            const newTitle = prompt("বইয়ের নতুন নাম লিখুন:", book.title);
+            if (newTitle !== null) {
+                const newYear = prompt("বইয়ের বছর লিখুন:", book.year || "");
+                const newDescription = prompt("বইয়ের বিবরণ লিখুন:", book.description || "");
+                
+                books[index].title = newTitle.trim();
+                if (newYear) books[index].year = newYear.trim();
+                if (newDescription) books[index].description = newDescription.trim();
+                
+                renderBooks();
+                renderAdminBooks();
+            }
         }
 
         // Function to delete a book
@@ -644,6 +775,8 @@
             e.preventDefault();
             const title = document.getElementById('newBookTitle').value.trim();
             const link = document.getElementById('newBookLink').value.trim();
+            const year = document.getElementById('newBookYear').value.trim();
+            const description = document.getElementById('newBookDescription').value.trim();
             
             if (title && link) { 
                 const downloadLink = convertToDownloadLink(link);
@@ -651,7 +784,9 @@
                     title, 
                     link: downloadLink, 
                     downloads: 0,
-                    emoji: getRandomEmoji()
+                    emoji: getRandomEmoji(),
+                    year: year || "২০২৪",
+                    description: description || ""
                 };
                 books.push(newBook); 
                 renderBooks(); 
