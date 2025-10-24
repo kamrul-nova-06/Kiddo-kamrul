@@ -17,9 +17,22 @@ header {
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  position: relative;
 }
 header h1 { font-size: 28px; }
 header p { font-size: 14px; color: #111; margin-top: 6px; }
+.admin-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.3);
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  display: none;
+}
+.admin-indicator.active { display: block; }
 
 .book-grid {
   display: grid;
@@ -57,6 +70,7 @@ header p { font-size: 14px; color: #111; margin-top: 6px; }
   border-radius: 20px;
   font-weight: 600;
   transition: background 0.2s;
+  width: 100%;
 }
 .book-card a.download-btn:hover { background: #00b38f; }
 
@@ -122,6 +136,8 @@ header p { font-size: 14px; color: #111; margin-top: 6px; }
   .book-card .emoji { font-size: 50px; }
   header h1 { font-size: 22px; }
   .stats { flex-direction: column; }
+  .admin-form input { width: 100%; margin-bottom: 10px; }
+  .admin-form button { width: 100%; }
 }
 </style>
 </head>
@@ -130,6 +146,7 @@ header p { font-size: 14px; color: #111; margin-top: 6px; }
 <header>
   <h1>📚 Kiddo Book Stall</h1>
   <p>আপনার প্রয়োজনীয় ক্যাপসুল বেছে ডাউনলোড করুন।</p>
+  <div class="admin-indicator" id="adminIndicator">Admin Mode</div>
 </header>
 
 <div class="book-grid" id="bookGrid"></div>
@@ -168,11 +185,11 @@ header p { font-size: 14px; color: #111; margin-top: 6px; }
 
 <script>
 let books = [
-  {title:"📗 Capsule 1", link:"https://drive.google.com/uc?export=download&id=1364e2UqYcPFNo8rdICeEn01eYIxi4lkJ", downloads:0},
-  {title:"📘 Capsule 2", link:"https://drive.google.com/uc?export=download&id=15YhW44ultCzrcAeV9FeG5XAAFCPRbG5s", downloads:0},
-  {title:"📙 Capsule 3", link:"https://drive.google.com/uc?export=download&id=19w9xH7T3ysEq9TL0oz1OIBnTSLzxYQb1", downloads:0},
-  {title:"📕 Capsule 4", link:"https://drive.google.com/uc?export=download&id=19HZzTPrDqpkwMhEtp3qPUmjAjW4l_FRn", downloads:0},
-  {title:"📒 Capsule 5", link:"https://drive.google.com/uc?export=download&id=14WTRJWqXF883Wms-e97ubxBV7UibLMYL", downloads:0}
+  {title:"সাম্প্রতিক ক্যাপসুল - ১", link:"https://drive.google.com/uc?export=download&id=1364e2UqYcPFNo8rdICeEn01eYIxi4lkJ", downloads:0},
+  {title:"সাম্প্রতিক ক্যাপসুল - ২", link:"https://drive.google.com/uc?export=download&id=15YhW44ultCzrcAeV9FeG5XAAFCPRbG5s", downloads:0},
+  {title:"সাম্প্রতিক ক্যাপসুল - ৩", link:"https://drive.google.com/uc?export=download&id=19w9xH7T3ysEq9TL0oz1OIBnTSLzxYQb1", downloads:0},
+  {title:"সাম্প্রতিক ক্যাপসুল - ৪", link:"https://drive.google.com/uc?export=download&id=19HZzTPrDqpkwMhEtp3qPUmjAjW4l_FRn", downloads:0},
+  {title:"সাম্প্রতিক ক্যাপসুল - ৫", link:"https://drive.google.com/uc?export=download&id=14WTRJWqXF883Wms-e97ubxBV7UibLMYL", downloads:0}
 ];
 
 const emojis = ["📔","📕","📓","📗","📘","📙","📖","📝","📄","📃","📑","📒"];
@@ -182,6 +199,7 @@ const adminBookList = document.getElementById("adminBookList");
 const addBookForm = document.getElementById("addBookForm");
 const totalBooksEl = document.getElementById("totalBooks");
 const totalDownloadsEl = document.getElementById("totalDownloads");
+const adminIndicator = document.getElementById("adminIndicator");
 
 function getRandomEmoji(){ return emojis[Math.floor(Math.random()*emojis.length)]; }
 
@@ -233,30 +251,63 @@ addBookForm.addEventListener('submit', function(e){
   e.preventDefault();
   const title=document.getElementById('newBookTitle').value.trim();
   const link=document.getElementById('newBookLink').value.trim();
-  if(title && link){ books.push({title,link,downloads:0}); renderBooks(); renderAdminBooks(); updateStats(); addBookForm.reset(); }
+  if(title && link){ 
+    books.push({title,link,downloads:0}); 
+    renderBooks(); 
+    renderAdminBooks(); 
+    updateStats(); 
+    addBookForm.reset(); 
+  }
 });
 
-let isAdminLoggedIn = sessionStorage.getItem('adminLogged')==='true';
-function openAdminPanel(){ adminPanel.classList.add('active'); renderAdminBooks(); updateStats(); }
-if(isAdminLoggedIn){ openAdminPanel(); }
+// Improved admin access system
+let isAdminLoggedIn = false;
+let clickCount = 0;
+let clickTimer = null;
 
-let longPressTimer;
-document.body.addEventListener('mousedown', startPress);
-document.body.addEventListener('touchstart', startPress);
-document.body.addEventListener('mouseup', cancelPress);
-document.body.addEventListener('touchend', cancelPress);
-
-function startPress(){
-  if(isAdminLoggedIn) return;
-  longPressTimer = setTimeout(()=>{
-    const pwd = prompt("Enter Admin Password:");
-    if(pwd==='kiddo'){ sessionStorage.setItem('adminLogged','true'); isAdminLoggedIn=true; openAdminPanel(); }
-  },1000);
+function openAdminPanel(){ 
+  adminPanel.classList.add('active'); 
+  adminIndicator.classList.add('active');
+  renderAdminBooks(); 
+  updateStats(); 
 }
-function cancelPress(){ clearTimeout(longPressTimer); }
 
-document.getElementById('closeAdmin').addEventListener('click',()=>{ adminPanel.classList.remove('active'); });
+function closeAdminPanel() {
+  adminPanel.classList.remove('active');
+  adminIndicator.classList.remove('active');
+  isAdminLoggedIn = false;
+  clickCount = 0;
+}
 
+function checkAdminAccess() {
+  clickCount++;
+  
+  if (clickCount === 1) {
+    clickTimer = setTimeout(() => {
+      clickCount = 0;
+    }, 500);
+  } else if (clickCount === 2) {
+    clearTimeout(clickTimer);
+    if (!isAdminLoggedIn) {
+      const pwd = prompt("Enter Admin Password:");
+      if(pwd==='kiddo'){
+        isAdminLoggedIn = true;
+        openAdminPanel();
+      } else {
+        alert("Incorrect password!");
+      }
+    } else {
+      closeAdminPanel();
+    }
+    clickCount = 0;
+  }
+}
+
+// Event listeners for admin access
+document.addEventListener('dblclick', checkAdminAccess);
+document.getElementById('closeAdmin').addEventListener('click', closeAdminPanel);
+
+// Initialize the app
 renderBooks();
 updateStats();
 </script>
