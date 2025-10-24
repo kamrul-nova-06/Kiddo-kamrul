@@ -19,23 +19,24 @@
         }
 
         :root {
-            --primary: #2563eb;
-            --secondary: #7c3aed;
+            --primary: #10b981;
+            --secondary: #059669;
             --accent: #f59e0b;
             --success: #10b981;
             --warning: #f59e0b;
             --error: #ef4444;
-            --dark: #1e293b;
+            --dark: #0f172a;
             --light: #f8fafc;
-            --text: #334155;
+            --text: #1e293b;
             --text-light: #ffffff;
             --card-bg: #ffffff;
-            --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            --gradient: linear-gradient(135deg, #2563eb, #7c3aed);
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            --gradient: linear-gradient(135deg, #10b981, #059669);
+            --gradient-light: linear-gradient(135deg, #34d399, #10b981);
         }
 
         body {
-            background: linear-gradient(135deg, #0f172a, #1e293b);
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
             color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
@@ -120,15 +121,15 @@
         .section-title {
             text-align: center;
             margin: 30px 0 20px;
-            color: var(--text-light);
-            font-size: 1.6rem;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            color: var(--text);
+            font-size: 1.8rem;
+            font-weight: 600;
         }
 
         .book-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            gap: 20px;
             margin-top: 20px;
         }
 
@@ -151,15 +152,15 @@
         .book-card {
             background: var(--card-bg);
             border-radius: 20px;
-            padding: 20px;
+            padding: 25px;
             box-shadow: var(--shadow);
             display: flex;
             flex-direction: column;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            min-height: 300px;
+            border: 1px solid #e2e8f0;
+            min-height: 320px;
         }
 
         .book-card::before {
@@ -174,7 +175,7 @@
 
         .book-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15);
         }
 
         .book-badge {
@@ -183,43 +184,43 @@
             right: 15px;
             background: var(--gradient);
             color: white;
-            padding: 5px 10px;
+            padding: 6px 12px;
             border-radius: 15px;
             font-size: 0.8rem;
             font-weight: 600;
             z-index: 2;
-            box-shadow: 0 3px 8px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 3px 8px rgba(16, 185, 129, 0.3);
         }
 
         .book-card .emoji {
-            font-size: 65px;
-            margin-bottom: 15px;
-            height: 70px;
+            font-size: 70px;
+            margin-bottom: 20px;
+            height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .book-card h3 {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
             color: var(--primary);
             text-align: center;
             font-weight: 600;
             line-height: 1.4;
-            min-height: 50px;
+            min-height: 55px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .book-description {
-            font-size: 0.85rem;
-            color: #666;
-            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 20px;
             text-align: center;
-            line-height: 1.4;
-            min-height: 40px;
+            line-height: 1.5;
+            min-height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -230,14 +231,14 @@
             background: var(--gradient);
             color: white;
             text-align: center;
-            padding: 12px 20px;
+            padding: 14px 20px;
             border-radius: 50px;
             font-weight: 600;
             transition: all 0.3s ease;
             width: 100%;
             margin-top: auto;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
-            font-size: 0.95rem;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            font-size: 1rem;
             border: none;
             cursor: pointer;
             text-decoration: none;
@@ -245,17 +246,18 @@
 
         .book-card .download-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            background: var(--gradient-light);
         }
 
         .book-card .download-count {
-            margin-top: 10px;
+            margin-top: 12px;
             font-size: 0.85rem;
-            color: #666;
+            color: #94a3b8;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            gap: 6px;
         }
 
         /* Admin Panel Styles */
@@ -329,7 +331,7 @@
             text-align: center;
             color: white;
             font-weight: 600;
-            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
             transition: transform 0.3s ease;
         }
 
@@ -393,7 +395,7 @@
 
         .admin-form input:focus, .admin-form textarea:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
         }
 
         .admin-form button {
@@ -415,7 +417,7 @@
 
         .admin-form button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
         }
 
         .admin-book-list {
@@ -483,7 +485,7 @@
         }
 
         .admin-book-item .edit-btn:hover {
-            background: #1d4ed8;
+            background: #059669;
             transform: scale(1.05);
         }
 
@@ -497,7 +499,7 @@
         }
 
         .link-converter {
-            background: #dbeafe;
+            background: #d1fae5;
             padding: 15px;
             border-radius: 12px;
             margin-top: 15px;
@@ -605,7 +607,7 @@
 
         .edit-form input:focus, .edit-form textarea:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
         }
 
         .edit-form button {
@@ -627,7 +629,7 @@
 
         .edit-form button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
         }
 
         /* Security Modal */
@@ -677,55 +679,6 @@
             line-height: 1.6;
         }
 
-        .security-options {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .security-option {
-            padding: 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .security-option:hover {
-            border-color: var(--primary);
-            background: #f8fafc;
-        }
-
-        .security-option.active {
-            border-color: var(--primary);
-            background: #dbeafe;
-        }
-
-        .option-icon {
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-
-        .option-text {
-            text-align: left;
-            flex: 1;
-        }
-
-        .option-text h4 {
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-
-        .option-text p {
-            font-size: 0.9rem;
-            margin: 0;
-            color: #64748b;
-        }
-
         .security-input {
             width: 100%;
             padding: 15px;
@@ -739,7 +692,7 @@
 
         .security-input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
         }
 
         .security-buttons {
@@ -765,7 +718,7 @@
 
         .security-buttons .auth-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
         }
 
         .security-buttons .cancel-btn {
@@ -781,7 +734,7 @@
         footer {
             text-align: center;
             margin-top: 50px;
-            color: rgba(255, 255, 255, 0.7);
+            color: #64748b;
             font-size: 0.9rem;
             line-height: 1.6;
             padding: 0 15px;
@@ -790,35 +743,40 @@
         .made-by {
             cursor: pointer;
             transition: all 0.3s ease;
-            padding: 5px 10px;
-            border-radius: 8px;
+            padding: 8px 16px;
+            border-radius: 10px;
+            background: var(--gradient);
+            color: white;
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: 600;
         }
 
         .made-by:hover {
-            background: rgba(255, 255, 255, 0.1);
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
         }
 
         /* Responsive Styles */
         @media (max-width: 767px) {
             .book-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
+                gap: 15px;
             }
             
             .book-card {
-                padding: 18px;
-                min-height: 280px;
+                padding: 20px;
+                min-height: 300px;
             }
             
             .book-card .emoji {
-                font-size: 55px;
-                height: 65px;
+                font-size: 60px;
+                height: 70px;
             }
             
             .book-card h3 {
-                font-size: 1rem;
-                min-height: 45px;
+                font-size: 1.1rem;
+                min-height: 50px;
             }
             
             header h1 {
@@ -973,51 +931,17 @@
     <div class="security-modal" id="securityModal">
         <div class="security-content">
             <div class="security-icon">
-                <i class="fas fa-shield-alt"></i>
+                <i class="fas fa-lock"></i>
             </div>
-            <h3>সিকিউরিটি যাচাই</h3>
-            <p>অ্যাডমিন প্যানেলে প্রবেশ করতে নিরাপত্তা যাচাই করুন</p>
+            <h3>অ্যাডমিন এক্সেস</h3>
+            <p>অ্যাডমিন প্যানেলে প্রবেশ করতে পাসওয়ার্ড দিন</p>
             
-            <div class="security-options">
-                <div class="security-option" id="fingerprintOption">
-                    <div class="option-icon">
-                        <i class="fas fa-fingerprint"></i>
-                    </div>
-                    <div class="option-text">
-                        <h4>ফিঙ্গারপ্রিন্ট</h4>
-                        <p>আপনার ফিঙ্গারপ্রিন্ট দিয়ে যাচাই করুন</p>
-                    </div>
-                </div>
-                <div class="security-option" id="passwordOption">
-                    <div class="option-icon">
-                        <i class="fas fa-lock"></i>
-                    </div>
-                    <div class="option-text">
-                        <h4>পাসওয়ার্ড</h4>
-                        <p>পাসওয়ার্ড দিয়ে যাচাই করুন</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="fingerprintAuth" style="display: none;">
-                <p>ফিঙ্গারপ্রিন্ট সেন্সরে আঙ্গুল রাখুন</p>
-                <div class="security-buttons">
-                    <button class="auth-btn" id="fingerprintSuccess">
-                        <i class="fas fa-check"></i> ফিঙ্গারপ্রিন্ট যাচাই
-                    </button>
-                </div>
-            </div>
-
-            <div id="passwordAuth" style="display: none;">
-                <input type="password" class="security-input" id="adminPassword" placeholder="অ্যাডমিন পাসওয়ার্ড দিন">
-                <div class="security-buttons">
-                    <button class="auth-btn" id="passwordSuccess">
-                        <i class="fas fa-check"></i> পাসওয়ার্ড যাচাই
-                    </button>
-                </div>
-            </div>
-
-            <div class="security-buttons" id="mainButtons">
+            <input type="password" class="security-input" id="adminPassword" placeholder="অ্যাডমিন পাসওয়ার্ড দিন">
+            
+            <div class="security-buttons">
+                <button class="auth-btn" id="passwordSuccess">
+                    <i class="fas fa-check"></i> প্রবেশ করুন
+                </button>
                 <button class="cancel-btn" id="securityCancel">
                     <i class="fas fa-times"></i> বাতিল
                 </button>
@@ -1045,7 +969,7 @@
         let books = [];
 
         // Emojis for book covers
-        const emojis = ["📕", "📗", "📘", "📙", "📓", "📔", "📒", "📖", "📚", "🔖"];
+        const emojis = ["📕", "📗", "📘", "📙", "📓", "📔", "📒", "📖", "📄", "📑", "📃", "📝"];
         
         // DOM elements
         const bookGrid = document.getElementById("bookGrid");
@@ -1062,11 +986,6 @@
         const editBookForm = document.getElementById("editBookForm");
         const closeEditModal = document.getElementById("closeEditModal");
         const securityModal = document.getElementById("securityModal");
-        const fingerprintOption = document.getElementById("fingerprintOption");
-        const passwordOption = document.getElementById("passwordOption");
-        const fingerprintAuth = document.getElementById("fingerprintAuth");
-        const passwordAuth = document.getElementById("passwordAuth");
-        const fingerprintSuccess = document.getElementById("fingerprintSuccess");
         const passwordSuccess = document.getElementById("passwordSuccess");
         const securityCancel = document.getElementById("securityCancel");
         const adminPassword = document.getElementById("adminPassword");
@@ -1075,7 +994,6 @@
         // Current book being edited
         let currentEditIndex = -1;
         let isAdminLoggedIn = false;
-        let currentAuthMethod = '';
 
         // Function to get a random emoji
         function getRandomEmoji() { 
@@ -1312,7 +1230,7 @@
                     }
                 }, 100);
             }
-        });
+        }
 
         // Event listener for link input to show converted link
         newBookLinkInput.addEventListener('input', function() {
@@ -1343,56 +1261,21 @@
         // Security authentication
         function showSecurityModal() {
             securityModal.classList.add('active');
-            resetSecurityOptions();
+            adminPassword.value = '';
         }
 
         function hideSecurityModal() {
             securityModal.classList.remove('active');
-            resetSecurityOptions();
-        }
-
-        function resetSecurityOptions() {
-            fingerprintOption.classList.remove('active');
-            passwordOption.classList.remove('active');
-            fingerprintAuth.style.display = 'none';
-            passwordAuth.style.display = 'none';
-            document.getElementById('mainButtons').style.display = 'flex';
-            adminPassword.value = '';
-        }
-
-        function selectFingerprintAuth() {
-            resetSecurityOptions();
-            fingerprintOption.classList.add('active');
-            fingerprintAuth.style.display = 'block';
-            document.getElementById('mainButtons').style.display = 'none';
-            currentAuthMethod = 'fingerprint';
-        }
-
-        function selectPasswordAuth() {
-            resetSecurityOptions();
-            passwordOption.classList.add('active');
-            passwordAuth.style.display = 'block';
-            document.getElementById('mainButtons').style.display = 'none';
-            currentAuthMethod = 'password';
         }
 
         function authenticate() {
-            if (currentAuthMethod === 'fingerprint') {
-                // Simulate fingerprint authentication
-                setTimeout(() => {
-                    isAdminLoggedIn = true;
-                    hideSecurityModal();
-                    openAdminPanel();
-                }, 1000);
-            } else if (currentAuthMethod === 'password') {
-                const password = adminPassword.value.trim();
-                if (password === 'kiddo123') {
-                    isAdminLoggedIn = true;
-                    hideSecurityModal();
-                    openAdminPanel();
-                } else {
-                    alert('ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।');
-                }
+            const password = adminPassword.value.trim();
+            if (password === 'kiddo123') {
+                isAdminLoggedIn = true;
+                hideSecurityModal();
+                openAdminPanel();
+            } else {
+                alert('ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।');
             }
         }
 
@@ -1401,9 +1284,6 @@
         document.getElementById('closeAdmin').addEventListener('click', closeAdminPanel);
         closeEditModal.addEventListener('click', closeEditModalFunc);
         editBookForm.addEventListener('submit', saveEditedBook);
-        fingerprintOption.addEventListener('click', selectFingerprintAuth);
-        passwordOption.addEventListener('click', selectPasswordAuth);
-        fingerprintSuccess.addEventListener('click', authenticate);
         passwordSuccess.addEventListener('click', authenticate);
         securityCancel.addEventListener('click', hideSecurityModal);
 
