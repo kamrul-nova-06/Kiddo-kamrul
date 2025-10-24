@@ -1,105 +1,303 @@
-<!DOCTYPE html><html lang="bn">
+<!DOCTYPE html>
+<html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>📚 Kiddo Book Stall</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
-/* ====== Global ====== */
-body {margin:0;padding:0;font-family: 'Poppins', sans-serif;background:#f4f7ff;color:#222;}
-a{text-decoration:none;color:inherit;}
-button{cursor:pointer;}/* ====== Header ====== */ header{background:#6C63FF;color:#fff;padding:20px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.1);} header h1{margin:0;font-size:26px;} header p{margin:5px 0 0;font-size:14px;color:#e0e0ff;}
+/* ---------------- BODY & GENERAL ---------------- */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+body { background: #0f0f1a; color: #fff; line-height: 1.5; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
 
-/* ====== Books Grid ====== */ .books-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;padding:20px;max-width:1000px;margin:auto;} .book-card{background:#fff;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,0.1);overflow:hidden;transition:0.3s;} .book-card:hover{transform:translateY(-6px);box-shadow:0 8px 20px rgba(0,0,0,0.15);} .book-card img{width:100%;height:200px;object-fit:cover;} .book-card h3{margin:10px 0 4px;padding:0 10px;color:#6C63FF;} .book-card p{margin:0 0 10px;padding:0 10px;font-size:13px;color:#555;} .book-card button{background:#6C63FF;color:#fff;border:none;padding:8px 15px;border-radius:20px;margin:0 10px 10px;transition:0.2s;} .book-card button:hover{background:#574fd6;}
+/* ---------------- HEADER ---------------- */
+header {
+  background: linear-gradient(90deg,#ff6f61,#ffb347);
+  text-align: center;
+  padding: 25px 10px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+header h1 { font-size: 28px; }
+header p { font-size: 14px; color: #111; margin-top: 6px; }
 
-/* ====== Admin Login Overlay ====== */ #adminLogin{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;justify-content:center;align-items:center;display:none;z-index:999;} #adminLogin div{background:#fff;padding:25px;border-radius:12px;text-align:center;width:300px;} #adminLogin input{width:90%;padding:8px;margin:10px 0;border-radius:6px;border:1px solid #ccc;} #adminLogin button{background:#6C63FF;color:#fff;border:none;padding:8px 20px;border-radius:8px;}
+/* ---------------- BOOK GRID ---------------- */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(160px,1fr));
+  gap: 18px;
+  padding: 20px;
+  max-width: 1000px;
+  margin: 20px auto;
+}
+.book-card {
+  background: #1a1c2a;
+  border-radius: 15px;
+  overflow: hidden;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0,255,180,0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.book-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0,255,180,0.4);
+}
+.book-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+.book-card h3 { font-size: 16px; margin-bottom: 4px; color: #00ffc0; }
+.book-card p { font-size: 12px; color: #aaa; margin-bottom: 8px; }
+.book-card a.download-btn {
+  display: block;
+  background: #00ffc0;
+  color: #000;
+  text-align: center;
+  padding: 6px;
+  border-radius: 20px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.book-card a.download-btn:hover { background: #00b38f; }
 
-/* ====== Admin Panel ====== */ #adminPanel{position:fixed;top:0;right:0;width:0%;height:100%;background:#fff;overflow:auto;transition:0.3s;box-shadow:-2px 0 12px rgba(0,0,0,0.2);z-index:998;padding:20px;} #adminPanel.active{width:350px;} #adminPanel h2{color:#6C63FF;margin-top:0;} #adminPanel button{margin:5px 0;} .admin-book{display:flex;justify-content:space-between;align-items:center;background:#f1f1f1;padding:8px 10px;margin:5px 0;border-radius:8px;} .admin-book span{font-weight:500;}
+/* ---------------- ADMIN PANEL ---------------- */
+.admin-panel {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15,15,26,0.98);
+  z-index: 999;
+  display: none;
+  overflow-y: auto;
+  padding: 20px;
+}
+.admin-panel.active { display: block; }
+.admin-header {
+  display: flex; justify-content: space-between; align-items: center;
+  background: linear-gradient(90deg,#ff6f61,#ffb347);
+  padding: 12px 20px; border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+.admin-header h2 { font-size: 20px; color: #111; font-weight: 600; }
+.admin-header button { background: #111; color: #fff; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; }
 
-/* ====== Footer ====== */ footer{text-align:center;color:#888;padding:20px;margin-top:20px;font-size:13px;}
+/* ---------- DASHBOARD STATS ---------- */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+.stat-card {
+  flex: 1 1 150px;
+  background: linear-gradient(135deg,#00ffc0,#00b38f);
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  color: #111;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,255,180,0.2);
+}
+.stat-card h3 { font-size: 18px; margin-bottom: 5px; }
+.stat-card p { font-size: 14px; }
 
+/* ---------- BOOK MANAGEMENT ---------- */
+.admin-section { margin-bottom: 25px; }
+.admin-section h3 { margin-bottom: 12px; color: #ffb347; font-size: 16px; }
+.admin-form input {
+  width: calc(100% - 120px); padding: 8px; border-radius: 10px;
+  border: none; margin-right: 8px; outline: none;
+}
+.admin-form button {
+  padding: 8px 16px; border: none; border-radius: 10px;
+  background: #00ffc0; color: #000; font-weight: 600; cursor: pointer;
+}
+.admin-book-list { display: flex; flex-direction: column; gap: 10px; }
+.admin-book-item {
+  background: #22233b; padding: 10px; border-radius: 10px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.admin-book-item span { flex: 1; }
+.admin-book-item button {
+  background: #ff6f61; border: none; padding: 5px 10px; border-radius: 8px; cursor: pointer;
+  color: #fff;
+  transition: background 0.2s;
+}
+.admin-book-item button:hover { background: #ff3b2f; }
+
+/* -------------- MOBILE FRIENDLY -------------- */
+@media(max-width:600px){
+  .book-card img { height: 160px; }
+  header h1 { font-size: 22px; }
+  .stats { flex-direction: column; }
+}
 </style>
 </head>
-<body><header>
-<h1>📚 Kiddo Book Stall</h1>
-<p>নতুন ক্যাপসুল বুক ডাউনলোড করুন</p>
-</header><div class="books-grid" id="booksGrid">
-  <!-- Books loaded by JS -->
-</div><!-- Admin Login Overlay --><div id="adminLogin">
-  <div>
-    <h3>Admin Login</h3>
-    <input type="password" id="adminPass" placeholder="Enter Password">
-    <br>
-    <button onclick="loginAdmin()">Login</button>
+<body>
+
+<header>
+  <h1>📚 Kiddo Book Stall</h1>
+  <p>আপনার প্রয়োজনীয় ক্যাপসুল বেছে ডাউনলোড করুন।</p>
+</header>
+
+<div class="book-grid" id="bookGrid">
+  <!-- Dynamic Book Cards -->
+</div>
+
+<!-- Admin Panel -->
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-header">
+    <h2>Admin Dashboard</h2>
+    <button id="closeAdmin">Close</button>
   </div>
-</div><!-- Admin Panel --><div id="adminPanel">
-<h2>Admin Dashboard</h2>
-<div id="adminBooksList"></div>
-<h3>Add New Book</h3>
-<input type="text" id="newBookName" placeholder="Book Name"><br>
-<input type="text" id="newBookDesc" placeholder="Description"><br>
-<input type="text" id="newBookLink" placeholder="Drive Link"><br>
-<button onclick="addBook()">Add Book</button>
-<button onclick="closeAdmin()">Close Panel</button>
-</div><footer>© ২০২৫ | তৈরি করেছেন ❤️ Kamrul</footer><script>
-// ====== Books Data ======
-let books = [
-  {name:'ক্যাপসুল ১',desc:'সাম্প্রতিক গুরুত্বপূর্ণ প্রশ্নাবলি',link:'https://drive.google.com/uc?export=download&id=1364e2UqYcPFNo8rdICeEn01eYIxi4lkJ'},
-  {name:'ক্যাপসুল ২',desc:'চলমান ঘটনা বিশ্লেষণ',link:'https://drive.google.com/uc?export=download&id=15YhW44ultCzrcAeV9FeG5XAAFCPRbG5s'},
-  {name:'ক্যাপসুল ৩',desc:'বিশেষ নোট ও তথ্য',link:'https://drive.google.com/uc?export=download&id=19w9xH7T3ysEq9TL0oz1OIBnTSLzxYQb1'},
-  {name:'ক্যাপসুল ৪',desc:'চলতি ঘটনাবলির সারসংক্ষেপ',link:'https://drive.google.com/uc?export=download&id=19HZzTPrDqpkwMhEtp3qPUmjAjW4l_FRn'},
-  {name:'ক্যাপসুল ৫',desc:'গুরুত্বপূর্ণ ম্যাগাজিন টাইপ তথ্য',link:'https://drive.google.com/uc?export=download&id=1oTDD2USORNRy_O_2I5s5XWfY4tJJTVYY'}
-];
 
-function renderBooks(){
-  const grid = document.getElementById('booksGrid');
-  grid.innerHTML='';
-  books.forEach((b,i)=>{
-    let div = document.createElement('div');
-    div.className='book-card';
-    div.innerHTML=`<h3>📗 ${b.name}</h3><p>${b.desc}</p><button onclick="window.open('${b.link}','_blank')">Download</button>`;
-    grid.appendChild(div);
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-card">
+      <h3 id="totalBooks">0</h3>
+      <p>Total Books</p>
+    </div>
+    <div class="stat-card">
+      <h3 id="totalDownloads">0</h3>
+      <p>Total Downloads</p>
+    </div>
+  </div>
+
+  <!-- Add Book -->
+  <div class="admin-section">
+    <h3>Add New Book</h3>
+    <form id="addBookForm" class="admin-form">
+      <input type="text" placeholder="Book Title" required id="newBookTitle">
+      <input type="url" placeholder="Drive Link" required id="newBookLink">
+      <button type="submit">Add</button>
+    </form>
+  </div>
+
+  <!-- Existing Books -->
+  <div class="admin-section">
+    <h3>Existing Books</h3>
+    <div class="admin-book-list" id="adminBookList">
+      <!-- Dynamic Admin Book Items -->
+    </div>
+  </div>
+</div>
+
+<script>
+  // ----------------- INITIAL BOOK DATA -----------------
+  let books = [
+    {title:"📗 Capsule 1", link:"https://drive.google.com/uc?export=download&id=1364e2UqYcPFNo8rdICeEn01eYIxi4lkJ", downloads:0},
+    {title:"📘 Capsule 2", link:"https://drive.google.com/uc?export=download&id=15YhW44ultCzrcAeV9FeG5XAAFCPRbG5s", downloads:0},
+    {title:"📙 Capsule 3", link:"https://drive.google.com/uc?export=download&id=19w9xH7T3ysEq9TL0oz1OIBnTSLzxYQb1", downloads:0},
+    {title:"📕 Capsule 4", link:"https://drive.google.com/uc?export=download&id=19HZzTPrDqpkwMhEtp3qPUmjAjW4l_FRn", downloads:0},
+    {title:"📒 Capsule 5", link:"https://drive.google.com/uc?export=download&id=14WTRJWqXF883Wms-e97ubxBV7UibLMYL", downloads:0}
+  ];
+
+  const bookGrid = document.getElementById("bookGrid");
+  const adminPanel = document.getElementById("adminPanel");
+  const adminBookList = document.getElementById("adminBookList");
+  const addBookForm = document.getElementById("addBookForm");
+  const totalBooksEl = document.getElementById("totalBooks");
+  const totalDownloadsEl = document.getElementById("totalDownloads");
+
+  // ----------------- RENDER BOOKS -----------------
+  function renderBooks(){
+    bookGrid.innerHTML = '';
+    books.forEach((book,i)=>{
+      const card = document.createElement('div');
+      card.className = 'book-card';
+      card.innerHTML = `
+        <img src="https://via.placeholder.com/150x200.png?text=${encodeURIComponent(book.title)}" alt="${book.title}">
+        <h3>${book.title}</h3>
+        <p>Click to download</p>
+        <a href="${book.link}" class="download-btn" target="_blank" onclick="incrementDownload(${i})">Download</a>
+      `;
+      bookGrid.appendChild(card);
+    });
+  }
+
+  // ----------------- DOWNLOAD COUNT -----------------
+  function incrementDownload(index){
+    books[index].downloads +=1;
+    updateStats();
+  }
+
+  function updateStats(){
+    totalBooksEl.innerText = books.length;
+    let totalD = books.reduce((sum,b)=>sum+b.downloads,0);
+    totalDownloadsEl.innerText = totalD;
+  }
+
+  // ----------------- ADMIN FUNCTIONS -----------------
+  function renderAdminBooks(){
+    adminBookList.innerHTML = '';
+    books.forEach((book,i)=>{
+      const item = document.createElement('div');
+      item.className = 'admin-book-item';
+      item.innerHTML = `
+        <span>${book.title}</span>
+        <button onclick="deleteBook(${i})">Delete</button>
+      `;
+      adminBookList.appendChild(item);
+    });
+  }
+
+  function deleteBook(index){
+    if(confirm("Are you sure you want to delete this book?")){
+      books.splice(index,1);
+      renderBooks();
+      renderAdminBooks();
+      updateStats();
+    }
+  }
+
+  addBookForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const title = document.getElementById('newBookTitle').value.trim();
+    const link = document.getElementById('newBookLink').value.trim();
+    if(title && link){
+      books.push({title, link, downloads:0});
+      renderBooks();
+      renderAdminBooks();
+      updateStats();
+      addBookForm.reset();
+    }
   });
-}
-renderBooks();
 
-// ====== Admin Login ======
-let longPressTimer;
-document.body.addEventListener('mousedown',()=>{longPressTimer=setTimeout(()=>{
-  document.getElementById('adminLogin').style.display='flex';
-},2000);});
-document.body.addEventListener('mouseup',()=>{clearTimeout(longPressTimer);});
+  // ----------------- ADMIN PANEL HIDDEN LOGIN -----------------
+  let longPressTimer;
+  document.body.addEventListener('mousedown', startPress);
+  document.body.addEventListener('touchstart', startPress);
+  document.body.addEventListener('mouseup', cancelPress);
+  document.body.addEventListener('touchend', cancelPress);
 
-function loginAdmin(){
-  const pass=document.getElementById('adminPass').value;
-  if(pass==='kiddo'){
-    document.getElementById('adminLogin').style.display='none';
-    document.getElementById('adminPanel').classList.add('active');
-    renderAdminBooks();
-  }else{alert('Wrong Password');}
-}
-function closeAdmin(){document.getElementById('adminPanel').classList.remove('active');}
+  function startPress(){
+    longPressTimer = setTimeout(()=>{
+      const pwd = prompt("Enter Admin Password:");
+      if(pwd==='kiddo'){
+        adminPanel.classList.add('active');
+        renderAdminBooks();
+        updateStats();
+      }
+    },1000); // 1 second long press
+  }
 
-// ====== Admin Functions ======
-function renderAdminBooks(){
-  const list=document.getElementById('adminBooksList');
-  list.innerHTML='';
-  books.forEach((b,i)=>{
-    let div=document.createElement('div');
-    div.className='admin-book';
-    div.innerHTML=`<span>${b.name}</span><button onclick="deleteBook(${i})">Delete</button>`;
-    list.appendChild(div);
+  function cancelPress(){
+    clearTimeout(longPressTimer);
+  }
+
+  document.getElementById('closeAdmin').addEventListener('click',()=>{
+    adminPanel.classList.remove('active');
   });
-}
-function deleteBook(i){
-  if(confirm('Are you sure to delete this book?')){books.splice(i,1);renderBooks();renderAdminBooks();}
-}
-function addBook(){
-  const name=document.getElementById('newBookName').value;
-  const desc=document.getElementById('newBookDesc').value;
-  const link=document.getElementById('newBookLink').value.replace('/view?usp=drivesdk','').replace('/view?usp=sharing','').replace('file/d/','uc?export=download&id=');
-  if(name && link){books.push({name:name,desc:desc,link:link});renderBooks();renderAdminBooks();
-  document.getElementById('newBookName').value='';document.getElementById('newBookDesc').value='';document.getElementById('newBookLink').value='';}
-  else{alert('Fill all fields');}
-}
-</script></body>
+
+  // ----------------- INITIAL RENDER -----------------
+  renderBooks();
+  updateStats();
+</script>
+
+</body>
 </html>
