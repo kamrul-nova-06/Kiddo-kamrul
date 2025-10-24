@@ -140,6 +140,7 @@
             text-align: center;
             padding: 40px;
             color: #6B7280;
+            grid-column: 1 / -1;
         }
 
         .spinner {
@@ -1129,30 +1130,32 @@
 
         // Initialize the app
         function initApp() {
+            console.log("এপ্লিকেশন শুরু হচ্ছে...");
             setupEventListeners();
             setupAuthListener();
             loadBooksFromFirebase(); // Firebase থেকে বই লোড করুন
         }
 
-        // Firebase থেকে বই লোড করুন - FIXED FUNCTION
+        // Firebase থেকে বই লোড করুন - FIXED VERSION
         async function loadBooksFromFirebase() {
             try {
                 console.log("Firebase থেকে বই লোড শুরু...");
                 
-                const snapshot = await db.collection('books')
-                    .where('isActive', '!=', false) // শুধু active বইগুলো
-                    .get();
+                // Firebase Firestore থেকে সব বই লোড করুন
+                const snapshot = await db.collection('books').get();
                 
                 books = [];
                 snapshot.forEach(doc => {
                     const bookData = doc.data();
+                    console.log("বই পাওয়া গেছে:", bookData.title);
                     books.push({ 
                         id: doc.id, 
                         ...bookData 
                     });
                 });
 
-                console.log("লোড করা বই:", books);
+                console.log("মোট বই লোড হয়েছে:", books.length);
+                console.log("বইগুলোর তালিকা:", books);
                 
                 // বইগুলো রেন্ডার করুন
                 renderBooks();
@@ -1248,23 +1251,24 @@
             return card;
         }
 
-        // Render books to the grid - FIXED FUNCTION
+        // Render books to the grid - COMPLETELY FIXED VERSION
         function renderBooks() {
             console.log("বই রেন্ডার করা হচ্ছে...", books);
             
+            // প্রথমে লোডিং মেসেজ সরান
             freeBookGrid.innerHTML = '';
             premiumBookGrid.innerHTML = '';
 
             if (books.length === 0) {
                 freeBookGrid.innerHTML = `
-                    <div style="text-align: center; color: #6B7280; padding: 40px; grid-column: 1 / -1;">
+                    <div class="loading">
                         <i class="fas fa-book" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
                         <p>কোন বই পাওয়া যায়নি</p>
                         <p>অ্যাডমিন থেকে বই অ্যাড করুন</p>
                     </div>
                 `;
                 premiumBookGrid.innerHTML = `
-                    <div style="text-align: center; color: #6B7280; padding: 40px; grid-column: 1 / -1;">
+                    <div class="loading">
                         <i class="fas fa-crown" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
                         <p>কোন প্রিমিয়াম বই পাওয়া যায়নি</p>
                     </div>
@@ -1278,33 +1282,37 @@
             console.log("ফ্রি বই:", freeBooks.length);
             console.log("প্রিমিয়াম বই:", premiumBooks.length);
 
-            if (freeBooks.length === 0) {
-                freeBookGrid.innerHTML = `
-                    <div style="text-align: center; color: #6B7280; padding: 40px; grid-column: 1 / -1;">
-                        <i class="fas fa-book" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
-                        <p>কোন ফ্রি বই পাওয়া যায়নি</p>
-                    </div>
-                `;
-            } else {
+            // ফ্রি বইগুলো দেখান
+            if (freeBooks.length > 0) {
                 freeBooks.forEach(book => {
                     const bookCard = createBookCard(book);
                     freeBookGrid.appendChild(bookCard);
                 });
-            }
-
-            if (premiumBooks.length === 0) {
-                premiumBookGrid.innerHTML = `
-                    <div style="text-align: center; color: #6B7280; padding: 40px; grid-column: 1 / -1;">
-                        <i class="fas fa-crown" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
-                        <p>কোন প্রিমিয়াম বই পাওয়া যায়নি</p>
+            } else {
+                freeBookGrid.innerHTML = `
+                    <div class="loading">
+                        <i class="fas fa-book" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                        <p>কোন ফ্রি বই পাওয়া যায়নি</p>
                     </div>
                 `;
-            } else {
+            }
+
+            // প্রিমিয়াম বইগুলো দেখান
+            if (premiumBooks.length > 0) {
                 premiumBooks.forEach(book => {
                     const bookCard = createBookCard(book);
                     premiumBookGrid.appendChild(bookCard);
                 });
+            } else {
+                premiumBookGrid.innerHTML = `
+                    <div class="loading">
+                        <i class="fas fa-crown" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                        <p>কোন প্রিমিয়াম বই পাওয়া যায়নি</p>
+                    </div>
+                `;
             }
+
+            console.log("বই রেন্ডার সম্পন্ন");
         }
 
         // Create book card element
@@ -1338,13 +1346,13 @@
                     const bookId = e.target.getAttribute('data-book-id');
                     const book = books.find(b => b.id === bookId);
                     
-                    if (book.isPremium) {
+                    if (book && book.isPremium) {
                         if (currentUser) {
                             openPaymentModal(book);
                         } else {
                             openLoginModal();
                         }
-                    } else {
+                    } else if (book) {
                         downloadFreeBook(book);
                     }
                 }
@@ -1601,8 +1609,8 @@
         // Show error message
         function showError(message) {
             freeBookGrid.innerHTML = `
-                <div style="text-align: center; color: #EF4444; padding: 40px; grid-column: 1 / -1;">
-                    <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                <div class="loading">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 15px; color: #EF4444;"></i>
                     <p>${message}</p>
                     <button onclick="loadBooksFromFirebase()" style="background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-top: 15px;">
                         আবার চেষ্টা করুন
@@ -1610,8 +1618,8 @@
                 </div>
             `;
             premiumBookGrid.innerHTML = `
-                <div style="text-align: center; color: #EF4444; padding: 40px; grid-column: 1 / -1;">
-                    <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                <div class="loading">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 15px; color: #EF4444;"></i>
                     <p>${message}</p>
                 </div>
             `;
