@@ -6,6 +6,10 @@
     <title>📚 কিড্ডো বুক স্টল</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -31,6 +35,9 @@
             --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             --gradient: linear-gradient(135deg, #8B5CF6, #7C3AED);
             --premium-gradient: linear-gradient(135deg, #F59E0B, #D97706);
+            --bkash: #E2136E;
+            --nagad: #F8A01C;
+            --rocket: #7948AA;
         }
 
         body {
@@ -434,45 +441,54 @@
             font-size: 0.9rem;
         }
 
-        .payment-steps {
-            background: #F9FAFB;
-            padding: 20px;
-            border-radius: 12px;
+        .payment-form {
+            display: none;
             margin-bottom: 20px;
         }
 
-        .payment-steps h4 {
+        .payment-form.active {
+            display: block;
+        }
+
+        .form-group {
             margin-bottom: 15px;
-            color: var(--text);
         }
 
-        .step {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-            padding: 10px;
-            background: white;
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E5E7EB;
             border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
         }
 
-        .step-number {
-            background: var(--premium);
-            color: white;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: 600;
+        .form-group input:focus {
+            border-color: var(--premium);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
         }
 
-        .step-text {
-            flex: 1;
-            font-size: 0.9rem;
-            color: var(--text);
+        .bkash-form input:focus {
+            border-color: var(--bkash);
+            box-shadow: 0 0 0 3px rgba(226, 19, 110, 0.1);
+        }
+
+        .nagad-form input:focus {
+            border-color: var(--nagad);
+            box-shadow: 0 0 0 3px rgba(248, 160, 28, 0.1);
+        }
+
+        .rocket-form input:focus {
+            border-color: var(--rocket);
+            box-shadow: 0 0 0 3px rgba(121, 72, 170, 0.1);
         }
 
         .confirm-btn {
@@ -495,6 +511,289 @@
         .confirm-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        /* Receipt Modal */
+        .receipt-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .receipt-modal.active {
+            display: flex;
+        }
+
+        .receipt-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .receipt-icon {
+            font-size: 4rem;
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+
+        .receipt-content h3 {
+            color: var(--success);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .receipt-details {
+            background: #F0FDF4;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .receipt-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #D1FAE5;
+        }
+
+        .receipt-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .receipt-item .label {
+            color: #6B7280;
+            font-weight: 500;
+        }
+
+        .receipt-item .value {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .download-receipt-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: var(--success);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .download-receipt-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .close-receipt-btn {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            background: white;
+            color: #6B7280;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-receipt-btn:hover {
+            background: #F9FAFB;
+        }
+
+        /* Admin Panel Styles */
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.95);
+            z-index: 4000;
+            display: none;
+            overflow-y: auto;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--gradient);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            color: white;
+        }
+
+        .admin-header h2 {
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-header button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .admin-stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .admin-stat-card h3 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .admin-stat-card p {
+            color: #6B7280;
+            font-size: 0.9rem;
+        }
+
+        .admin-section {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .admin-section h3 {
+            margin-bottom: 20px;
+            color: var(--primary);
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .payment-requests {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .payment-request {
+            background: #F9FAFB;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--premium);
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .request-book {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .request-amount {
+            font-weight: 700;
+            color: var(--premium);
+        }
+
+        .request-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .request-detail {
+            font-size: 0.9rem;
+        }
+
+        .request-detail .label {
+            color: #6B7280;
+            font-weight: 500;
+        }
+
+        .request-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .approve-btn, .reject-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .approve-btn {
+            background: var(--success);
+            color: white;
+        }
+
+        .approve-btn:hover {
+            background: #059669;
+        }
+
+        .reject-btn {
+            background: var(--error);
+            color: white;
+        }
+
+        .reject-btn:hover {
+            background: #DC2626;
         }
 
         /* Footer */
@@ -550,8 +849,12 @@
                 font-size: 1.8rem;
             }
             
-            .payment-content {
+            .payment-content, .receipt-content {
                 padding: 25px;
+            }
+            
+            .request-actions {
+                flex-direction: column;
             }
         }
 
@@ -613,7 +916,7 @@
             <div class="payment-methods">
                 <h4>পেমেন্ট মাধ্যম নির্বাচন করুন</h4>
                 <div class="payment-option" id="bkashOption">
-                    <div class="payment-icon">
+                    <div class="payment-icon" style="color: var(--bkash);">
                         <i class="fas fa-mobile-alt"></i>
                     </div>
                     <div class="payment-info">
@@ -622,7 +925,7 @@
                     </div>
                 </div>
                 <div class="payment-option" id="nagadOption">
-                    <div class="payment-icon">
+                    <div class="payment-icon" style="color: var(--nagad);">
                         <i class="fas fa-wallet"></i>
                     </div>
                     <div class="payment-info">
@@ -631,7 +934,7 @@
                     </div>
                 </div>
                 <div class="payment-option" id="rocketOption">
-                    <div class="payment-icon">
+                    <div class="payment-icon" style="color: var(--rocket);">
                         <i class="fas fa-rocket"></i>
                     </div>
                     <div class="payment-info">
@@ -641,99 +944,183 @@
                 </div>
             </div>
 
-            <div class="payment-steps">
-                <h4>পেমেন্ট স্টেপস:</h4>
-                <div class="step">
-                    <div class="step-number">১</div>
-                    <div class="step-text">উপরে আপনার পছন্দের পেমেন্ট মাধ্যম সিলেক্ট করুন</div>
+            <!-- BKash Form -->
+            <div class="payment-form bkash-form" id="bkashForm">
+                <div class="form-group">
+                    <label for="bkashName">আপনার নাম *</label>
+                    <input type="text" id="bkashName" placeholder="আপনার পুরো নাম লিখুন" required>
                 </div>
-                <div class="step">
-                    <div class="step-number">২</div>
-                    <div class="step-text">নিচের "কনফার্ম পেমেন্ট" বাটনে ক্লিক করুন</div>
+                <div class="form-group">
+                    <label for="bkashPhone">বিকাশ নম্বর *</label>
+                    <input type="tel" id="bkashPhone" placeholder="01XXXXXXXXX" pattern="[0-9]{11}" required>
                 </div>
-                <div class="step">
-                    <div class="step-number">৩</div>
-                    <div class="step-text">পেমেন্ট ডিটেইলস এবং ইনস্ট্রাকশন দেখবেন</div>
+                <div class="form-group">
+                    <label for="bkashTrxId">ট্রানজেকশন আইডি *</label>
+                    <input type="text" id="bkashTrxId" placeholder="TRX123456789" required>
                 </div>
-                <div class="step">
-                    <div class="step-number">৪</div>
-                    <div class="step-text">পেমেন্ট করে রিসিপ্ট সাবমিট করুন</div>
+                <div class="form-group">
+                    <label for="bkashEmail">ইমেইল (ঐচ্ছিক)</label>
+                    <input type="email" id="bkashEmail" placeholder="your@email.com">
+                </div>
+            </div>
+
+            <!-- Nagad Form -->
+            <div class="payment-form nagad-form" id="nagadForm">
+                <div class="form-group">
+                    <label for="nagadName">আপনার নাম *</label>
+                    <input type="text" id="nagadName" placeholder="আপনার পুরো নাম লিখুন" required>
+                </div>
+                <div class="form-group">
+                    <label for="nagadPhone">নগদ নম্বর *</label>
+                    <input type="tel" id="nagadPhone" placeholder="01XXXXXXXXX" pattern="[0-9]{11}" required>
+                </div>
+                <div class="form-group">
+                    <label for="nagadTrxId">ট্রানজেকশন আইডি *</label>
+                    <input type="text" id="nagadTrxId" placeholder="TRX123456789" required>
+                </div>
+                <div class="form-group">
+                    <label for="nagadEmail">ইমেইল (ঐচ্ছিক)</label>
+                    <input type="email" id="nagadEmail" placeholder="your@email.com">
+                </div>
+            </div>
+
+            <!-- Rocket Form -->
+            <div class="payment-form rocket-form" id="rocketForm">
+                <div class="form-group">
+                    <label for="rocketName">আপনার নাম *</label>
+                    <input type="text" id="rocketName" placeholder="আপনার পুরো নাম লিখুন" required>
+                </div>
+                <div class="form-group">
+                    <label for="rocketPhone">রকেট নম্বর *</label>
+                    <input type="tel" id="rocketPhone" placeholder="01XXXXXXXXX" pattern="[0-9]{11}" required>
+                </div>
+                <div class="form-group">
+                    <label for="rocketTrxId">ট্রানজেকশন আইডি *</label>
+                    <input type="text" id="rocketTrxId" placeholder="TRX123456789" required>
+                </div>
+                <div class="form-group">
+                    <label for="rocketEmail">ইমেইল (ঐচ্ছিক)</label>
+                    <input type="email" id="rocketEmail" placeholder="your@email.com">
                 </div>
             </div>
 
             <button class="confirm-btn" id="confirmPayment">
-                <i class="fas fa-check-circle"></i> কনফার্ম পেমেন্ট
+                <i class="fas fa-check-circle"></i> পেমেন্ট সাবমিট করুন
             </button>
         </div>
     </div>
 
+    <!-- Receipt Modal -->
+    <div class="receipt-modal" id="receiptModal">
+        <div class="receipt-content">
+            <div class="receipt-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>পেমেন্ট সফল!</h3>
+            <p>আপনার পেমেন্ট রিকোয়েস্ট সাবমিট হয়েছে। ভেরিফিকেশনের পর বইটি ডাউনলোড লিংক পাঠানো হবে।</p>
+            
+            <div class="receipt-details" id="receiptDetails">
+                <!-- Receipt details will be dynamically added here -->
+            </div>
+
+            <button class="download-receipt-btn" id="downloadReceipt">
+                <i class="fas fa-download"></i> রিসিপ্ট ডাউনলোড করুন
+            </button>
+            <button class="close-receipt-btn" id="closeReceipt">
+                বন্ধ করুন
+            </button>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="container">
+            <div class="admin-header">
+                <h2><i class="fas fa-tachometer-alt"></i> অ্যাডমিন ড্যাশবোর্ড</h2>
+                <button id="closeAdmin"><i class="fas fa-times"></i> বন্ধ করুন</button>
+            </div>
+
+            <div class="admin-stats">
+                <div class="admin-stat-card">
+                    <h3 id="totalBooks">0</h3>
+                    <p>মোট বই</p>
+                </div>
+                <div class="admin-stat-card">
+                    <h3 id="totalPayments">0</h3>
+                    <p>মোট পেমেন্ট</p>
+                </div>
+                <div class="admin-stat-card">
+                    <h3 id="pendingPayments">0</h3>
+                    <p>পেন্ডিং রিকোয়েস্ট</p>
+                </div>
+                <div class="admin-stat-card">
+                    <h3 id="totalEarnings">৳ 0</h3>
+                    <p>মোট আয়</p>
+                </div>
+            </div>
+
+            <div class="admin-section">
+                <h3><i class="fas fa-clock"></i> পেন্ডিং পেমেন্ট রিকোয়েস্ট</h3>
+                <div class="payment-requests" id="paymentRequests">
+                    <!-- Payment requests will be dynamically added here -->
+                </div>
+            </div>
+
+            <div class="admin-section">
+                <h3><i class="fas fa-plus-circle"></i> নতুন বই যোগ করুন</h3>
+                <form id="addBookForm" class="admin-form">
+                    <div class="form-group">
+                        <label for="bookType">বইয়ের ধরন</label>
+                        <select id="bookType" required>
+                            <option value="free">ফ্রি</option>
+                            <option value="premium">প্রিমিয়াম</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="newBookTitle">বইয়ের নাম</label>
+                        <input type="text" id="newBookTitle" placeholder="বইয়ের নাম" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newBookLink">ডাউনলোড লিংক</label>
+                        <input type="url" id="newBookLink" placeholder="গুগল ড্রাইভ লিংক" required>
+                    </div>
+                    <div class="form-group" id="priceField" style="display: none;">
+                        <label for="newBookPrice">মূল্য (৳)</label>
+                        <input type="number" id="newBookPrice" placeholder="150">
+                    </div>
+                    <div class="form-group">
+                        <label for="newBookDescription">বিবরণ</label>
+                        <textarea id="newBookDescription" placeholder="বইয়ের বিবরণ"></textarea>
+                    </div>
+                    <button type="submit" class="confirm-btn">
+                        <i class="fas fa-plus"></i> বই যোগ করুন
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDLogJ9_NzTAkt2cRF1ex1amEu-e9rH8EA",
+            authDomain: "kiddo-kamrul.firebaseapp.com",
+            projectId: "kiddo-kamrul",
+            storageBucket: "kiddo-kamrul.firebasestorage.app",
+            messagingSenderId: "714264902093",
+            appId: "1:714264902093:web:628164446feacd1eebec84",
+            measurementId: "G-4BXFG50W7Q"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
         // Sample books data
-        const freeBooks = [
-            {
-                title: "সাম্প্রতিক ক্যাপসুল - ১", 
-                link: "https://drive.google.com/uc?export=download&id=1364e2UqYcPFNo8rdICeEn01eYIxi4lkJ", 
-                downloads: 0, 
-                emoji: "📕", 
-                year: "২০২৪", 
-                description: "এই ক্যাপসুলে রয়েছে সাম্প্রতিক পরীক্ষার জন্য গুরুত্বপূর্ণ প্রশ্নোত্তর"
-            },
-            {
-                title: "সাম্প্রতিক ক্যাপসুল - ২", 
-                link: "https://drive.google.com/uc?export=download&id=15YhW44ultCzrcAeV9FeG5XAAFCPRbG5s", 
-                downloads: 0, 
-                emoji: "📗", 
-                year: "২০২৪", 
-                description: "গুরুত্বপূর্ণ টপিকস সম্বলিত এই ক্যাপসুলে রয়েছে বিগত বছরের প্রশ্ন বিশ্লেষণ"
-            }
-        ];
+        let freeBooks = [];
+        let premiumBooks = [];
+        let paymentRequests = [];
 
-        const premiumBooks = [
-            {
-                title: "এডভান্সড ম্যাথ স্পেশাল", 
-                link: "#", 
-                downloads: 0, 
-                emoji: "🧮", 
-                year: "২০২৪", 
-                description: "এডভান্সড ম্যাথেমেটিক্সের সম্পূর্ণ গাইডলাইন এবং সলিউশন",
-                price: "৳ ১৫০",
-                originalPrice: "৳ ২০০"
-            },
-            {
-                title: "ইংলিশ মাস্টারি", 
-                link: "#", 
-                downloads: 0, 
-                emoji: "📚", 
-                year: "২০২৪", 
-                description: "ইংলিশ গ্রামার এবং ভোকাবুলারি মাস্টার করার সম্পূর্ণ গাইড",
-                price: "৳ ২০০",
-                originalPrice: "৳ ২৫০"
-            },
-            {
-                title: "সাইন্স ল্যাব গাইড", 
-                link: "#", 
-                downloads: 0, 
-                emoji: "🔬", 
-                year: "২০২৪", 
-                description: "সব বিজ্ঞান বিষয়ের প্র্যাকটিক্যাল ল্যাব গাইড",
-                price: "৳ ১৮০",
-                originalPrice: "৳ ২২০"
-            },
-            {
-                title: "ক্যারিয়ার প্ল্যানিং", 
-                link: "#", 
-                downloads: 0, 
-                emoji: "🎯", 
-                year: "২০২৪", 
-                description: "ভবিষ্যত ক্যারিয়ার প্ল্যান করার সম্পূর্ণ গাইডবুক",
-                price: "৳ ২৫০",
-                originalPrice: "৳ ৩০০"
-            }
-        ];
-
-        // Emojis for book covers
-        const emojis = ["📕", "📗", "📘", "📙", "📓", "📔", "📒", "📖", "📚", "🔖"];
-        
         // DOM elements
         const freeBookGrid = document.getElementById("freeBookGrid");
         const premiumBookGrid = document.getElementById("premiumBookGrid");
@@ -745,175 +1132,468 @@
         const bkashOption = document.getElementById("bkashOption");
         const nagadOption = document.getElementById("nagadOption");
         const rocketOption = document.getElementById("rocketOption");
+        const bkashForm = document.getElementById("bkashForm");
+        const nagadForm = document.getElementById("nagadForm");
+        const rocketForm = document.getElementById("rocketForm");
+        const receiptModal = document.getElementById("receiptModal");
+        const receiptDetails = document.getElementById("receiptDetails");
+        const downloadReceipt = document.getElementById("downloadReceipt");
+        const closeReceipt = document.getElementById("closeReceipt");
+        const adminPanel = document.getElementById("adminPanel");
+        const adminIndicator = document.getElementById("adminIndicator");
+        const closeAdmin = document.getElementById("closeAdmin");
+        const paymentRequestsContainer = document.getElementById("paymentRequests");
+        const addBookForm = document.getElementById("addBookForm");
+        const bookType = document.getElementById("bookType");
+        const priceField = document.getElementById("priceField");
 
         let selectedBook = null;
         let selectedPaymentMethod = null;
+        let currentReceiptData = null;
 
-        // Function to get a random emoji
-        function getRandomEmoji() { 
-            return emojis[Math.floor(Math.random() * emojis.length)]; 
+        // Load data from Firebase
+        async function loadData() {
+            try {
+                // Load free books
+                const freeSnapshot = await db.collection('freeBooks').get();
+                freeBooks = [];
+                freeSnapshot.forEach(doc => {
+                    freeBooks.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Load premium books
+                const premiumSnapshot = await db.collection('premiumBooks').get();
+                premiumBooks = [];
+                premiumSnapshot.forEach(doc => {
+                    premiumBooks.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Load payment requests
+                const paymentSnapshot = await db.collection('paymentRequests').where('status', '==', 'pending').get();
+                paymentRequests = [];
+                paymentSnapshot.forEach(doc => {
+                    paymentRequests.push({ id: doc.id, ...doc.data() });
+                });
+
+                renderFreeBooks();
+                renderPremiumBooks();
+                renderPaymentRequests();
+                updateAdminStats();
+            } catch (error) {
+                console.error("Error loading data:", error);
+                loadSampleData();
+            }
         }
 
-        // Function to render free books
+        // Load sample data if Firebase fails
+        function loadSampleData() {
+            freeBooks = [
+                {
+                    title: "সাম্প্রতিক ক্যাপসুল - ১", 
+                    link: "https://drive.google.com/uc?export=download&id=1364e2UqYcPFNo8rdICeEn01eYIxi4lkJ", 
+                    downloads: 0, 
+                    emoji: "📕", 
+                    year: "২০২৪", 
+                    description: "এই ক্যাপসুলে রয়েছে সাম্প্রতিক পরীক্ষার জন্য গুরুত্বপূর্ণ প্রশ্নোত্তর"
+                }
+            ];
+
+            premiumBooks = [
+                {
+                    title: "এডভান্সড ম্যাথ স্পেশাল", 
+                    link: "#", 
+                    downloads: 0, 
+                    emoji: "🧮", 
+                    year: "২০২৪", 
+                    description: "এডভান্সড ম্যাথেমেটিক্সের সম্পূর্ণ গাইডলাইন এবং সলিউশন",
+                    price: 150,
+                    originalPrice: 200
+                }
+            ];
+
+            renderFreeBooks();
+            renderPremiumBooks();
+        }
+
+        // Render free books
         function renderFreeBooks() {
             freeBookGrid.innerHTML = '';
             freeBooks.forEach((book, i) => {
-                const card = document.createElement('div');
-                card.className = 'book-card';
-                card.innerHTML = `
-                    ${book.year ? `<div class="book-badge">${book.year}</div>` : ''}
-                    <div class="emoji">${book.emoji || getRandomEmoji()}</div>
-                    <h3>${book.title}</h3>
-                    ${book.description ? `<div class="book-description">${book.description}</div>` : '<div class="book-description"></div>'}
-                    <div>
-                        <a href="${book.link}" class="download-btn" target="_blank" onclick="incrementDownload('free', ${i})">
-                            <i class="fas fa-download"></i> ফ্রি ডাউনলোড
-                        </a>
-                        <div class="download-count">
-                            <i class="fas fa-download"></i> ${book.downloads} বার ডাউনলোড
-                        </div>
-                    </div>
-                `;
+                const card = createBookCard(book, 'free', i);
                 freeBookGrid.appendChild(card);
             });
         }
 
-        // Function to render premium books
+        // Render premium books
         function renderPremiumBooks() {
             premiumBookGrid.innerHTML = '';
             premiumBooks.forEach((book, i) => {
-                const card = document.createElement('div');
-                card.className = 'book-card premium';
-                card.innerHTML = `
-                    <div class="book-badge premium-badge">
-                        <i class="fas fa-crown"></i> প্রিমিয়াম
-                    </div>
-                    <div class="emoji">${book.emoji || getRandomEmoji()}</div>
-                    <h3>${book.title}</h3>
-                    ${book.description ? `<div class="book-description">${book.description}</div>` : '<div class="book-description"></div>'}
-                    <div class="book-price">
-                        ${book.price} <small style="text-decoration: line-through; color: #9CA3AF; font-size: 0.9rem;">${book.originalPrice}</small>
-                    </div>
-                    <div>
-                        <button class="download-btn premium-btn" onclick="openPaymentModal(${i})">
-                            <i class="fas fa-shopping-cart"></i> কিনুন এখন
-                        </button>
-                        <div class="download-count">
-                            <i class="fas fa-users"></i> ${book.downloads} জন কিনেছেন
-                        </div>
-                    </div>
-                `;
+                const card = createBookCard(book, 'premium', i);
                 premiumBookGrid.appendChild(card);
             });
         }
 
-        // Function to increment download count
-        function incrementDownload(type, index) {
-            if (type === 'free') {
-                freeBooks[index].downloads += 1;
-            } else {
-                premiumBooks[index].downloads += 1;
-            }
+        // Create book card
+        function createBookCard(book, type, index) {
+            const card = document.createElement('div');
+            card.className = `book-card ${type === 'premium' ? 'premium' : ''}`;
+            
+            const priceHtml = type === 'premium' ? 
+                `<div class="book-price">৳ ${book.price} <small style="text-decoration: line-through; color: #9CA3AF; font-size: 0.9rem;">৳ ${book.originalPrice}</small></div>` : '';
+
+            const buttonHtml = type === 'premium' ? 
+                `<button class="download-btn premium-btn" onclick="openPaymentModal(${index})">
+                    <i class="fas fa-shopping-cart"></i> কিনুন এখন
+                </button>` :
+                `<a href="${book.link}" class="download-btn" target="_blank" onclick="incrementDownload('free', ${index})">
+                    <i class="fas fa-download"></i> ফ্রি ডাউনলোড
+                </a>`;
+
+            card.innerHTML = `
+                ${book.year ? `<div class="book-badge ${type === 'premium' ? 'premium-badge' : ''}">${book.year}</div>` : ''}
+                ${type === 'premium' ? `<div class="book-badge premium-badge"><i class="fas fa-crown"></i> প্রিমিয়াম</div>` : ''}
+                <div class="emoji">${book.emoji || '📚'}</div>
+                <h3>${book.title}</h3>
+                ${book.description ? `<div class="book-description">${book.description}</div>` : '<div class="book-description"></div>'}
+                ${priceHtml}
+                <div>
+                    ${buttonHtml}
+                    <div class="download-count">
+                        <i class="fas fa-${type === 'premium' ? 'users' : 'download'}"></i> 
+                        ${book.downloads} ${type === 'premium' ? 'জন কিনেছেন' : 'বার ডাউনলোড'}
+                    </div>
+                </div>
+            `;
+            return card;
         }
 
-        // Function to open payment modal
+        // Open payment modal
         function openPaymentModal(index) {
             selectedBook = premiumBooks[index];
             selectedPaymentMethod = null;
             
-            // Reset payment options
-            bkashOption.classList.remove('active');
-            nagadOption.classList.remove('active');
-            rocketOption.classList.remove('active');
+            resetPaymentForms();
+            hideAllForms();
             
-            // Update book preview
             bookPreview.innerHTML = `
                 <div class="emoji">${selectedBook.emoji}</div>
                 <h4>${selectedBook.title}</h4>
                 <p class="book-description">${selectedBook.description}</p>
-                <div class="price">${selectedBook.price}</div>
+                <div class="price">৳ ${selectedBook.price}</div>
             `;
             
             paymentModal.classList.add('active');
         }
 
-        // Function to close payment modal
-        function closePaymentModalFunc() {
-            paymentModal.classList.remove('active');
-            selectedBook = null;
-            selectedPaymentMethod = null;
+        // Reset payment forms
+        function resetPaymentForms() {
+            document.getElementById('bkashName').value = '';
+            document.getElementById('bkashPhone').value = '';
+            document.getElementById('bkashTrxId').value = '';
+            document.getElementById('bkashEmail').value = '';
+            
+            document.getElementById('nagadName').value = '';
+            document.getElementById('nagadPhone').value = '';
+            document.getElementById('nagadTrxId').value = '';
+            document.getElementById('nagadEmail').value = '';
+            
+            document.getElementById('rocketName').value = '';
+            document.getElementById('rocketPhone').value = '';
+            document.getElementById('rocketTrxId').value = '';
+            document.getElementById('rocketEmail').value = '';
         }
 
-        // Function to handle payment confirmation
-        function handlePaymentConfirmation() {
+        // Hide all payment forms
+        function hideAllForms() {
+            bkashForm.classList.remove('active');
+            nagadForm.classList.remove('active');
+            rocketForm.classList.remove('active');
+        }
+
+        // Handle payment submission
+        async function handlePaymentSubmission() {
             if (!selectedPaymentMethod) {
                 alert('দয়া করে একটি পেমেন্ট মাধ্যম সিলেক্ট করুন।');
                 return;
             }
 
-            let paymentNumber = '';
-            let paymentInstructions = '';
+            let formData = {};
+            const timestamp = new Date().toISOString();
+            const receiptId = 'RCP' + Date.now();
 
             switch(selectedPaymentMethod) {
                 case 'bkash':
-                    paymentNumber = '০১৭XXXXXXXX';
-                    paymentInstructions = `
-                        বিকাশ পেমেন্ট স্টেপস:
-                        ১. *২৪৭# ডায়াল করুন
-                        ২. "Send Money" সিলেক্ট করুন
-                        ৩. নম্বর: ${paymentNumber}
-                        ৪. Amount: ${selectedBook.price.replace('৳ ', '')}
-                        ৫. Reference: KIDDO${Math.random().toString(36).substr(2, 6).toUpperCase()}
-                    `;
+                    formData = {
+                        name: document.getElementById('bkashName').value,
+                        phone: document.getElementById('bkashPhone').value,
+                        trxId: document.getElementById('bkashTrxId').value,
+                        email: document.getElementById('bkashEmail').value
+                    };
                     break;
                 case 'nagad':
-                    paymentNumber = '০১৮XXXXXXXX';
-                    paymentInstructions = `
-                        নগদ পেমেন্ট স্টেপস:
-                        ১. *১৬৭# ডায়াল করুন
-                        ২. "Send Money" সিলেক্ট করুন
-                        ৩. নম্বর: ${paymentNumber}
-                        ৪. Amount: ${selectedBook.price.replace('৳ ', '')}
-                        ৫. PIN দিয়ে কনফার্ম করুন
-                    `;
+                    formData = {
+                        name: document.getElementById('nagadName').value,
+                        phone: document.getElementById('nagadPhone').value,
+                        trxId: document.getElementById('nagadTrxId').value,
+                        email: document.getElementById('nagadEmail').value
+                    };
                     break;
                 case 'rocket':
-                    paymentNumber = '০১৮XXXXXXXXR';
-                    paymentInstructions = `
-                        রকেট পেমেন্ট স্টেপস:
-                        ১. রকেট অ্যাপ খুলুন
-                        ২. "Send Money" সিলেক্ট করুন
-                        ৩. নম্বর: ${paymentNumber}
-                        ৪. Amount: ${selectedBook.price.replace('৳ ', '')}
-                        ৫. ট্রানজেকশন কমপ্লিট করুন
-                    `;
+                    formData = {
+                        name: document.getElementById('rocketName').value,
+                        phone: document.getElementById('rocketPhone').value,
+                        trxId: document.getElementById('rocketTrxId').value,
+                        email: document.getElementById('rocketEmail').value
+                    };
                     break;
             }
 
-            const confirmation = confirm(
-                `পেমেন্ট ডিটেইলস:\n\n` +
-                `বই: ${selectedBook.title}\n` +
-                `মূল্য: ${selectedBook.price}\n` +
-                `পেমেন্ট মাধ্যম: ${selectedPaymentMethod.toUpperCase()}\n` +
-                `নম্বর: ${paymentNumber}\n\n` +
-                `ইনস্ট্রাকশন:\n${paymentInstructions}\n\n` +
-                `পেমেন্ট করে রিসিপ্ট আমাদের ইমেইলে পাঠান: kiddo@example.com\n` +
-                `রিসিপ্ট ভেরিফাই হলে বইটি ডাউনলোড লিংক পাঠানো হবে।`
-            );
+            // Validate form data
+            if (!formData.name || !formData.phone || !formData.trxId) {
+                alert('দয়া করে সকল প্রয়োজনীয় তথ্য প্রদান করুন।');
+                return;
+            }
 
-            if (confirmation) {
-                alert('ধন্যবাদ! পেমেন্ট ইনস্ট্রাকশন দেখে পেমেন্ট করুন এবং রিসিপ্ট পাঠান।');
-                closePaymentModalFunc();
+            // Create payment request
+            const paymentRequest = {
+                bookTitle: selectedBook.title,
+                bookId: selectedBook.id,
+                amount: selectedBook.price,
+                paymentMethod: selectedPaymentMethod,
+                customerName: formData.name,
+                customerPhone: formData.phone,
+                transactionId: formData.trxId,
+                customerEmail: formData.email,
+                timestamp: timestamp,
+                status: 'pending',
+                receiptId: receiptId
+            };
+
+            try {
+                // Save to Firebase
+                await db.collection('paymentRequests').add(paymentRequest);
+                
+                // Show receipt
+                showReceipt(paymentRequest);
+                paymentModal.classList.remove('active');
+                
+            } catch (error) {
+                console.error('Error saving payment request:', error);
+                alert('পেমেন্ট সাবমিট করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।');
+            }
+        }
+
+        // Show receipt
+        function showReceipt(paymentData) {
+            currentReceiptData = paymentData;
+            
+            receiptDetails.innerHTML = `
+                <div class="receipt-item">
+                    <span class="label">রিসিপ্ট আইডি:</span>
+                    <span class="value">${paymentData.receiptId}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="label">বইয়ের নাম:</span>
+                    <span class="value">${paymentData.bookTitle}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="label">পরিমাণ:</span>
+                    <span class="value">৳ ${paymentData.amount}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="label">পেমেন্ট মাধ্যম:</span>
+                    <span class="value">${paymentData.paymentMethod.toUpperCase()}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="label">ট্রানজেকশন আইডি:</span>
+                    <span class="value">${paymentData.transactionId}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="label">সময়:</span>
+                    <span class="value">${new Date(paymentData.timestamp).toLocaleString('bn-BD')}</span>
+                </div>
+            `;
+            
+            receiptModal.classList.add('active');
+        }
+
+        // Download receipt
+        function downloadReceiptAsPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Add content to PDF
+            doc.setFontSize(20);
+            doc.text('কিড্ডো বুক স্টল - পেমেন্ট রিসিপ্ট', 105, 20, { align: 'center' });
+            
+            doc.setFontSize(12);
+            doc.text(`রিসিপ্ট আইডি: ${currentReceiptData.receiptId}`, 20, 40);
+            doc.text(`বইয়ের নাম: ${currentReceiptData.bookTitle}`, 20, 50);
+            doc.text(`পরিমাণ: ৳ ${currentReceiptData.amount}`, 20, 60);
+            doc.text(`পেমেন্ট মাধ্যম: ${currentReceiptData.paymentMethod.toUpperCase()}`, 20, 70);
+            doc.text(`ট্রানজেকশন আইডি: ${currentReceiptData.transactionId}`, 20, 80);
+            doc.text(`সময়: ${new Date(currentReceiptData.timestamp).toLocaleString('bn-BD')}`, 20, 90);
+            doc.text(`স্ট্যাটাস: ${currentReceiptData.status}`, 20, 100);
+            
+            doc.text('ধন্যবাদ! পেমেন্ট ভেরিফাই হলে বইটি ডাউনলোড লিংক পাঠানো হবে।', 20, 120);
+            doc.text('ইমেইল: kiddo@example.com', 20, 130);
+            
+            // Save the PDF
+            doc.save(`receipt-${currentReceiptData.receiptId}.pdf`);
+        }
+
+        // Render payment requests in admin panel
+        function renderPaymentRequests() {
+            paymentRequestsContainer.innerHTML = '';
+            
+            if (paymentRequests.length === 0) {
+                paymentRequestsContainer.innerHTML = '<p>কোন পেন্ডিং রিকোয়েস্ট নেই</p>';
+                return;
+            }
+            
+            paymentRequests.forEach((request, index) => {
+                const requestElement = document.createElement('div');
+                requestElement.className = 'payment-request';
+                requestElement.innerHTML = `
+                    <div class="request-header">
+                        <div class="request-book">${request.bookTitle}</div>
+                        <div class="request-amount">৳ ${request.amount}</div>
+                    </div>
+                    <div class="request-details">
+                        <div class="request-detail">
+                            <span class="label">গ্রাহক:</span> ${request.customerName}
+                        </div>
+                        <div class="request-detail">
+                            <span class="label">নম্বর:</span> ${request.customerPhone}
+                        </div>
+                        <div class="request-detail">
+                            <span class="label">ট্রানজেকশন:</span> ${request.transactionId}
+                        </div>
+                        <div class="request-detail">
+                            <span class="label">মাধ্যম:</span> ${request.paymentMethod}
+                        </div>
+                    </div>
+                    <div class="request-actions">
+                        <button class="approve-btn" onclick="approvePayment('${request.id}', '${request.bookId}')">
+                            <i class="fas fa-check"></i> অ্যাপ্রুভ
+                        </button>
+                        <button class="reject-btn" onclick="rejectPayment('${request.id}')">
+                            <i class="fas fa-times"></i> রিজেক্ট
+                        </button>
+                    </div>
+                `;
+                paymentRequestsContainer.appendChild(requestElement);
+            });
+        }
+
+        // Approve payment
+        async function approvePayment(requestId, bookId) {
+            try {
+                // Update payment request status
+                await db.collection('paymentRequests').doc(requestId).update({
+                    status: 'approved',
+                    approvedAt: new Date().toISOString()
+                });
+                
+                // Increment book downloads
+                const bookRef = db.collection('premiumBooks').doc(bookId);
+                const bookDoc = await bookRef.get();
+                if (bookDoc.exists) {
+                    await bookRef.update({
+                        downloads: (bookDoc.data().downloads || 0) + 1
+                    });
+                }
+                
+                // Reload data
+                await loadData();
+                alert('পেমেন্ট অ্যাপ্রুভ করা হয়েছে!');
+                
+            } catch (error) {
+                console.error('Error approving payment:', error);
+                alert('অ্যাপ্রুভ করতে সমস্যা হয়েছে।');
+            }
+        }
+
+        // Reject payment
+        async function rejectPayment(requestId) {
+            try {
+                await db.collection('paymentRequests').doc(requestId).update({
+                    status: 'rejected',
+                    rejectedAt: new Date().toISOString()
+                });
+                
+                await loadData();
+                alert('পেমেন্ট রিজেক্ট করা হয়েছে!');
+                
+            } catch (error) {
+                console.error('Error rejecting payment:', error);
+                alert('রিজেক্ট করতে সমস্যা হয়েছে।');
+            }
+        }
+
+        // Update admin statistics
+        function updateAdminStats() {
+            document.getElementById('totalBooks').textContent = freeBooks.length + premiumBooks.length;
+            document.getElementById('totalPayments').textContent = paymentRequests.length;
+            document.getElementById('pendingPayments').textContent = paymentRequests.length;
+            
+            const totalEarnings = premiumBooks.reduce((sum, book) => sum + (book.downloads * book.price), 0);
+            document.getElementById('totalEarnings').textContent = `৳ ${totalEarnings}`;
+        }
+
+        // Add new book
+        async function addNewBook(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('newBookTitle').value;
+            const link = document.getElementById('newBookLink').value;
+            const description = document.getElementById('newBookDescription').value;
+            const type = bookType.value;
+            const price = type === 'premium' ? parseInt(document.getElementById('newBookPrice').value) : 0;
+            
+            const newBook = {
+                title,
+                link,
+                description,
+                downloads: 0,
+                emoji: '📚',
+                year: '২০২৪',
+                ...(type === 'premium' && { price, originalPrice: price + 50 })
+            };
+            
+            try {
+                if (type === 'free') {
+                    await db.collection('freeBooks').add(newBook);
+                } else {
+                    await db.collection('premiumBooks').add(newBook);
+                }
+                
+                addBookForm.reset();
+                await loadData();
+                alert('বইটি সফলভাবে যোগ করা হয়েছে!');
+                
+            } catch (error) {
+                console.error('Error adding book:', error);
+                alert('বই যোগ করতে সমস্যা হয়েছে।');
             }
         }
 
         // Event listeners
         madeBy.addEventListener('click', function() {
-            alert('অ্যাডমিন এক্সেসের জন্য যোগাযোগ করুন: kiddo@example.com');
+            const password = prompt('অ্যাডমিন পাসওয়ার্ড দিন:');
+            if (password === 'kiddo123') {
+                adminPanel.classList.add('active');
+                adminIndicator.classList.add('active');
+            } else if (password) {
+                alert('ভুল পাসওয়ার্ড!');
+            }
         });
 
-        closePaymentModal.addEventListener('click', closePaymentModalFunc);
-        confirmPayment.addEventListener('click', handlePaymentConfirmation);
+        closePaymentModal.addEventListener('click', () => paymentModal.classList.remove('active'));
+        closeReceipt.addEventListener('click', () => receiptModal.classList.remove('active'));
+        closeAdmin.addEventListener('click', () => adminPanel.classList.remove('active'));
+        confirmPayment.addEventListener('click', handlePaymentSubmission);
+        downloadReceipt.addEventListener('click', downloadReceiptAsPDF);
 
         // Payment method selection
         bkashOption.addEventListener('click', function() {
@@ -921,6 +1601,8 @@
             bkashOption.classList.add('active');
             nagadOption.classList.remove('active');
             rocketOption.classList.remove('active');
+            hideAllForms();
+            bkashForm.classList.add('active');
         });
 
         nagadOption.addEventListener('click', function() {
@@ -928,6 +1610,8 @@
             nagadOption.classList.add('active');
             bkashOption.classList.remove('active');
             rocketOption.classList.remove('active');
+            hideAllForms();
+            nagadForm.classList.add('active');
         });
 
         rocketOption.addEventListener('click', function() {
@@ -935,18 +1619,40 @@
             rocketOption.classList.add('active');
             bkashOption.classList.remove('active');
             nagadOption.classList.remove('active');
+            hideAllForms();
+            rocketForm.classList.add('active');
         });
 
-        // Close modal when clicking outside
-        paymentModal.addEventListener('click', function(e) {
-            if (e.target === paymentModal) {
-                closePaymentModalFunc();
+        // Book type change
+        bookType.addEventListener('change', function() {
+            if (this.value === 'premium') {
+                priceField.style.display = 'block';
+            } else {
+                priceField.style.display = 'none';
             }
         });
 
+        // Add book form submission
+        addBookForm.addEventListener('submit', addNewBook);
+
+        // Close modals when clicking outside
+        paymentModal.addEventListener('click', function(e) {
+            if (e.target === paymentModal) paymentModal.classList.remove('active');
+        });
+
+        receiptModal.addEventListener('click', function(e) {
+            if (e.target === receiptModal) receiptModal.classList.remove('active');
+        });
+
+        adminPanel.addEventListener('click', function(e) {
+            if (e.target === adminPanel) adminPanel.classList.remove('active');
+        });
+
         // Initialize the app
-        renderFreeBooks();
-        renderPremiumBooks();
+        loadData();
     </script>
+
+    <!-- PDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html>
