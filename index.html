@@ -1,195 +1,325 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📚 কিড্ডো বুক স্টল</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: radial-gradient(circle at top, #1c1f2e, #0f111a);
-      color: #fff;
-      min-height: 100vh;
-      text-align: center;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>📚 কিড্ডো বুক স্টল — Pro Mobile UI</title>
+<style>
+  :root{
+    --bg1:#0f1724; --bg2:#121422;
+    --card: rgba(255,255,255,0.04);
+    --accent1: #00ffd0; --accent2:#00a8ff;
+    --muted:#aeb7c7;
+    --success:#22c55e; --danger:#ff5c63;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:Inter, "Poppins", system-ui, sans-serif;
+    background: linear-gradient(180deg,var(--bg1),var(--bg2));
+    color:#fff; -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    min-height:100vh;
+    display:flex;flex-direction:column;
+  }
 
-    header {
-      background: linear-gradient(90deg, #00ffa6, #00c4ff);
-      color: #000;
-      padding: 25px 10px;
-      border-radius: 0 0 30px 30px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
+  /* Header */
+  .top{
+    padding:18px 16px;
+    background: linear-gradient(90deg,var(--accent1),var(--accent2));
+    color:#001;
+    border-bottom-left-radius:16px;
+    border-bottom-right-radius:16px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.35);
+  }
+  .top h1{font-size:18px;margin:0;font-weight:700}
+  .top p{margin:6px 0 0;color:#041; font-size:13px}
 
-    header h1 {
-      font-size: 22px;
-      font-weight: 700;
-    }
+  /* container */
+  main{flex:1; padding:18px; width:100%; max-width:920px; margin:0 auto; box-sizing:border-box;}
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:14px;
+    margin-top:16px;
+  }
 
-    header p {
-      margin-top: 6px;
-      font-size: 14px;
-      color: #111;
-    }
+  /* card */
+  .card{
+    background:var(--card);
+    border:1px solid rgba(255,255,255,0.04);
+    border-radius:14px;
+    padding:14px;
+    display:flex; flex-direction:column;
+    align-items:center;
+    gap:8px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.45), inset 0 -2px 10px rgba(0,0,0,0.25);
+    transition:transform .18s ease, box-shadow .18s ease;
+    min-height:170px;
+  }
+  .card:hover{ transform: translateY(-6px); box-shadow:0 18px 40px rgba(0,0,0,0.6); }
+  .emoji{ font-size:44px; display:block; line-height:1 }
+  .title{ color:var(--accent1); font-weight:700; font-size:15px; margin-top:6px; text-align:center; }
+  .desc{ color:var(--muted); font-size:13px; text-align:center; padding:0 6px; flex:1; display:flex; align-items:center; justify-content:center }
+  .row{ width:100%; display:flex; gap:8px; align-items:center; justify-content:center; margin-top:6px }
 
-    .shop {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 20px;
-      padding: 30px 15px;
-      max-width: 900px;
-      margin: auto;
-    }
+  .btn{
+    background: linear-gradient(90deg,var(--accent1),var(--accent2));
+    color:#001; padding:8px 12px; border-radius:999px; font-weight:700; font-size:13px;
+    text-decoration:none; border:none; cursor:pointer;
+    display:inline-flex; align-items:center; gap:8px;
+    box-shadow:0 6px 18px rgba(0,168,255,0.08);
+  }
+  .btn:disabled{ opacity:0.6; cursor:default }
 
-    .book {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: 20px 10px;
-      box-shadow: 0 0 10px rgba(0,255,200,0.15);
-      transition: all 0.3s ease;
-    }
+  /* download all bar */
+  .download-bar{
+    margin-top:18px; display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap;
+  }
+  .download-all{
+    background: linear-gradient(90deg,#ffd200,#ff8a00);
+    color:#001; padding:12px 18px; border-radius:999px; font-weight:800; font-size:15px; border:none; cursor:pointer;
+    box-shadow:0 10px 30px rgba(255,140,0,0.18);
+  }
+  .status{
+    color:var(--muted); font-size:13px;
+  }
 
-    .book:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 0 25px rgba(0,255,200,0.4);
-    }
+  /* toast / small notice */
+  .toast{
+    position:fixed; right:14px; bottom:14px; min-width:220px; max-width:320px;
+    background:rgba(0,0,0,0.6); color:#fff; padding:12px 14px; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.6);
+    font-size:13px; display:none; z-index:40;
+  }
 
-    .emoji {
-      font-size: 48px;
-      display: block;
-      margin-bottom: 10px;
-    }
+  footer{ text-align:center; padding:18px 10px; color: #9aa6b8; font-size:13px; }
 
-    .book h3 {
-      font-size: 18px;
-      color: #00ffc6;
-      margin-bottom: 6px;
-    }
-
-    .book p {
-      font-size: 13px;
-      color: #bbb;
-      margin-bottom: 15px;
-    }
-
-    .btn {
-      background: linear-gradient(90deg, #00ffc6, #00b4ff);
-      color: #000;
-      padding: 9px 18px;
-      border-radius: 25px;
-      font-weight: bold;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
-
-    .btn:hover {
-      background: linear-gradient(90deg, #00c4ff, #00ffa6);
-      transform: scale(1.05);
-    }
-
-    .download-all {
-      margin: 30px 0;
-      background: linear-gradient(90deg, #ffd200, #ff8800);
-      color: #000;
-      font-size: 16px;
-      padding: 12px 25px;
-      border-radius: 35px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 0 20px rgba(255,180,0,0.3);
-      transition: all 0.2s ease;
-    }
-
-    .download-all:hover {
-      transform: scale(1.05);
-    }
-
-    footer {
-      margin: 40px 0 25px;
-      color: #888;
-      font-size: 13px;
-    }
-  </style>
+  /* responsive spacing */
+  @media (max-width:420px){
+    .emoji{ font-size:40px }
+    .title{ font-size:15px }
+    .desc{ font-size:12px }
+  }
+</style>
 </head>
 <body>
 
-  <header>
-    <h1>📚 জুবায়ের স্যার এর সাম্প্রতিক ক্যাপসুল (১–৫)</h1>
-    <p>যে বই দরকার সেটি নিন 📖 অথবা সবগুলো একসাথে ডাউনলোড করুন!</p>
-  </header>
-
-  <div class="shop">
-
-    <div class="book">
-      <span class="emoji">📗</span>
-      <h3>ক্যাপসুল ১</h3>
-      <p>সাম্প্রতিক গুরুত্বপূর্ণ প্রশ্নাবলি</p>
-      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf" class="btn" download>Download</a>
-    </div>
-
-    <div class="book">
-      <span class="emoji">📘</span>
-      <h3>ক্যাপসুল ২</h3>
-      <p>চলমান ঘটনা বিশ্লেষণ</p>
-      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf" class="btn" download>Download</a>
-    </div>
-
-    <div class="book">
-      <span class="emoji">📙</span>
-      <h3>ক্যাপসুল ৩</h3>
-      <p>বিশেষ নোট ও তথ্য</p>
-      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf" class="btn" download>Download</a>
-    </div>
-
-    <div class="book">
-      <span class="emoji">📕</span>
-      <h3>ক্যাপসুল ৪</h3>
-      <p>চলতি ঘটনাবলির সারসংক্ষেপ</p>
-      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AA.pdf" class="btn" download>Download</a>
-    </div>
-
-    <div class="book">
-      <span class="emoji">📒</span>
-      <h3>ক্যাপসুল ৫</h3>
-      <p>গুরুত্বপূর্ণ ম্যাগাজিন টাইপ তথ্য</p>
-      <a href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AB.pdf" class="btn" download>Download</a>
-    </div>
-
+  <div class="top">
+    <h1>📚 কিড্ডো বুক স্টল</h1>
+    <p>মোবাইল-প্রো UI — প্রতিটি বই ডাউনলোড করুন বা নিচের দিয়ে সবগুলো একসাথে নিন</p>
   </div>
 
-  <button class="download-all" id="downloadAll">⬇️ সবগুলো ডাউনলোড করুন</button>
+  <main>
+    <div class="grid" id="grid">
+      <!-- cards inserted by JS -->
+    </div>
 
-  <footer>© ২০২৫ | তৈরি করেছেন ❤️ Kamrul</footer>
+    <div class="download-bar" style="margin-top:18px;">
+      <button id="downloadAll" class="download-all">⬇️ সবগুলো ডাউনলোড করুন</button>
+      <div class="status" id="statusText">প্রস্তুত — ৫টি ফাইল</div>
+    </div>
+  </main>
 
-  <script>
-    const files = [
-      "https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf",
-      "https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf",
-      "https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf",
-      "https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AA.pdf",
-      "https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AB.pdf"
-    ];
+  <div class="toast" id="toast"></div>
+  <footer>© ২০২৫ • তৈরি করেছেন ❤️ Kamrul</footer>
 
-    document.getElementById("downloadAll").addEventListener("click", () => {
-      files.forEach((url, i) => {
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "";
-        a.target = "_blank";
-        document.body.appendChild(a);
-        setTimeout(() => a.click(), i * 1000);
-      });
+<script>
+/*
+  New download system:
+  - Uses fetch() to get file as blob (better UX, fewer popups)
+  - Fallback: open raw link in new tab if fetch fails due to CORS/redirect
+  - Sequential "Download All" with UI feedback
+*/
+
+const books = [
+  {
+    id:1, emoji:'📗', title:'ক্যাপসুল ১', desc:'সাম্প্রতিক গুরুত্বপূর্ণ প্রশ্নাবলি',
+    url: 'https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf',
+    name: 'Capsule-1.pdf'
+  },
+  {
+    id:2, emoji:'📘', title:'ক্যাপসুল ২', desc:'চলমান ঘটনা বিশ্লেষণ',
+    url: 'https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf',
+    name: 'Capsule-2.pdf'
+  },
+  {
+    id:3, emoji:'📙', title:'ক্যাপসুল ৩', desc:'বিশেষ নোট ও তথ্য',
+    url: 'https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf',
+    name: 'Capsule-3.pdf'
+  },
+  {
+    id:4, emoji:'📕', title:'ক্যাপসুল ৪', desc:'চলতি ঘটনাবলির সারসংক্ষেপ',
+    url: 'https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AA.pdf',
+    name: 'Capsule-4.pdf'
+  },
+  {
+    id:5, emoji:'📒', title:'ক্যাপসুল ৫', desc:'গুরুত্বপূর্ণ ম্যাগাজিন টাইপ তথ্য',
+    url: 'https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95-%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AB.pdf',
+    name: 'Capsule-5.pdf'
+  }
+];
+
+const grid = document.getElementById('grid');
+const toast = document.getElementById('toast');
+const statusText = document.getElementById('statusText');
+const downloadAllBtn = document.getElementById('downloadAll');
+
+function showToast(msg, time=3500){
+  toast.textContent = msg;
+  toast.style.display = 'block';
+  clearTimeout(toast._t);
+  toast._t = setTimeout(()=> toast.style.display='none', time);
+}
+
+/* create card elements */
+books.forEach(b=>{
+  const div = document.createElement('div');
+  div.className = 'card';
+  div.innerHTML = `
+    <span class="emoji">${b.emoji}</span>
+    <div class="title">${b.title}</div>
+    <div class="desc">${b.desc}</div>
+    <div class="row">
+      <button class="btn single-download" data-id="${b.id}">⬇️ ডাউনলোড</button>
+      <button class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);font-weight:600;font-size:12px" data-url="${b.url}">🔗 খোলা</button>
+    </div>
+  `;
+  grid.appendChild(div);
+});
+
+/* utility: download blob as file */
+function saveBlob(blob, filename){
+  const a = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  a.href = url; a.download = filename || 'file';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=> URL.revokeObjectURL(url), 1500);
+}
+
+/* fetch + download with error handling and progress */
+async function fetchAndDownload(url, filename, onProgress){
+  try{
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('Network response not OK: '+res.status);
+    // try to stream for progress if available
+    const contentLength = res.headers.get('content-length');
+    if(!res.body || !contentLength){
+      const blob = await res.blob();
+      saveBlob(blob, filename);
+      return {ok:true};
+    }
+    const total = parseInt(contentLength,10);
+    const reader = res.body.getReader();
+    let received = 0;
+    const chunks = [];
+    while(true){
+      const {done,value} = await reader.read();
+      if(done) break;
+      chunks.push(value);
+      received += value.length;
+      if(onProgress) onProgress(received / total);
+    }
+    const blob = new Blob(chunks);
+    saveBlob(blob, filename);
+    return {ok:true};
+  }catch(err){
+    console.error('fetch error', err);
+    return {ok:false, error: err};
+  }
+}
+
+/* fallback: open link in new tab (user can save from there) */
+function openInNewTab(url){
+  window.open(url, '_blank');
+}
+
+/* single download handler */
+async function handleSingleDownload(book){
+  const btns = document.querySelectorAll(`.single-download`);
+  const btn = Array.from(btns).find(x=> x.dataset.id == book.id);
+  if(!btn) return;
+  btn.disabled = true; btn.textContent = '⏳ ডাউনলোড হচ্ছে...';
+  statusText.textContent = `ডাউনলোড করছে: ${book.title}`;
+  showToast(`${book.title} ডাউনলোড শুরু`);
+
+  const res = await fetchAndDownload(book.url, book.name, (p)=> {
+    // optional: show progress percent in status
+    const pct = Math.round(p*100);
+    statusText.textContent = `${book.title} — ${pct}%`;
+  });
+
+  if(res.ok){
+    showToast(`${book.title} সফলভাবে ডাউনলোড হয়েছে`);
+    statusText.textContent = `প্রস্তুত — ${books.length} ফাইল`;
+  }else{
+    showToast(`${book.title} ডাউনলোড ব্যর্থ — নতুন ট্যাবে খুলুন`, 6000);
+    openInNewTab(book.url);
+    statusText.textContent = `কিছু সমস্যা: খোলা ট্যাব থেকে ডাউনলোড করুন`;
+  }
+  btn.disabled = false; btn.textContent = '⬇️ ডাউনলোড';
+}
+
+/* attach single-download click listeners (delegation) */
+grid.addEventListener('click', (e)=>{
+  const sd = e.target.closest('.single-download');
+  if(!sd) return;
+  const id = +sd.dataset.id;
+  const book = books.find(b=>b.id===id);
+  if(book) handleSingleDownload(book);
+});
+
+/* "open raw" buttons */
+grid.addEventListener('click', (e)=>{
+  const op = e.target.closest('[data-url]');
+  if(!op) return;
+  const url = op.dataset.url;
+  openInNewTab(url);
+});
+
+/* download all sequentially */
+let downloadingAll = false;
+downloadAllBtn.addEventListener('click', async ()=>{
+  if(downloadingAll) return;
+  downloadingAll = true;
+  downloadAllBtn.disabled = true;
+  downloadAllBtn.textContent = '⏳ সবগুলো ডাউনলোড হচ্ছে...';
+  statusText.textContent = 'সবগুলো ডাউনলোড চলছে — অপেক্ষা করুন';
+
+  for(let i=0;i<books.length;i++){
+    const b = books[i];
+    statusText.textContent = `(${i+1}/${books.length}) ${b.title} ডাউনলোড হচ্ছে`;
+    showToast(`${b.title} ডাউনলোড শুরু`, 2500);
+
+    const res = await fetchAndDownload(b.url, b.name, (p)=>{
+      // progressively update small percent
+      statusText.textContent = `(${i+1}/${books.length}) ${b.title} — ${Math.round(p*100)}%`;
     });
-  </script>
+
+    if(!res.ok){
+      // fallback: open in new tab, continue next
+      showToast(`${b.title} fetch ব্যর্থ — নতুন ট্যাবে খোলা হচ্ছে`, 4500);
+      openInNewTab(b.url);
+      await new Promise(r=>setTimeout(r,900)); // small delay
+    }else{
+      // give slight pause so browser can start saving
+      await new Promise(r=>setTimeout(r,600));
+    }
+  }
+
+  showToast('সবগুলো ডাউনলোড প্রক্রিয়া সম্পন্ন (কিছু ফাইল নতুন ট্যাবে খুলছে যদি fetch ব্যর্থ হয়)');
+  statusText.textContent = 'সম্পন্ন — চাইলে আবার ডাউনলোড করুন';
+  downloadAllBtn.disabled = false;
+  downloadAllBtn.textContent = '⬇️ সবগুলো ডাউনলোড করুন';
+  downloadingAll = false;
+});
+
+/* small UX: detect large files or slow network (optional) */
+// you may show extra guidance for users with popup blockers
+(function initialNote(){
+  showToast('নোট: যদি কোন ফাইল ডাউনলোড না হয়, "খোলা" বাটন ক্লিক করে নতুন ট্যাবে ডাউনলোড করুন।',7000);
+})();
+</script>
 
 </body>
 </html>
