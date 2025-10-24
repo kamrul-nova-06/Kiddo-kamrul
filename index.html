@@ -1413,7 +1413,7 @@
                 isPremium: true,
                 downloadCount: 320,
                 year: 2024,
-                downloadLink: "https://drive.google.com/file/d/1mno345/view?usp=sharing",
+                downloadLink: "#",
                 driveLink: "https://drive.google.com/file/d/1premium1/view?usp=sharing"
             },
             {
@@ -1867,14 +1867,16 @@
             }
         }
 
-        // Toggle admin mode
+        // Toggle admin mode - FIXED FUNCTION
         function toggleAdminMode() {
             const isAdmin = localStorage.getItem('kiddoAdminMode') === 'true';
             
             if (isAdmin) {
+                // If already admin, close admin panel
                 localStorage.setItem('kiddoAdminMode', 'false');
                 adminIndicator.classList.remove('active');
                 closeAdminPanel();
+                alert('অ্যাডমিন মোড বন্ধ করা হয়েছে');
             } else {
                 // Ask for admin password
                 const password = prompt('অ্যাডমিন পাসওয়ার্ড দিন:');
@@ -1882,8 +1884,9 @@
                     localStorage.setItem('kiddoAdminMode', 'true');
                     adminIndicator.classList.add('active');
                     openAdminPanel();
+                    alert('অ্যাডমিন মোড চালু করা হয়েছে!');
                 } else {
-                    alert('ভুল পাসওয়ার্ড!');
+                    alert('ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।');
                 }
             }
         }
