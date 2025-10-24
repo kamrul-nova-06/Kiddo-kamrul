@@ -37,7 +37,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 0 20px;
         }
@@ -120,7 +120,7 @@
 
         .book-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 25px;
             margin-top: 20px;
         }
@@ -128,7 +128,7 @@
         .book-card {
             background: var(--card-bg);
             border-radius: 20px;
-            padding: 20px;
+            padding: 25px;
             box-shadow: var(--shadow);
             display: flex;
             flex-direction: column;
@@ -137,6 +137,8 @@
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.5);
+            height: 320px;
+            justify-content: space-between;
         }
 
         .book-card::before {
@@ -169,6 +171,7 @@
             color: var(--primary);
             text-align: center;
             font-weight: 600;
+            line-height: 1.4;
         }
 
         .book-card .download-btn {
@@ -428,7 +431,7 @@
         /* Responsive Styles */
         @media (max-width: 768px) {
             .book-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                grid-template-columns: 1fr;
                 gap: 20px;
             }
 
@@ -463,6 +466,11 @@
                 gap: 15px;
                 text-align: center;
             }
+            
+            .book-card {
+                height: 300px;
+                padding: 20px;
+            }
         }
     </style>
 </head>
@@ -471,14 +479,14 @@
         <header>
             <div class="header-content">
                 <h1>📚 কিড্ডো বুক স্টল</h1>
-                <p>আপনার প্রয়োজনীয় বই বেছে নিন এবং সহজেই ডাউনলোড করুন</p>
+                <p>আপনার প্রয়োজনীয় হেন্ডনোটস এবং বই বেছে নিন এবং সহজেই ডাউনলোড করুন</p>
                 <div class="admin-indicator" id="adminIndicator">
                     <i class="fas fa-user-shield"></i> অ্যাডমিন মোড
                 </div>
             </div>
         </header>
 
-        <h2 class="section-title">বই সমূহ</h2>
+        <h2 class="section-title">হেন্ডনোটস এবং বই সমূহ</h2>
 
         <div class="book-grid" id="bookGrid">
             <!-- Books will be dynamically added here -->
@@ -486,7 +494,7 @@
 
         <footer>
             <p>কিড্ডো বুক স্টল - জ্ঞানের আলো ছড়িয়ে দিন</p>
-            <p>কিড্ডো বুক স্টল - Made by Kiddo</p>
+            <p>কিড্ডো বুক স্টল - Made by kiddo</p>
         </footer>
     </div>
 
@@ -532,11 +540,11 @@
     <script>
         // Sample books data
         let books = [
-            {title: "সাম্প্রতিক ক্যাপসুল - ১", link: "https://drive.google.com/uc?export=download&id=1364e2UqYcPFNo8rdICeEn01eYIxi4lkJ", downloads: 0},
-            {title: "সাম্প্রতিক ক্যাপসুল - ২", link: "https://drive.google.com/uc?export=download&id=15YhW44ultCzrcAeV9FeG5XAAFCPRbG5s", downloads: 0},
-            {title: "সাম্প্রতিক ক্যাপসুল - ৩", link: "https://drive.google.com/uc?export=download&id=19w9xH7T3ysEq9TL0oz1OIBnTSLzxYQb1", downloads: 0},
-            {title: "সাম্প্রতিক ক্যাপসুল - ৪", link: "https://drive.google.com/uc?export=download&id=19HZzTPrDqpkwMhEtp3qPUmjAjW4l_FRn", downloads: 0},
-            {title: "সাম্প্রতিক ক্যাপসুল - ৫", link: "https://drive.google.com/uc?export=download&id=14WTRJWqXF883Wms-e97ubxBV7UibLMYL", downloads: 0}
+            {title: "সাম্প্রতিক ক্যাপসুল - ১", link: "https://drive.google.com/uc?export=download&id=1364e2UqYcPFNo8rdICeEn01eYIxi4lkJ", downloads: 0, emoji: "📕"},
+            {title: "সাম্প্রতিক ক্যাপসুল - ২", link: "https://drive.google.com/uc?export=download&id=15YhW44ultCzrcAeV9FeG5XAAFCPRbG5s", downloads: 0, emoji: "📗"},
+            {title: "সাম্প্রতিক ক্যাপসুল - ৩", link: "https://drive.google.com/uc?export=download&id=19w9xH7T3ysEq9TL0oz1OIBnTSLzxYQb1", downloads: 0, emoji: "📘"},
+            {title: "সাম্প্রতিক ক্যাপসুল - ৪", link: "https://drive.google.com/uc?export=download&id=19HZzTPrDqpkwMhEtp3qPUmjAjW4l_FRn", downloads: 0, emoji: "📙"},
+            {title: "সাম্প্রতিক ক্যাপসুল - ৫", link: "https://drive.google.com/uc?export=download&id=14WTRJWqXF883Wms-e97ubxBV7UibLMYL", downloads: 0, emoji: "📓"}
         ];
 
         // Emojis for book covers
@@ -566,13 +574,15 @@
                 const card = document.createElement('div');
                 card.className = 'book-card';
                 card.innerHTML = `
-                    <div class="emoji">${getRandomEmoji()}</div>
+                    <div class="emoji">${book.emoji || getRandomEmoji()}</div>
                     <h3>${book.title}</h3>
-                    <a href="${book.link}" class="download-btn" target="_blank" onclick="incrementDownload(${i})">
-                        <i class="fas fa-download"></i> ডাউনলোড করুন
-                    </a>
-                    <div class="download-count">
-                        <i class="fas fa-download"></i> ${book.downloads} বার ডাউনলোড
+                    <div>
+                        <a href="${book.link}" class="download-btn" target="_blank" onclick="incrementDownload(${i})">
+                            <i class="fas fa-download"></i> ডাউনলোড করুন
+                        </a>
+                        <div class="download-count">
+                            <i class="fas fa-download"></i> ${book.downloads} বার ডাউনলোড
+                        </div>
                     </div>
                 `;
                 bookGrid.appendChild(card);
@@ -637,12 +647,29 @@
             
             if (title && link) { 
                 const downloadLink = convertToDownloadLink(link);
-                books.push({title, link: downloadLink, downloads: 0}); 
+                const newBook = {
+                    title, 
+                    link: downloadLink, 
+                    downloads: 0,
+                    emoji: getRandomEmoji()
+                };
+                books.push(newBook); 
                 renderBooks(); 
                 renderAdminBooks(); 
                 updateStats(); 
                 addBookForm.reset();
                 linkConverter.classList.remove('active');
+                
+                // Scroll to the newly added book
+                setTimeout(() => {
+                    const cards = document.querySelectorAll('.book-card');
+                    if (cards.length > 0) {
+                        cards[cards.length - 1].scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'center' 
+                        });
+                    }
+                }, 100);
             }
         });
 
