@@ -1645,5 +1645,10 @@ window.onerror = function (message, source, lineno, colno, error) {
   console.error("🔥 Error details:", message, source, lineno, colno, error);
 };
     </script>
+    <script>
+db.collection('books').get().then(snapshot => {
+  alert("Books found: " + snapshot.size);
+}).catch(e => alert("Error: " + e.message));
+    </script>
 </body>
 </html>
