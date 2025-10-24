@@ -1,290 +1,198 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>📚 কিড্ডো বুক স্টল — জুবায়ের স্যার এর ক্যাপসুল</title>
-<style>
-  :root{
-    --bg1:#0b1220; --bg2:#0f1724;
-    --card: rgba(255,255,255,0.04);
-    --accent1: #00ffd0; --accent2:#00a8ff;
-    --muted:#9fb0c4;
-    --ok:#22c55e; --warn:#ffb020;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0; font-family: "Poppins", Inter, system-ui, sans-serif;
-    background: linear-gradient(180deg,var(--bg1),var(--bg2));
-    color:#fff; min-height:100vh; display:flex; flex-direction:column;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📚 Kiddo Book Stall</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f2f4f8;
+      color: #222;
+    }
 
-  /* Top header */
-  .top{
-    padding:18px 16px;
-    background: linear-gradient(90deg,var(--accent1),var(--accent2));
-    color:#001;
-    border-bottom-left-radius:16px;
-    border-bottom-right-radius:16px;
-    box-shadow:0 6px 20px rgba(0,0,0,0.35);
-    text-align:center;
-  }
-  .top h1{font-size:18px;margin:0;font-weight:800}
-  .top p{margin:6px 0 0;color:#041;font-size:13px}
+    header {
+      background: linear-gradient(135deg, #4b6cb7, #182848);
+      color: white;
+      text-align: center;
+      padding: 20px 10px;
+      font-size: 1.8em;
+      font-weight: bold;
+      border-bottom-left-radius: 25px;
+      border-bottom-right-radius: 25px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
 
-  main{flex:1;padding:16px;max-width:920px;margin:0 auto;width:100%;}
-  .grid{
-    display:grid; gap:14px;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    margin-top:16px;
-  }
+    .container {
+      max-width: 500px;
+      margin: 30px auto;
+      padding: 15px;
+    }
 
-  .card{
-    background:var(--card);
-    border:1px solid rgba(255,255,255,0.04);
-    border-radius:14px; padding:14px; display:flex; flex-direction:column; align-items:center;
-    gap:8px; box-shadow: 0 6px 18px rgba(0,0,0,0.45); transition: all .18s ease;
-    min-height:170px;
-  }
-  .card:hover{ transform: translateY(-6px); box-shadow:0 18px 40px rgba(0,0,0,0.65); }
-  .emoji{ font-size:44px; display:block; line-height:1 }
-  .title{ color:var(--accent1); font-weight:800; font-size:15px; margin-top:6px; text-align:center; }
-  .desc{ color:var(--muted); font-size:13px; text-align:center; padding:0 6px; flex:1; display:flex; align-items:center; justify-content:center; }
+    .book-card {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
 
-  .row{ width:100%; display:flex; gap:8px; align-items:center; justify-content:center; margin-top:6px }
-  .btn{
-    background: linear-gradient(90deg,var(--accent1),var(--accent2));
-    color:#001; padding:8px 12px; border-radius:999px; font-weight:800; font-size:13px; border:none; cursor:pointer;
-    display:inline-flex; align-items:center; gap:8px;
-  }
-  .btn.secondary{
-    background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--muted); padding:7px 10px; font-weight:700;
-  }
-  .btn:disabled{ opacity:0.6; cursor:default; transform:none }
+    .book-card:hover {
+      transform: scale(1.02);
+    }
 
-  .download-bar{ margin-top:18px; display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; }
-  .download-all{
-    background: linear-gradient(90deg,#ffd200,#ff8a00);
-    color:#001; padding:12px 18px; border-radius:999px; font-weight:800; font-size:15px; border:none; cursor:pointer;
-    box-shadow:0 10px 30px rgba(255,140,0,0.18);
-  }
-  .status{ color:var(--muted); font-size:13px; }
+    .book-title {
+      font-size: 1.3em;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
 
-  .toast{ position:fixed; right:14px; bottom:14px; min-width:220px; max-width:320px;
-    background:rgba(0,0,0,0.6); color:#fff; padding:12px 14px; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.6);
-    font-size:13px; display:none; z-index:40;
-  }
+    .book-desc {
+      font-size: 0.9em;
+      color: #555;
+      margin-bottom: 15px;
+    }
 
-  footer{ text-align:center; padding:18px 10px; color:#9aa6b8; font-size:13px; }
+    .btn {
+      display: inline-block;
+      background: linear-gradient(90deg, #4b6cb7, #182848);
+      color: white;
+      padding: 10px 18px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95em;
+      transition: background 0.3s;
+    }
 
-  @media (max-width:420px){
-    .emoji{ font-size:40px }
-    .title{ font-size:15px }
-    .desc{ font-size:12px }
-  }
-</style>
+    .btn:hover {
+      background: linear-gradient(90deg, #3953a4, #121c3a);
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      color: #555;
+      font-size: 0.9em;
+    }
+
+    /* 🔒 Admin Panel Hidden Section */
+    #admin-panel {
+      display: none;
+      background: #fff4d4;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 15px;
+      font-size: 0.9em;
+    }
+
+    #admin-panel.visible {
+      display: block;
+    }
+
+    #admin-login {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    #admin-login input {
+      padding: 8px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      width: 70%;
+    }
+
+    #admin-login button {
+      padding: 8px 12px;
+      background: #182848;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+
+  </style>
 </head>
 <body>
+  <header>📚 Kiddo Book Stall</header>
 
-  <div class="top">
-    <h1>📚 কিড্ডো বুক স্টল</h1>
-    <p>জুবায়ের স্যার এর সাম্প্রতিক ক্যাপসুল (১–৫) — আপনার মোবাইলের জন্য অপটিমাইজড</p>
+  <div class="container">
+    <div class="book-card">
+      <div class="book-title">📖 ক্যাপসুল ১</div>
+      <div class="book-desc">সাম্প্রতিক ক্যাপসুল ১ - সম্পূর্ণ PDF ফাইল ডাউনলোড করুন।</div>
+      <a class="btn" href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf" target="_blank">Open / Download</a>
+    </div>
+
+    <div class="book-card">
+      <div class="book-title">📖 ক্যাপসুল ২</div>
+      <div class="book-desc">সাম্প্রতিক ক্যাপসুল ২ - PDF খুলুন বা ডাউনলোড করুন।</div>
+      <a class="btn" href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf" target="_blank">Open / Download</a>
+    </div>
+
+    <div class="book-card">
+      <div class="book-title">📖 ক্যাপসুল ৩</div>
+      <div class="book-desc">সাম্প্রতিক ক্যাপসুল ৩ - এখনই পড়ুন বা ডাউনলোড করুন।</div>
+      <a class="btn" href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf" target="_blank">Open / Download</a>
+    </div>
+
+    <div class="book-card">
+      <div class="book-title">📖 ক্যাপসুল ৪</div>
+      <div class="book-desc">সাম্প্রতিক ক্যাপসুল ৪ - খুলুন বা সেভ করুন।</div>
+      <a class="btn" href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AA.pdf" target="_blank">Open / Download</a>
+    </div>
+
+    <div class="book-card">
+      <div class="book-title">📖 ক্যাপসুল ৫</div>
+      <div class="book-desc">সাম্প্রতিক ক্যাপসুল ৫ - শেষ অধ্যায় PDF।</div>
+      <a class="btn" href="https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AB.pdf" target="_blank">Open / Download</a>
+    </div>
+
+    <center>
+      <a class="btn" href="#" onclick="downloadAll()">📦 Download All</a>
+    </center>
+
+    <!-- 🔐 Hidden Admin Panel -->
+    <div id="admin-login">
+      <input type="password" id="adminPass" placeholder="Enter admin code">
+      <button onclick="checkAdmin()">Login</button>
+    </div>
+
+    <div id="admin-panel">
+      <b>Admin Panel:</b><br>
+      🔸 Total Downloads Today: <span id="count">0</span><br>
+      🔸 Last Updated: <span id="date"></span>
+    </div>
+
   </div>
 
-  <main>
-    <div class="grid" id="grid"></div>
+  <footer>© 2025 Kiddo Book Stall — Powered by Kamrul</footer>
 
-    <div class="download-bar" style="margin-top:18px;">
-      <button id="downloadAll" class="download-all">⬇️ সবগুলো ডাউনলোড করুন</button>
-      <div class="status" id="statusText">প্রস্তুত — ৫টি ফাইল</div>
-    </div>
-  </main>
+  <script>
+    let downloadCount = 0;
 
-  <div class="toast" id="toast"></div>
-  <footer>© ২০২৫ • তৈরি করেছেন ❤️ Kamrul</footer>
-
-<script>
-/* === এখানে আপনার ফাইল URL গুলো পরিবর্তন করুন যদি প্রয়োজন হয় ===
-   আমি নিচে আপনার দেওয়া (কিছুটা জটিল / এনকোডেড) লিংকগুলোর উপর ভিত্তি করে বসিয়েছি।
-   যদি আপনার raw লিংকগুলো ভিন্ন হয়, তাহলে এখানে সেই লিংকগুলো বসিয়ে দিন। */
-
-const books = [
-  {
-    id:1, emoji:'📗', title:'ক্যাপসুল ১', desc:'সাম্প্রতিক গুরুত্বপূর্ণ প্রশ্নাবলি',
-    url: 'https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf',
-    name: 'Capsule-1.pdf'
-  },
-  {
-    id:2, emoji:'📘', title:'ক্যাপসুল ২', desc:'চলমান ঘটনা বিশ্লেষণ',
-    url: 'https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf',
-    name: 'Capsule-2.pdf'
-  },
-  {
-    id:3, emoji:'📙', title:'ক্যাপসুল ৩', desc:'বিশেষ নোট ও তথ্য',
-    url: 'https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf',
-    name: 'Capsule-3.pdf'
-  },
-  {
-    id:4, emoji:'📕', title:'ক্যাপসুল ৪', desc:'চলতি ঘটনাবলির সারসংক্ষেপ',
-    url: 'https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AA.pdf6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf',
-    name: 'Capsule-4.pdf'
-  },
-  {
-    id:5, emoji:'📒', title:'ক্যাপসুল ৫', desc:'গুরুত্বপূর্ণ ম্যাগাজিন টাইপ তথ্য',
-    url: 'https://raw.githubusercontent.com/kamrul-nova-06/Kiddo-kamrul/main/%E0%A6%B8%E0%A6%BE%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AB.pdf%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%AA.pdf6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A9.pdf%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A8.pdf6%A4%E0%A6%BF%E0%A6%95%20%E0%A6%95%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%B8%E0%A7%81%E0%A6%B2-%E0%A7%A7.pdf',
-    name: 'Capsule-5.pdf'
-  }
-];
-
-/* =========== UI rendering =========== */
-const grid = document.getElementById('grid');
-const toast = document.getElementById('toast');
-const statusText = document.getElementById('statusText');
-const downloadAllBtn = document.getElementById('downloadAll');
-
-function showToast(msg, time=3500){
-  toast.textContent = msg;
-  toast.style.display = 'block';
-  clearTimeout(toast._t);
-  toast._t = setTimeout(()=> toast.style.display='none', time);
-}
-
-/* render cards */
-books.forEach(b=>{
-  const div = document.createElement('div');
-  div.className = 'card';
-  div.innerHTML = `
-    <span class="emoji">${b.emoji}</span>
-    <div class="title">${b.title}</div>
-    <div class="desc">${b.desc}</div>
-    <div class="row">
-      <button class="btn single-download" data-id="${b.id}">⬇️ ডাউনলোড</button>
-      <button class="btn secondary open-link" data-url="${b.url}">🔗 খোলা</button>
-    </div>
-  `;
-  grid.appendChild(div);
-});
-
-/* helper to save blob */
-function saveBlob(blob, filename){
-  const a = document.createElement('a');
-  const url = URL.createObjectURL(blob);
-  a.href = url; a.download = filename || 'file';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(()=> URL.revokeObjectURL(url), 1500);
-}
-
-/* fetch + stream handling */
-async function fetchAndDownload(url, filename, onProgress){
-  try{
-    const res = await fetch(url);
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const contentLength = res.headers.get('content-length');
-    if(!res.body || !contentLength){
-      const blob = await res.blob();
-      saveBlob(blob, filename);
-      return {ok:true};
+    function downloadAll() {
+      const links = document.querySelectorAll(".btn[target='_blank']");
+      links.forEach((btn, i) => {
+        setTimeout(() => window.open(btn.href, "_blank"), i * 1000);
+      });
+      downloadCount += links.length;
+      document.getElementById("count").innerText = downloadCount;
     }
-    const total = parseInt(contentLength,10);
-    const reader = res.body.getReader();
-    let received = 0;
-    const chunks = [];
-    while(true){
-      const {done,value} = await reader.read();
-      if(done) break;
-      chunks.push(value);
-      received += value.length;
-      if(onProgress) onProgress(received / total);
+
+    function checkAdmin() {
+      const pass = document.getElementById("adminPass").value;
+      if (pass === "kiddo2025") {
+        document.getElementById("admin-panel").classList.add("visible");
+        document.getElementById("admin-login").style.display = "none";
+        document.getElementById("date").innerText = new Date().toLocaleString();
+      } else {
+        alert("❌ Wrong Code!");
+      }
     }
-    const blob = new Blob(chunks);
-    saveBlob(blob, filename);
-    return {ok:true};
-  }catch(err){
-    console.error('fetch error', err);
-    return {ok:false, error: err};
-  }
-}
-
-/* fallback */
-function openInNewTab(url){ window.open(url, '_blank'); }
-
-/* single download */
-async function handleSingleDownload(book){
-  const btn = document.querySelector(`.single-download[data-id="${book.id}"]`);
-  if(!btn) return;
-  btn.disabled = true; btn.textContent = '⏳ ডাউনলোড হচ্ছে...';
-  statusText.textContent = `ডাউনলোড করছে: ${book.title}`;
-  showToast(`${book.title} ডাউনলোড শুরু`);
-
-  const res = await fetchAndDownload(book.url, book.name, (p)=> {
-    const pct = Math.round(p*100);
-    statusText.textContent = `${book.title} — ${pct}%`;
-  });
-
-  if(res.ok){
-    showToast(`${book.title} সফলভাবে ডাউনলোড হয়েছে`);
-    statusText.textContent = `প্রস্তুত — ${books.length} ফাইল`;
-  }else{
-    showToast(`${book.title} ডাউনলোড ব্যর্থ — নতুন ট্যাবে খোলা হচ্ছে`, 6000);
-    openInNewTab(book.url);
-    statusText.textContent = `কিছু সমস্যা: নতুন ট্যাব খুলে ডাউনলোড করুন`;
-  }
-  btn.disabled = false; btn.textContent = '⬇️ ডাউনলোড';
-}
-
-/* event delegation for card buttons */
-grid.addEventListener('click', (e)=>{
-  const sd = e.target.closest('.single-download');
-  if(sd){
-    const id = +sd.dataset.id; const book = books.find(b=>b.id===id);
-    if(book) handleSingleDownload(book);
-    return;
-  }
-  const op = e.target.closest('.open-link');
-  if(op){
-    const url = op.dataset.url; openInNewTab(url);
-  }
-});
-
-/* download all sequentially */
-let downloadingAll = false;
-downloadAllBtn.addEventListener('click', async ()=>{
-  if(downloadingAll) return;
-  downloadingAll = true;
-  downloadAllBtn.disabled = true;
-  downloadAllBtn.textContent = '⏳ সবগুলো ডাউনলোড হচ্ছে...';
-  statusText.textContent = 'সবগুলো ডাউনলোড চলছে — অপেক্ষা করুন';
-
-  for(let i=0;i<books.length;i++){
-    const b = books[i];
-    statusText.textContent = `(${i+1}/${books.length}) ${b.title} ডাউনলোড হচ্ছে`;
-    showToast(`${b.title} ডাউনলোড শুরু`, 2500);
-
-    const res = await fetchAndDownload(b.url, b.name, (p)=>{
-      statusText.textContent = `(${i+1}/${books.length}) ${b.title} — ${Math.round(p*100)}%`;
-    });
-
-    if(!res.ok){
-      showToast(`${b.title} fetch ব্যর্থ — নতুন ট্যাবে খোলা হচ্ছে`, 4500);
-      openInNewTab(b.url);
-      await new Promise(r=>setTimeout(r,900));
-    }else{
-      await new Promise(r=>setTimeout(r,600));
-    }
-  }
-
-  showToast('সবগুলো ডাউনলোড প্রক্রিয়া সম্পন্ন (যদি কোনো fetch ব্যর্থ হয় সেগুলো নতুন ট্যাবে খুলবে)');
-  statusText.textContent = 'সম্পন্ন — চাইলে আবার ডাউনলোড করুন';
-  downloadAllBtn.disabled = false;
-  downloadAllBtn.textContent = '⬇️ সবগুলো ডাউনলোড করুন';
-  downloadingAll = false;
-});
-
-/* startup note */
-(function initialNote(){ showToast('নোট: যদি কোনো ফাইল 404 দেখায়—আপনার GitHub repo তে ফাইলের নাম/পাথ চেক করুন বা আমাকে ফাইলের সঠিক নাম দিন।',7000); })();
-</script>
-
+  </script>
 </body>
 </html>
