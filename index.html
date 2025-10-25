@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 কিড্ডো বুক স্টল - ইউজার</title>
+    <title>📚 কিড্ডো বুক স্টল</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -21,30 +21,21 @@
 
         :root {
             --primary: #6C63FF;
-            --primary-light: #8A85FF;
             --secondary: #FF6584;
             --accent: #FFB74D;
             --success: #4CAF50;
-            --warning: #FF9800;
-            --error: #F44336;
             --dark: #1A1A2E;
             --light: #F8F9FA;
             --text: #2D3748;
-            --text-light: #FFFFFF;
             --card-bg: #FFFFFF;
             --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            --shadow-hover: 0 10px 25px rgba(108, 99, 255, 0.15);
             --gradient: linear-gradient(135deg, #6C63FF, #8A85FF);
-            --premium-gradient: linear-gradient(135deg, #FFB74D, #FF9800);
-            --bkash: #E2136E;
-            --nagad: #F8A01C;
         }
 
         body {
             background: var(--light);
             color: var(--text);
             line-height: 1.6;
-            min-height: 100vh;
         }
 
         .container {
@@ -53,13 +44,11 @@
             padding: 0 15px;
         }
 
-        /* Header Styles */
         header {
             background: var(--gradient);
-            color: var(--text-light);
+            color: white;
             padding: 25px 0;
             text-align: center;
-            box-shadow: var(--shadow);
             margin-bottom: 30px;
         }
 
@@ -68,44 +57,9 @@
             margin-bottom: 10px;
         }
 
-        header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        .user-info {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 16px;
-            border-radius: 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 15px;
-        }
-
-        .admin-link {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 16px;
-            border-radius: 20px;
-            color: white;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .admin-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Loading Spinner */
         .loading {
             text-align: center;
-            padding: 40px 20px;
+            padding: 40px;
             color: #6B7280;
         }
 
@@ -124,23 +78,13 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Section Styles */
         .section-title {
             text-align: center;
             margin: 40px 0 20px;
             color: var(--dark);
             font-size: 1.8rem;
-            font-weight: 600;
         }
 
-        .section-subtitle {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #6B7280;
-            font-size: 1.1rem;
-        }
-
-        /* Book Grid Styles */
         .book-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -153,11 +97,12 @@
             border-radius: 15px;
             padding: 20px;
             box-shadow: var(--shadow);
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
-            border: 1px solid #E5E7EB;
-            min-height: 320px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
         }
 
         .book-card.premium {
@@ -165,558 +110,80 @@
             background: #FFF9E6;
         }
 
-        .book-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
-        }
-
         .book-badge {
-            background: var(--gradient);
+            background: var(--primary);
             color: white;
-            padding: 6px 12px;
-            border-radius: 15px;
+            padding: 5px 10px;
+            border-radius: 10px;
             font-size: 0.8rem;
-            font-weight: 600;
             display: inline-block;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .premium-badge {
-            background: var(--premium-gradient);
+            background: var(--accent);
         }
 
-        .year-badge {
-            background: var(--secondary);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 10px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            display: inline-block;
-            margin-left: 10px;
+        .book-emoji {
+            font-size: 50px;
+            margin: 10px 0;
         }
 
-        .book-card .emoji {
-            font-size: 60px;
-            margin-bottom: 15px;
-            text-align: center;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .book-card h3 {
+        .book-title {
             font-size: 1.2rem;
-            margin-bottom: 10px;
+            margin: 10px 0;
             color: var(--dark);
-            text-align: center;
-            font-weight: 600;
             min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .book-description {
-            font-size: 0.9rem;
             color: #64748B;
-            margin-bottom: 15px;
-            text-align: center;
-            line-height: 1.5;
-            min-height: 65px;
+            margin: 10px 0;
+            min-height: 60px;
         }
 
         .book-price {
             font-size: 1.3rem;
-            font-weight: 700;
+            font-weight: bold;
             color: var(--secondary);
-            text-align: center;
-            margin-bottom: 15px;
+            margin: 10px 0;
         }
 
-        .book-card .download-btn {
-            display: block;
-            background: var(--gradient);
+        .download-btn {
+            background: var(--primary);
             color: white;
-            text-align: center;
+            border: none;
             padding: 12px 20px;
             border-radius: 8px;
             font-weight: 600;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-top: auto;
-            border: none;
             cursor: pointer;
-            font-size: 1rem;
-            text-decoration: none;
-        }
-
-        .book-card .premium-btn {
-            background: var(--premium-gradient);
-        }
-
-        .book-card .download-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
-        }
-
-        .book-card .download-count {
+            width: 100%;
             margin-top: 10px;
-            font-size: 0.85rem;
+        }
+
+        .premium-btn {
+            background: var(--accent);
+        }
+
+        .download-count {
+            margin-top: 10px;
             color: #94A3B8;
-            text-align: center;
-        }
-
-        /* User Orders */
-        .user-orders {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-        }
-
-        .order-card {
-            background: #F9FAFB;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border-left: 4px solid var(--success);
-        }
-
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .order-book {
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .order-status {
-            padding: 4px 8px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .status-approved {
-            background: #E8F5E9;
-            color: var(--success);
-        }
-
-        .status-pending {
-            background: #FFF3E0;
-            color: var(--warning);
-        }
-
-        .order-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
             font-size: 0.9rem;
         }
 
-        .order-detail .label {
-            color: #6B7280;
-            font-weight: 500;
-        }
-
-        .drive-link {
-            background: #E3F2FD;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-
-        .drive-link a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        /* Payment Modal */
-        .payment-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .payment-modal.active {
-            display: flex;
-        }
-
-        .payment-content {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .payment-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #E5E7EB;
-        }
-
-        .payment-header h3 {
-            color: var(--primary);
-            font-size: 1.3rem;
-        }
-
-        .payment-header button {
-            background: var(--error);
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .book-preview {
-            text-align: center;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #F5F3FF;
-            border-radius: 10px;
-        }
-
-        .book-preview .emoji {
-            font-size: 3rem;
-            margin-bottom: 10px;
-        }
-
-        .book-preview h4 {
-            color: var(--primary);
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
-
-        .book-preview .price {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .payment-info {
-            background: #E8F5E9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-
-        .payment-info h4 {
-            color: var(--success);
-            margin-bottom: 8px;
-        }
-
-        .payment-number {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin: 8px 0;
-            padding: 8px;
-            background: white;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        .payment-instruction {
-            color: #6B7280;
-            font-size: 0.9rem;
-        }
-
-        .payment-methods {
-            margin-bottom: 20px;
-        }
-
-        .payment-methods h4 {
-            margin-bottom: 10px;
-        }
-
-        .payment-option {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px;
-            border: 1px solid #E5E7EB;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            cursor: pointer;
-        }
-
-        .payment-option.active {
-            border-color: var(--primary);
-            background: #F5F3FF;
-        }
-
-        .payment-icon {
-            font-size: 1.5rem;
-        }
-
-        .bkash-icon {
-            color: var(--bkash);
-        }
-
-        .nagad-icon {
-            color: var(--nagad);
-        }
-
-        .payment-form {
-            display: none;
-            margin-bottom: 15px;
-        }
-
-        .payment-form.active {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 12px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #E5E7EB;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
-        .form-group input:focus {
-            border-color: var(--primary);
-            outline: none;
-        }
-
-        .confirm-btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            background: var(--gradient);
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .confirm-btn:hover {
-            opacity: 0.9;
-        }
-
-        /* Receipt Modal */
-        .receipt-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .receipt-modal.active {
-            display: flex;
-        }
-
-        .receipt-content {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 500px;
-            text-align: center;
-        }
-
-        .receipt-icon {
-            font-size: 3rem;
-            color: var(--success);
-            margin-bottom: 15px;
-        }
-
-        .receipt-content h3 {
-            color: var(--success);
-            margin-bottom: 15px;
-        }
-
-        .receipt-details {
-            background: #E8F5E9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .receipt-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-
-        .receipt-item .label {
-            color: #6B7280;
-        }
-
-        .receipt-item .value {
-            font-weight: 600;
-        }
-
-        .download-receipt-btn, .close-receipt-btn {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-
-        .download-receipt-btn {
-            background: var(--success);
-            color: white;
-        }
-
-        .close-receipt-btn {
-            background: #E5E7EB;
-            color: #6B7280;
-        }
-
-        /* Login Modal */
-        .login-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .login-modal.active {
-            display: flex;
-        }
-
-        .login-content {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        .login-header {
-            margin-bottom: 20px;
-        }
-
-        .login-header h3 {
-            color: var(--primary);
-            font-size: 1.3rem;
-            margin-bottom: 8px;
-        }
-
-        .google-login-btn {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #E5E7EB;
-            border-radius: 8px;
-            background: white;
-            color: var(--text);
-            font-weight: 600;
-            cursor: pointer;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .google-login-btn:hover {
-            border-color: var(--primary);
-        }
-
-        /* Footer */
         footer {
             text-align: center;
             padding: 20px;
             color: #6B7280;
-            font-size: 0.9rem;
-            border-top: 1px solid #E5E7EB;
             margin-top: 50px;
         }
 
-        /* Error Message */
-        .error-message {
-            text-align: center;
-            padding: 20px;
-            background: #FFEBEE;
-            color: #C62828;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .book-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 20px;
-            }
-            
-            .book-card {
-                min-height: 300px;
-                padding: 15px;
-            }
-            
-            header h1 {
-                font-size: 1.8rem;
-            }
-            
-            .admin-link {
-                position: static;
-                margin-top: 15px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .book-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .order-details {
-                grid-template-columns: 1fr;
-            }
+        .debug-info {
+            background: #f0f0f0;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -725,28 +192,10 @@
         <header>
             <h1>📚 কিড্ডো বুক স্টল</h1>
             <p>ফ্রি এবং প্রিমিয়াম বই ডাউনলোড করুন</p>
-            <a href="kiddo69.html" class="admin-link">
-                <i class="fas fa-user-shield"></i> অ্যাডমিন লগইন
-            </a>
-            <div class="user-info" id="userInfo" style="display: none;">
-                <i class="fas fa-user"></i> <span id="userName"></span>
-                <button id="logoutBtn" style="background: none; border: none; color: white; margin-left: 10px; cursor: pointer;">
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
-            </div>
         </header>
 
         <main>
-            <div id="userOrders" class="user-orders" style="display: none;">
-                <h2 class="section-title">আপনার অর্ডারসমূহ</h2>
-                <div id="ordersList">
-                    <!-- User orders will be dynamically added here -->
-                </div>
-            </div>
-
             <h2 class="section-title">ফ্রি বই সমূহ</h2>
-            <p class="section-subtitle">বিনামূল্যে ডাউনলোড করুন</p>
-
             <div class="book-grid" id="freeBookGrid">
                 <div class="loading">
                     <div class="spinner"></div>
@@ -755,8 +204,6 @@
             </div>
 
             <h2 class="section-title">প্রিমিয়াম বই সমূহ</h2>
-            <p class="section-subtitle">কিনে ডাউনলোড করুন</p>
-
             <div class="book-grid" id="premiumBookGrid">
                 <div class="loading">
                     <div class="spinner"></div>
@@ -769,120 +216,6 @@
             <p>কিড্ডো বুক স্টল - জ্ঞানের আলো ছড়িয়ে দিন</p>
             <p>ইমেইল: kamrulislam2007s@gmail.com | ফোন: ০১৭৬৮-৯৭১৪৫৪</p>
         </footer>
-    </div>
-
-    <!-- Payment Modal -->
-    <div class="payment-modal" id="paymentModal">
-        <div class="payment-content">
-            <div class="payment-header">
-                <h3><i class="fas fa-crown"></i> প্রিমিয়াম বই কিনুন</h3>
-                <button id="closePaymentModal"><i class="fas fa-times"></i></button>
-            </div>
-
-            <div class="book-preview" id="bookPreview">
-                <!-- Book preview will be dynamically added here -->
-            </div>
-
-            <div class="payment-info">
-                <h4><i class="fas fa-info-circle"></i> পেমেন্ট নির্দেশনা</h4>
-                <div class="payment-number" id="paymentNumber">
-                    <!-- Payment number will be dynamically added here -->
-                </div>
-                <p class="payment-instruction" id="paymentInstruction">
-                    <!-- Payment instruction will be dynamically added here -->
-                </p>
-            </div>
-
-            <div class="payment-methods">
-                <h4>পেমেন্ট মাধ্যম নির্বাচন করুন</h4>
-                <div class="payment-option" id="bkashOption">
-                    <div class="payment-icon bkash-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <div>
-                        <h5>বিকাশ</h5>
-                        <p>বিকাশ মাধ্যমে পেমেন্ট করুন</p>
-                    </div>
-                </div>
-                <div class="payment-option" id="nagadOption">
-                    <div class="payment-icon nagad-icon">
-                        <i class="fas fa-wallet"></i>
-                    </div>
-                    <div>
-                        <h5>নগদ</h5>
-                        <p>নগদ মাধ্যমে পেমেন্ট করুন</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- BKash Form -->
-            <div class="payment-form bkash-form" id="bkashForm">
-                <div class="form-group">
-                    <label for="bkashName">আপনার নাম *</label>
-                    <input type="text" id="bkashName" placeholder="আপনার পুরো নাম লিখুন" required>
-                </div>
-                <div class="form-group">
-                    <label for="bkashPhone">বিকাশ নম্বর *</label>
-                    <input type="tel" id="bkashPhone" placeholder="01XXXXXXXXX" required>
-                </div>
-                <div class="form-group">
-                    <label for="bkashTrxId">ট্রানজেকশন আইডি *</label>
-                    <input type="text" id="bkashTrxId" placeholder="TRX123456789" required>
-                </div>
-            </div>
-
-            <!-- Nagad Form -->
-            <div class="payment-form nagad-form" id="nagadForm">
-                <div class="form-group">
-                    <label for="nagadName">আপনার নাম *</label>
-                    <input type="text" id="nagadName" placeholder="আপনার পুরো নাম লিখুন" required>
-                </div>
-                <div class="form-group">
-                    <label for="nagadPhone">নগদ নম্বর *</label>
-                    <input type="tel" id="nagadPhone" placeholder="01XXXXXXXXX" required>
-                </div>
-                <div class="form-group">
-                    <label for="nagadTrxId">ট্রানজেকশন আইডি *</label>
-                    <input type="text" id="nagadTrxId" placeholder="TRX123456789" required>
-                </div>
-            </div>
-
-            <button class="confirm-btn" id="confirmPayment">
-                <i class="fas fa-check-circle"></i> পেমেন্ট নিশ্চিত করুন
-            </button>
-        </div>
-    </div>
-
-    <!-- Receipt Modal -->
-    <div class="receipt-modal" id="receiptModal">
-        <div class="receipt-content">
-            <div class="receipt-icon">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <h3>পেমেন্ট সফল!</h3>
-            <div class="receipt-details" id="receiptDetails">
-                <!-- Receipt details will be dynamically added here -->
-            </div>
-            <button class="download-receipt-btn" id="downloadReceipt">
-                <i class="fas fa-download"></i> রিসিপ্ট ডাউনলোড করুন
-            </button>
-            <button class="close-receipt-btn" id="closeReceiptModal">বন্ধ করুন</button>
-        </div>
-    </div>
-
-    <!-- Login Modal -->
-    <div class="login-modal" id="loginModal">
-        <div class="login-content">
-            <div class="login-header">
-                <h3><i class="fas fa-sign-in-alt"></i> লগইন করুন</h3>
-                <p>প্রিমিয়াম বই কিনতে লগইন করুন</p>
-            </div>
-            <button class="google-login-btn" id="googleLoginBtn">
-                <i class="fab fa-google"></i>
-                Google দিয়ে লগইন করুন
-            </button>
-            <button class="close-receipt-btn" id="closeLoginModal">বন্ধ করুন</button>
-        </div>
     </div>
 
     <script>
@@ -899,223 +232,76 @@
 
         // Initialize Firebase
         try {
-            // Check if Firebase is already initialized
             if (!firebase.apps.length) {
                 firebase.initializeApp(firebaseConfig);
-                console.log("Firebase initialized successfully");
-            } else {
-                console.log("Firebase already initialized");
+                console.log("✅ Firebase initialized successfully");
             }
         } catch (error) {
-            console.error("Firebase initialization error:", error);
+            console.error("❌ Firebase initialization error:", error);
         }
 
         const db = firebase.firestore();
-        const auth = firebase.auth();
 
         // DOM Elements
         const freeBookGrid = document.getElementById('freeBookGrid');
         const premiumBookGrid = document.getElementById('premiumBookGrid');
-        const paymentModal = document.getElementById('paymentModal');
-        const receiptModal = document.getElementById('receiptModal');
-        const userInfo = document.getElementById('userInfo');
-        const userName = document.getElementById('userName');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const userOrders = document.getElementById('userOrders');
-        const ordersList = document.getElementById('ordersList');
-        const loginModal = document.getElementById('loginModal');
-        const googleLoginBtn = document.getElementById('googleLoginBtn');
-        const closeLoginModal = document.getElementById('closeLoginModal');
 
-        // Global variables
-        let currentBook = null;
-        let currentPaymentMethod = 'bkash';
-        let currentUser = null;
-        let books = [];
-
-        // Payment methods data
-        const paymentMethods = {
-            bkash: {
-                number: "০১৭৬৮-৯৭১৪৫৪",
-                instruction: "উপরের নম্বরে টাকা সেন্ড মানি করুন এবং ট্রানজেকশন আইডি নোট করুন।"
-            },
-            nagad: {
-                number: "০১৭৬৮-৯৭১৪৫৪",
-                instruction: "উপরের নম্বরে টাকা সেন্ড মানি করুন এবং ট্রানজেকশন আইডি নোট করুন।"
-            }
-        };
-
-        // Initialize the app
-        function initApp() {
-            console.log("এপ্লিকেশন শুরু হচ্ছে...");
-            setupEventListeners();
-            setupAuthListener();
-            loadBooksFromFirebase();
-        }
-
-        // Test Firebase connection
-        async function testFirebaseConnection() {
-            try {
-                console.log("Testing Firebase connection...");
-                const testDoc = await db.collection('books').limit(1).get();
-                console.log("Firebase connection successful. Books found:", testDoc.size);
-                return true;
-            } catch (error) {
-                console.error("Firebase connection failed:", error);
-                showError("Firebase connection failed: " + error.message);
-                return false;
-            }
-        }
-
-        // Firebase থেকে বই লোড করুন
+        // Load books from Firebase - SIMPLIFIED VERSION
         async function loadBooksFromFirebase() {
-            console.log("Firebase থেকে বই লোড শুরু...");
+            console.log("🔄 Firebase থেকে বই লোড শুরু...");
             
             try {
-                // First test the connection
-                const isConnected = await testFirebaseConnection();
-                if (!isConnected) return;
-
-                // Get all books
+                // সরাসরি বই কালেকশন থেকে ডেটা আনো
                 const snapshot = await db.collection('books').get();
-                console.log("Total books found:", snapshot.size);
-
+                console.log(`📚 মোট বই পাওয়া গেছে: ${snapshot.size}`);
+                
                 if (snapshot.empty) {
-                    console.log("No books found in database");
+                    console.log("❌ ডাটাবেসে কোন বই নেই");
                     showNoBooksMessage();
                     return;
                 }
 
-                books = [];
+                const books = [];
                 snapshot.forEach(doc => {
                     const bookData = doc.data();
-                    console.log("Book found:", bookData.title, "ID:", doc.id);
+                    console.log("📖 বই:", bookData.title, "- প্রিমিয়াম:", bookData.isPremium);
+                    
                     books.push({
                         id: doc.id,
-                        title: bookData.title || 'No Title',
-                        description: bookData.description || 'No description available',
+                        title: bookData.title || 'নামহীন বই',
+                        description: bookData.description || 'কোন বিবরণ নেই',
                         emoji: bookData.emoji || '📚',
                         price: bookData.price || 0,
                         isPremium: bookData.isPremium || false,
                         downloadCount: bookData.downloadCount || 0,
                         downloadLink: bookData.downloadLink || '#',
-                        driveLink: bookData.driveLink || '#',
-                        year: bookData.year || 2024,
-                        isActive: bookData.isActive !== false
+                        year: bookData.year || 2024
                     });
                 });
 
-                console.log("All books loaded:", books.length);
+                console.log("✅ সব বই লোড হয়েছে:", books.length);
                 renderBooks(books);
 
             } catch (error) {
-                console.error("Error loading books:", error);
-                showError("Books load error: " + error.message);
+                console.error("❌ বই লোড করতে সমস্যা:", error);
+                showError("বই লোড করতে সমস্যা: " + error.message);
             }
-        }
-
-        // Firebase Auth Listener
-        function setupAuthListener() {
-            auth.onAuthStateChanged((user) => {
-                currentUser = user;
-                if (user) {
-                    userInfo.style.display = 'inline-flex';
-                    userName.textContent = user.displayName || user.email;
-                    userOrders.style.display = 'block';
-                    loadUserOrders(user.uid);
-                } else {
-                    userInfo.style.display = 'none';
-                    userOrders.style.display = 'none';
-                }
-            });
-        }
-
-        // Load user orders from Firebase
-        async function loadUserOrders(userId) {
-            try {
-                const snapshot = await db.collection('payments')
-                    .where('userId', '==', userId)
-                    .orderBy('timestamp', 'desc')
-                    .get();
-                
-                ordersList.innerHTML = '';
-                
-                if (snapshot.empty) {
-                    ordersList.innerHTML = '<p style="text-align: center; color: #6B7280;">আপনার কোন অর্ডার নেই</p>';
-                    return;
-                }
-                
-                snapshot.forEach(doc => {
-                    const order = doc.data();
-                    const orderCard = createOrderCard(order);
-                    ordersList.appendChild(orderCard);
-                });
-            } catch (error) {
-                console.error("অর্ডার লোড করতে সমস্যা:", error);
-                ordersList.innerHTML = '<p style="text-align: center; color: #EF4444;">অর্ডার লোড করতে সমস্যা হয়েছে</p>';
-            }
-        }
-
-        // Create order card element
-        function createOrderCard(order) {
-            const card = document.createElement('div');
-            card.className = 'order-card';
-            
-            const book = books.find(b => b.id === order.bookId);
-            const statusClass = order.status === 'approved' ? 'status-approved' : 'status-pending';
-            const statusText = order.status === 'approved' ? 'অনুমোদিত' : 'বিচারাধীন';
-            
-            card.innerHTML = `
-                <div class="order-header">
-                    <div class="order-book">${order.bookTitle}</div>
-                    <div class="order-status ${statusClass}">${statusText}</div>
-                </div>
-                <div class="order-details">
-                    <div class="order-detail">
-                        <div class="label">মূল্য:</div>
-                        <div>৳ ${order.bookPrice}</div>
-                    </div>
-                    <div class="order-detail">
-                        <div class="label">পেমেন্ট মাধ্যম:</div>
-                        <div>${order.paymentMethod === 'bkash' ? 'বিকাশ' : 'নগদ'}</div>
-                    </div>
-                    <div class="order-detail">
-                        <div class="label">ট্রানজেকশন আইডি:</div>
-                        <div>${order.transactionId}</div>
-                    </div>
-                    <div class="order-detail">
-                        <div class="label">অর্ডার তারিখ:</div>
-                        <div>${new Date(order.timestamp?.toDate()).toLocaleDateString('bn-BD')}</div>
-                    </div>
-                </div>
-                ${order.status === 'approved' && book && book.driveLink ? `
-                    <div class="drive-link">
-                        <div class="label">ডাউনলোড লিংক:</div>
-                        <a href="${book.driveLink}" target="_blank">${book.driveLink}</a>
-                    </div>
-                ` : ''}
-            `;
-
-            return card;
         }
 
         // Render books to the grid
         function renderBooks(books) {
-            console.log("বই রেন্ডার করা হচ্ছে...");
+            console.log("🎨 বইগুলো দেখানো হচ্ছে...");
             
-            // Clear loading messages
+            // Clear loading
             freeBookGrid.innerHTML = '';
             premiumBookGrid.innerHTML = '';
 
-            // Filter active books only
-            const activeBooks = books.filter(book => book.isActive !== false);
-            
             // Separate free and premium books
-            const freeBooks = activeBooks.filter(book => !book.isPremium);
-            const premiumBooks = activeBooks.filter(book => book.isPremium);
+            const freeBooks = books.filter(book => !book.isPremium);
+            const premiumBooks = books.filter(book => book.isPremium);
 
-            console.log("Active free books:", freeBooks.length);
-            console.log("Active premium books:", premiumBooks.length);
+            console.log(`🆓 ফ্রি বই: ${freeBooks.length}`);
+            console.log(`👑 প্রিমিয়াম বই: ${premiumBooks.length}`);
 
             // Render free books
             if (freeBooks.length > 0) {
@@ -1137,7 +323,7 @@
                 premiumBookGrid.innerHTML = '<div class="loading">কোন প্রিমিয়াম বই পাওয়া যায়নি</div>';
             }
 
-            console.log("Books rendering completed");
+            console.log("✅ বইগুলো দেখানো শেষ");
         }
 
         // Create book card element
@@ -1146,265 +332,41 @@
             card.className = `book-card ${book.isPremium ? 'premium' : ''}`;
             
             card.innerHTML = `
-                ${book.isPremium ? '<div class="book-badge premium-badge"><i class="fas fa-crown"></i> প্রিমিয়াম</div>' : ''}
-                ${book.year === 2024 ? '<div class="year-badge">নতুন</div>' : ''}
-                <div class="emoji">${book.emoji}</div>
-                <h3>${book.title}</h3>
+                ${book.isPremium ? '<div class="book-badge premium-badge">প্রিমিয়াম</div>' : ''}
+                <div class="book-emoji">${book.emoji}</div>
+                <h3 class="book-title">${book.title}</h3>
                 <p class="book-description">${book.description}</p>
                 ${book.isPremium ? `<div class="book-price">৳ ${book.price}</div>` : ''}
-                <button class="download-btn ${book.isPremium ? 'premium-btn' : ''}" data-book-id="${book.id}">
-                    ${book.isPremium ? '<i class="fas fa-crown"></i> কিনুন' : '<i class="fas fa-download"></i> ডাউনলোড'}
+                <button class="download-btn ${book.isPremium ? 'premium-btn' : ''}" 
+                        onclick="handleBookClick('${book.id}', ${book.isPremium})">
+                    ${book.isPremium ? 'কিনুন' : 'ডাউনলোড'}
                 </button>
                 <div class="download-count">
-                    <i class="fas fa-download"></i> ${book.downloadCount || 0} বার ডাউনলোড
+                    ${book.downloadCount || 0} বার ডাউনলোড
                 </div>
             `;
 
             return card;
         }
 
-        // Setup event listeners
-        function setupEventListeners() {
-            // Download buttons
-            document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('download-btn')) {
-                    const bookId = e.target.getAttribute('data-book-id');
-                    const book = books.find(b => b.id === bookId);
-                    
-                    if (book && book.isPremium) {
-                        if (currentUser) {
-                            openPaymentModal(book);
-                        } else {
-                            openLoginModal();
-                        }
-                    } else if (book) {
-                        downloadFreeBook(book);
-                    }
-                }
-            });
-
-            // Payment method selection
-            document.getElementById('bkashOption').addEventListener('click', function() {
-                selectPaymentMethod('bkash');
-            });
-
-            document.getElementById('nagadOption').addEventListener('click', function() {
-                selectPaymentMethod('nagad');
-            });
-
-            // Close modals
-            document.getElementById('closePaymentModal').addEventListener('click', closePaymentModal);
-            document.getElementById('closeReceiptModal').addEventListener('click', closeReceiptModal);
-            closeLoginModal.addEventListener('click', closeLoginModal);
-
-            // Confirm payment
-            document.getElementById('confirmPayment').addEventListener('click', confirmPayment);
-
-            // Download receipt
-            document.getElementById('downloadReceipt').addEventListener('click', downloadReceipt);
-
-            // Logout
-            logoutBtn.addEventListener('click', signOut);
-
-            // Google login
-            googleLoginBtn.addEventListener('click', signInWithGoogle);
-        }
-
-        // Open payment modal
-        function openPaymentModal(book) {
-            currentBook = book;
-            const bookPreview = document.getElementById('bookPreview');
-            bookPreview.innerHTML = `
-                <div class="emoji">${book.emoji}</div>
-                <h4>${book.title}</h4>
-                <p class="price">৳ ${book.price}</p>
-            `;
-
-            selectPaymentMethod('bkash');
-            paymentModal.classList.add('active');
-        }
-
-        // Close payment modal
-        function closePaymentModal() {
-            paymentModal.classList.remove('active');
-            resetPaymentForms();
-        }
-
-        // Open login modal
-        function openLoginModal() {
-            loginModal.classList.add('active');
-        }
-
-        // Close login modal
-        function closeLoginModal() {
-            loginModal.classList.remove('active');
-        }
-
-        // Select payment method
-        function selectPaymentMethod(method) {
-            currentPaymentMethod = method;
-            
-            document.getElementById('bkashOption').classList.remove('active');
-            document.getElementById('nagadOption').classList.remove('active');
-            document.getElementById('bkashForm').classList.remove('active');
-            document.getElementById('nagadForm').classList.remove('active');
-
-            document.getElementById(`${method}Option`).classList.add('active');
-            document.getElementById(`${method}Form`).classList.add('active');
-
-            const paymentNumber = document.getElementById('paymentNumber');
-            const paymentInstruction = document.getElementById('paymentInstruction');
-            
-            paymentNumber.textContent = paymentMethods[method].number;
-            paymentInstruction.textContent = paymentMethods[method].instruction;
-        }
-
-        // Reset payment forms
-        function resetPaymentForms() {
-            document.getElementById('bkashForm').reset();
-            document.getElementById('nagadForm').reset();
-        }
-
-        // Confirm payment
-        async function confirmPayment() {
-            const form = document.getElementById(`${currentPaymentMethod}Form`);
-            
-            let isValid = true;
-            const inputs = form.querySelectorAll('input[required]');
-            inputs.forEach(input => {
-                if (!input.value.trim()) {
-                    isValid = false;
-                    input.style.borderColor = 'var(--error)';
-                } else {
-                    input.style.borderColor = '';
-                }
-            });
-
-            if (!isValid) {
-                alert('দয়া করে সকল প্রয়োজনীয় তথ্য প্রদান করুন।');
-                return;
-            }
-
-            const paymentData = {
-                bookId: currentBook.id,
-                bookTitle: currentBook.title,
-                bookPrice: currentBook.price,
-                paymentMethod: currentPaymentMethod,
-                customerName: document.getElementById(`${currentPaymentMethod}Name`).value,
-                customerPhone: document.getElementById(`${currentPaymentMethod}Phone`).value,
-                transactionId: document.getElementById(`${currentPaymentMethod}TrxId`).value,
-                customerEmail: currentUser.email,
-                userId: currentUser.uid,
-                userEmail: currentUser.email,
-                userName: currentUser.displayName || document.getElementById(`${currentPaymentMethod}Name`).value,
-                timestamp: new Date(),
-                status: 'pending'
-            };
-
-            try {
-                await db.collection('payments').add(paymentData);
-                showReceipt(paymentData);
-                closePaymentModal();
-                
-                // Reload user orders
-                if (currentUser) {
-                    loadUserOrders(currentUser.uid);
-                }
-            } catch (error) {
-                console.error("পেমেন্ট সেভ করতে সমস্যা:", error);
-                alert("পেমেন্ট সেভ করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।");
-            }
-        }
-
-        // Show receipt
-        function showReceipt(paymentData) {
-            const receiptDetails = document.getElementById('receiptDetails');
-            
-            receiptDetails.innerHTML = `
-                <div class="receipt-item">
-                    <span class="label">বইয়ের নাম:</span>
-                    <span class="value">${paymentData.bookTitle}</span>
-                </div>
-                <div class="receipt-item">
-                    <span class="label">মূল্য:</span>
-                    <span class="value">৳ ${paymentData.bookPrice}</span>
-                </div>
-                <div class="receipt-item">
-                    <span class="label">পেমেন্ট মাধ্যম:</span>
-                    <span class="value">${paymentData.paymentMethod === 'bkash' ? 'বিকাশ' : 'নগদ'}</span>
-                </div>
-                <div class="receipt-item">
-                    <span class="label">ট্রানজেকশন আইডি:</span>
-                    <span class="value">${paymentData.transactionId}</span>
-                </div>
-                <div class="receipt-item">
-                    <span class="label">স্ট্যাটাস:</span>
-                    <span class="value" style="color: var(--success);">সফল</span>
-                </div>
-                <div class="receipt-item">
-                    <span class="label">নোট:</span>
-                    <span class="value">অ্যাডমিন অ্যাপ্রুভ করলে ডাউনলোড লিংক পাবেন</span>
-                </div>
-            `;
-
-            receiptModal.classList.add('active');
-        }
-
-        // Close receipt modal
-        function closeReceiptModal() {
-            receiptModal.classList.remove('active');
-        }
-
-        // Download receipt
-        function downloadReceipt() {
-            alert('রিসিপ্ট ডাউনলোড শুরু হচ্ছে...');
-        }
-
-        // Download free book
-        function downloadFreeBook(book) {
-            if (book.downloadLink && book.downloadLink !== '#') {
-                window.open(book.downloadLink, '_blank');
-                updateDownloadCount(book.id, (book.downloadCount || 0) + 1);
+        // Handle book download/purchase
+        function handleBookClick(bookId, isPremium) {
+            if (isPremium) {
+                alert(`প্রিমিয়াম বই কিনতে চাপ দিয়েছেন। বই ID: ${bookId}\n\nঅ্যাডমিন প্যানেল থেকে বই অ্যাড করার পর এই ফিচার কাজ করবে।`);
             } else {
-                alert('এই বইটির ডাউনলোড লিংক পাওয়া যায়নি।');
+                alert(`ফ্রি বই ডাউনলোড করতে চাপ দিয়েছেন। বই ID: ${bookId}\n\nঅ্যাডমিন প্যানেল থেকে বই অ্যাড করার পর এই ফিচার কাজ করবে।`);
             }
-        }
-
-        // Update download count in Firebase
-        async function updateDownloadCount(bookId, newCount) {
-            try {
-                await db.collection('books').doc(bookId).update({
-                    downloadCount: newCount
-                });
-                // Reload books to show updated count
-                loadBooksFromFirebase();
-            } catch (error) {
-                console.error("ডাউনলোড কাউন্ট আপডেট করতে সমস্যা:", error);
-            }
-        }
-
-        // Google Sign In
-        async function signInWithGoogle() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            
-            try {
-                await auth.signInWithPopup(provider);
-                closeLoginModal();
-            } catch (error) {
-                console.error("Google লগইন করতে সমস্যা:", error);
-                alert("লগইন করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।");
-            }
-        }
-
-        // Sign Out
-        function signOut() {
-            auth.signOut();
         }
 
         // Show error message
         function showError(message) {
             const errorDiv = document.createElement('div');
-            errorDiv.className = 'error-message';
+            errorDiv.style.background = '#ffebee';
+            errorDiv.style.color = '#c62828';
+            errorDiv.style.padding = '20px';
+            errorDiv.style.borderRadius = '8px';
+            errorDiv.style.margin = '20px 0';
+            errorDiv.style.textAlign = 'center';
             errorDiv.innerHTML = `
                 <h3>ত্রুটি!</h3>
                 <p>${message}</p>
@@ -1414,7 +376,6 @@
                 </button>
             `;
             
-            // Insert at the beginning of main
             const main = document.querySelector('main');
             main.insertBefore(errorDiv, main.firstChild);
         }
@@ -1427,6 +388,10 @@
                 <i class="fas fa-book" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
                 <p>কোন বই পাওয়া যায়নি</p>
                 <p>অ্যাডমিন থেকে বই অ্যাড করুন</p>
+                <button onclick="testFirebase()" 
+                        style="background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px;">
+                    Firebase টেস্ট করুন
+                </button>
             `;
             
             freeBookGrid.innerHTML = '';
@@ -1435,21 +400,40 @@
             premiumBookGrid.appendChild(messageDiv.cloneNode(true));
         }
 
-        // Debug function
-        function debugInfo() {
-            console.log("=== DEBUG INFO ===");
-            console.log("Books array:", books);
-            console.log("Current user:", currentUser);
-            console.log("Firebase apps:", firebase.apps);
-            console.log("===================");
+        // Test Firebase connection manually
+        async function testFirebase() {
+            console.log("🧪 Firebase টেস্ট শুরু...");
+            try {
+                const snapshot = await db.collection('books').get();
+                console.log("✅ Firebase কাজ করছে! মোট বই:", snapshot.size);
+                alert(`Firebase কাজ করছে! মোট বই: ${snapshot.size}`);
+                
+                if (snapshot.size > 0) {
+                    snapshot.forEach(doc => {
+                        console.log("বই:", doc.data());
+                    });
+                }
+            } catch (error) {
+                console.error("❌ Firebase টেস্ট ফেইল:", error);
+                alert("Firebase কাজ করছে না: " + error.message);
+            }
         }
 
-        // Initialize the app when DOM is loaded
-        document.addEventListener('DOMContentLoaded', initApp);
+        // Simple initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("🚀 ওয়েবসাইট লোড হয়েছে");
+            loadBooksFromFirebase();
+            
+            // ৩ সেকেন্ড পর আবার ট্রাই করো
+            setTimeout(loadBooksFromFirebase, 3000);
+        });
 
-        // Export functions to global scope for debugging
-        window.debugInfo = debugInfo;
+        // Debug functions
+        window.testFirebase = testFirebase;
         window.loadBooksFromFirebase = loadBooksFromFirebase;
+        window.showBooks = function() {
+            console.log("বর্তমান বইগুলো:", books);
+        };
     </script>
 </body>
 </html>
