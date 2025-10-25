@@ -14,11 +14,13 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     
     <style>
+        /* Reset and Base Styles */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: 'Baloo Da 2', cursive;
+            -webkit-tap-highlight-color: transparent;
         }
 
         :root {
@@ -46,6 +48,12 @@
             --category-3: #FFD166;
             --category-4: #06D6A0;
             --category-5: #118AB2;
+            --overlay: rgba(0, 0, 0, 0.5);
+            --sidebar-width: 280px;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -54,10 +62,11 @@
             line-height: 1.6;
             min-height: 100vh;
             padding-bottom: 80px;
+            overflow-x: hidden;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 100%;
             margin: 0 auto;
             padding: 0 15px;
         }
@@ -66,11 +75,12 @@
         header {
             background: var(--gradient);
             color: var(--text-light);
-            padding: 20px 0;
+            padding: 15px 0;
             box-shadow: var(--shadow);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
         }
 
         .header-content {
@@ -86,41 +96,43 @@
         }
 
         .logo-icon {
-            font-size: 2rem;
+            font-size: 1.8rem;
             background: white;
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .logo-text h1 {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             line-height: 1.2;
         }
 
         .logo-text p {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             opacity: 0.9;
         }
 
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .user-info {
             background: rgba(255, 255, 255, 0.2);
-            padding: 8px 15px;
-            border-radius: 25px;
-            font-size: 0.9rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            backdrop-filter: blur(10px);
         }
 
         .icon-btn {
@@ -135,11 +147,28 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
 
         .icon-btn:hover {
             background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
+            transform: scale(1.05);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--error);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
         }
 
         /* Navigation */
@@ -147,22 +176,23 @@
             background: white;
             border-radius: 0 0 20px 20px;
             box-shadow: var(--shadow);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             overflow-x: auto;
             padding: 0 15px;
+            -webkit-overflow-scrolling: touch;
         }
 
         .nav-scroll {
             display: flex;
-            gap: 10px;
-            padding: 15px 0;
+            gap: 8px;
+            padding: 12px 0;
             min-width: max-content;
         }
 
         .nav-item {
-            padding: 10px 20px;
+            padding: 8px 16px;
             background: var(--light);
-            border-radius: 25px;
+            border-radius: 20px;
             text-decoration: none;
             color: var(--text);
             font-weight: 500;
@@ -170,12 +200,14 @@
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            font-size: 0.9rem;
         }
 
         .nav-item.active {
             background: var(--gradient);
             color: white;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
         }
 
         .nav-item:hover {
@@ -187,8 +219,8 @@
         .hero {
             background: linear-gradient(135deg, var(--primary), var(--premium));
             border-radius: 20px;
-            padding: 30px;
-            margin: 20px 0;
+            padding: 25px 20px;
+            margin: 15px 0;
             color: white;
             text-align: center;
             position: relative;
@@ -211,29 +243,31 @@
             z-index: 1;
         }
 
-        .hero h2 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-
-        .hero p {
-            font-size: 1rem;
-            margin-bottom: 20px;
-            opacity: 0.9;
-        }
-
         .hero-badge {
             display: inline-block;
             background: rgba(255, 255, 255, 0.2);
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-bottom: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero h2 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero p {
             font-size: 0.9rem;
             margin-bottom: 15px;
+            opacity: 0.9;
         }
 
         /* Search Bar */
         .search-container {
-            margin: 20px 0;
+            margin: 15px 0;
             position: relative;
         }
 
@@ -241,16 +275,18 @@
             width: 100%;
             padding: 15px 50px 15px 20px;
             border: none;
-            border-radius: 50px;
+            border-radius: 25px;
             font-size: 1rem;
             background: white;
             box-shadow: var(--shadow);
             transition: all 0.3s ease;
+            -webkit-appearance: none;
         }
 
         .search-box:focus {
             outline: none;
             box-shadow: 0 5px 15px rgba(255, 107, 107, 0.2);
+            transform: translateY(-2px);
         }
 
         .search-icon {
@@ -264,28 +300,22 @@
 
         /* Categories */
         .categories {
-            margin: 25px 0;
+            margin: 20px 0;
         }
 
         .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
+            font-size: 1.3rem;
+            margin-bottom: 12px;
             color: var(--text);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .categories-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        @media (min-width: 768px) {
-            .categories-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
+            gap: 12px;
         }
 
         .category-card {
@@ -296,22 +326,29 @@
             box-shadow: var(--shadow);
             transition: all 0.3s ease;
             cursor: pointer;
+            border: 2px solid transparent;
         }
 
         .category-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary);
+        }
+
+        .category-card.active {
+            border-color: var(--primary);
+            background: var(--light);
         }
 
         .category-icon {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            margin: 0 auto 10px;
+            font-size: 1.3rem;
+            margin: 0 auto 8px;
             color: white;
         }
 
@@ -322,12 +359,13 @@
         .category-5 { background: var(--category-5); }
 
         .category-card h3 {
-            font-size: 1rem;
-            margin-bottom: 5px;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+            font-weight: 600;
         }
 
         .category-card p {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: #666;
         }
 
@@ -335,21 +373,8 @@
         .book-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        @media (min-width: 768px) {
-            .book-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 20px;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .book-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
+            gap: 12px;
+            margin: 15px 0;
         }
 
         .book-card {
@@ -372,38 +397,51 @@
 
         .book-badge {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 8px;
+            right: 8px;
             background: var(--premium-gradient);
             color: white;
-            padding: 5px 10px;
-            border-radius: 12px;
-            font-size: 0.7rem;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 0.6rem;
             font-weight: 600;
             z-index: 2;
+            box-shadow: 0 2px 8px rgba(255, 158, 100, 0.3);
         }
 
         .book-cover {
-            height: 120px;
+            height: 100px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-cover::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
         }
 
         .book-content {
-            padding: 15px;
+            padding: 12px;
         }
 
         .book-title {
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: var(--text);
             line-height: 1.3;
-            height: 40px;
+            height: 35px;
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -414,26 +452,26 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            font-size: 0.8rem;
+            margin-bottom: 8px;
+            font-size: 0.7rem;
             color: #666;
         }
 
         .book-price {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             color: var(--premium);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .book-actions {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
 
         .btn {
             flex: 1;
-            padding: 10px;
+            padding: 8px;
             border: none;
             border-radius: 8px;
             font-weight: 600;
@@ -442,8 +480,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
-            font-size: 0.8rem;
+            gap: 4px;
+            font-size: 0.7rem;
         }
 
         .btn-primary {
@@ -458,8 +496,18 @@
 
         .btn-outline {
             background: transparent;
-            border: 2px solid var(--primary);
+            border: 1px solid var(--primary);
             color: var(--primary);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: var(--text);
         }
 
         .btn:hover {
@@ -467,22 +515,26 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
+        .btn:active {
+            transform: translateY(0);
+        }
+
         /* Floating Action Button */
         .fab-container {
             position: fixed;
-            bottom: 20px;
+            bottom: 80px;
             right: 20px;
             z-index: 1000;
         }
 
         .fab {
-            width: 60px;
-            height: 60px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             background: var(--gradient);
             color: white;
             border: none;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             cursor: pointer;
             box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
             transition: all 0.3s ease;
@@ -507,32 +559,36 @@
             justify-content: space-around;
             padding: 10px 0;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 100;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
         }
 
         .nav-tab {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             text-decoration: none;
             color: #666;
             font-size: 0.7rem;
             transition: all 0.3s ease;
+            padding: 5px;
+            border-radius: 10px;
         }
 
         .nav-tab.active {
             color: var(--primary);
+            background: rgba(255, 107, 107, 0.1);
         }
 
         .nav-icon {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
 
         /* Loading */
         .loading {
             text-align: center;
-            padding: 40px;
+            padding: 30px;
             color: #666;
             grid-column: 1 / -1;
         }
@@ -541,10 +597,10 @@
             border: 3px solid #f3f3f3;
             border-top: 3px solid var(--primary);
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
+            width: 25px;
+            height: 25px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+            margin: 0 auto 10px;
         }
 
         @keyframes spin {
@@ -560,11 +616,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: var(--overlay);
             z-index: 2000;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 15px;
+            backdrop-filter: blur(5px);
         }
 
         .modal.active {
@@ -580,16 +637,17 @@
             overflow-y: auto;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             animation: modalSlideIn 0.3s ease;
+            -webkit-overflow-scrolling: touch;
         }
 
         @keyframes modalSlideIn {
             from {
                 opacity: 0;
-                transform: translateY(50px);
+                transform: translateY(50px) scale(0.9);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
@@ -599,11 +657,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            z-index: 1;
         }
 
         .modal-header h3 {
             color: var(--primary);
-            font-size: 1.3rem;
+            font-size: 1.2rem;
         }
 
         .close-btn {
@@ -612,10 +675,62 @@
             font-size: 1.2rem;
             color: #666;
             cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: #f5f5f5;
         }
 
         .modal-body {
             padding: 20px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #E5E7EB;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            -webkit-appearance: none;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-group input {
+            width: auto;
         }
 
         /* Notification */
@@ -623,7 +738,7 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            padding: 15px 20px;
+            padding: 12px 18px;
             border-radius: 10px;
             color: white;
             font-weight: 600;
@@ -631,6 +746,8 @@
             transform: translateX(400px);
             transition: transform 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+            backdrop-filter: blur(10px);
         }
 
         .notification.show {
@@ -650,6 +767,258 @@
             color: var(--text);
         }
 
+        /* Profile Styles */
+        .profile-section {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin: 0 auto 15px;
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .profile-details {
+            display: grid;
+            gap: 15px;
+        }
+
+        .profile-detail {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .profile-detail:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* Order History */
+        .order-card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--success);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .order-book {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        .order-status {
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .status-approved {
+            background: #D1FAE5;
+            color: var(--success);
+        }
+
+        .status-pending {
+            background: #FEF3C7;
+            color: var(--warning);
+        }
+
+        .status-rejected {
+            background: #FEE2E2;
+            color: var(--error);
+        }
+
+        .order-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .order-detail {
+            font-size: 0.8rem;
+        }
+
+        .order-detail .label {
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .drive-link {
+            background: #EFF6FF;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 8px;
+            border: 1px solid #DBEAFE;
+        }
+
+        .drive-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            word-break: break-all;
+            font-size: 0.8rem;
+        }
+
+        .drive-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Cart Styles */
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: var(--light);
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        .cart-item-emoji {
+            font-size: 1.5rem;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 0.9rem;
+        }
+
+        .cart-item-price {
+            color: var(--premium);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .cart-item-remove {
+            background: var(--error);
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .cart-item-remove:hover {
+            transform: scale(1.05);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-top: 2px solid #f0f0f0;
+            margin-top: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            margin: 20px 0;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option:hover {
+            border-color: var(--premium);
+            background: #FFFBEB;
+        }
+
+        .payment-option.active {
+            border-color: var(--premium);
+            background: #FFFBEB;
+        }
+
+        .payment-icon {
+            font-size: 1.5rem;
+            color: var(--premium);
+        }
+
+        .payment-info-small h5 {
+            color: var(--text);
+            margin-bottom: 3px;
+            font-size: 0.9rem;
+        }
+
+        .payment-info-small p {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        /* Empty States */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
         /* Responsive */
         @media (max-width: 480px) {
             .book-grid {
@@ -661,12 +1030,101 @@
             }
             
             .logo-text h1 {
-                font-size: 1.3rem;
+                font-size: 1.1rem;
             }
             
             .hero h2 {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
             }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 720px;
+            }
+            
+            .book-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 15px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 960px;
+            }
+            
+            .book-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .slide-up {
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+        .mb-1 { margin-bottom: 8px; }
+        .mb-2 { margin-bottom: 16px; }
+        .mb-3 { margin-bottom: 24px; }
+        .mt-1 { margin-top: 8px; }
+        .mt-2 { margin-top: 16px; }
+        .mt-3 { margin-top: 24px; }
+        .p-1 { padding: 8px; }
+        .p-2 { padding: 16px; }
+        .p-3 { padding: 24px; }
+        .hidden { display: none; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .w-full { width: 100%; }
+        .h-full { height: 100%; }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff5252;
         }
     </style>
 </head>
@@ -689,11 +1147,14 @@
                         <i class="fas fa-user"></i>
                         <span id="userName"></span>
                     </div>
-                    <button class="icon-btn" id="cartBtn">
-                        <i class="fas fa-shopping-cart"></i>
-                    </button>
-                    <button class="icon-btn" id="loginBtn">
-                        <i class="fas fa-user"></i>
+                    <div style="position: relative;">
+                        <button class="icon-btn" id="cartBtn">
+                            <i class="fas fa-shopping-cart"></i>
+                        </button>
+                        <div class="cart-badge" id="cartBadge" style="display: none;">0</div>
+                    </div>
+                    <button class="icon-btn" id="menuBtn">
+                        <i class="fas fa-bars"></i>
                     </button>
                 </div>
             </div>
@@ -735,7 +1196,7 @@
                 </div>
                 <h2>শিশুদের জন্য সেরা বই সংগ্রহ</h2>
                 <p>বিনামূল্যে পড়ুন এবং প্রিমিয়াম বই কিনুন</p>
-                <button class="btn btn-primary">
+                <button class="btn btn-primary" id="exploreBtn">
                     <i class="fas fa-rocket"></i> এক্সপ্লোর করুন
                 </button>
             </div>
@@ -755,33 +1216,33 @@
                 <i class="fas fa-th-large"></i> ক্যাটাগরিসমূহ
             </h2>
             <div class="categories-grid">
-                <div class="category-card" data-category="story">
+                <div class="category-card active" data-category="all">
                     <div class="category-icon category-1">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>সব বই</h3>
+                    <p>সকল বই দেখুন</p>
+                </div>
+                <div class="category-card" data-category="story">
+                    <div class="category-icon category-2">
                         <i class="fas fa-book"></i>
                     </div>
                     <h3>গল্পের বই</h3>
                     <p>৫০+ বই</p>
                 </div>
                 <div class="category-card" data-category="education">
-                    <div class="category-icon category-2">
+                    <div class="category-icon category-3">
                         <i class="fas fa-graduation-cap"></i>
                     </div>
                     <h3>শিক্ষামূলক</h3>
                     <p>৩০+ বই</p>
                 </div>
                 <div class="category-card" data-category="comics">
-                    <div class="category-icon category-3">
+                    <div class="category-icon category-4">
                         <i class="fas fa-mask"></i>
                     </div>
                     <h3>কমিকস</h3>
                     <p>২৫+ বই</p>
-                </div>
-                <div class="category-card" data-category="science">
-                    <div class="category-icon category-4">
-                        <i class="fas fa-flask"></i>
-                    </div>
-                    <h3>বিজ্ঞান</h3>
-                    <p>২০+ বই</p>
                 </div>
             </div>
         </div>
@@ -811,30 +1272,67 @@
                 </div>
             </div>
         </div>
+
+        <!-- Profile Section (Hidden by default) -->
+        <div id="profileSection" class="hidden">
+            <div class="profile-section">
+                <div class="profile-header">
+                    <div class="profile-avatar" id="profileAvatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h2 id="profileName">ব্যবহারকারীর নাম</h2>
+                    <p id="profileEmail">user@example.com</p>
+                </div>
+                
+                <div class="profile-details">
+                    <div class="profile-detail">
+                        <span class="detail-label">ইউজার আইডি:</span>
+                        <span class="detail-value" id="profileUserId">-</span>
+                    </div>
+                    <div class="profile-detail">
+                        <span class="detail-label">অ্যাকাউন্ট তৈরি:</span>
+                        <span class="detail-value" id="profileCreatedAt">-</span>
+                    </div>
+                    <div class="profile-detail">
+                        <span class="detail-label">মোট অর্ডার:</span>
+                        <span class="detail-value" id="profileTotalOrders">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order History -->
+            <div class="profile-section">
+                <h3 class="section-title">
+                    <i class="fas fa-history"></i> অর্ডার হিস্ট্রি
+                </h3>
+                <div id="orderHistory">
+                    <div class="empty-state">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>আপনার কোন অর্ডার নেই</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Floating Action Button -->
     <div class="fab-container">
         <button class="fab" id="fabBtn">
-            <i class="fas fa-bolt"></i>
+            <i class="fas fa-arrow-up"></i>
         </button>
     </div>
 
     <!-- Bottom Navigation -->
     <div class="bottom-nav">
-        <a href="#" class="nav-tab active">
+        <a href="#" class="nav-tab active" data-tab="home">
             <i class="fas fa-home nav-icon"></i>
             হোম
         </a>
-        <a href="#" class="nav-tab">
+        <a href="#" class="nav-tab" data-tab="explore">
             <i class="fas fa-compass nav-icon"></i>
             এক্সপ্লোর
         </a>
-        <a href="#" class="nav-tab">
-            <i class="fas fa-shopping-cart nav-icon"></i>
-            কার্ট
-        </a>
-        <a href="#" class="nav-tab">
+        <a href="#" class="nav-tab" data-tab="profile">
             <i class="fas fa-user nav-icon"></i>
             প্রোফাইল
         </a>
@@ -850,7 +1348,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div style="text-align: center; margin-bottom: 20px;">
+                <div class="text-center mb-2">
                     <div style="font-size: 3rem; color: var(--primary); margin-bottom: 10px;">
                         <i class="fas fa-book-reader"></i>
                     </div>
@@ -858,11 +1356,11 @@
                     <p style="color: #666; margin-bottom: 20px;">প্রিমিয়াম বই কিনতে লগইন করুন</p>
                 </div>
                 
-                <button class="btn btn-primary" id="googleLoginBtn" style="width: 100%; margin-bottom: 15px;">
+                <button class="btn btn-primary w-full mb-2" id="googleLoginBtn">
                     <i class="fab fa-google"></i> Google দিয়ে লগইন
                 </button>
                 
-                <div style="text-align: center; color: #666; font-size: 0.9rem;">
+                <div class="text-center" style="color: #666; font-size: 0.9rem;">
                     <p>লগইন করলে আমাদের শর্তাবলী মেনে নিচ্ছেন</p>
                 </div>
             </div>
@@ -880,21 +1378,125 @@
             </div>
             <div class="modal-body">
                 <div id="cartItems">
-                    <div style="text-align: center; padding: 40px 20px; color: #666;">
-                        <i class="fas fa-shopping-cart" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                    <div class="empty-state">
+                        <i class="fas fa-shopping-cart"></i>
                         <p>আপনার কার্ট খালি</p>
                     </div>
                 </div>
                 
-                <div style="border-top: 1px solid #eee; padding-top: 15px;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 600;">
-                        <span>মোট:</span>
-                        <span id="cartTotal">৳ 0</span>
+                <div class="cart-total">
+                    <span>মোট:</span>
+                    <span id="cartTotal">৳ 0</span>
+                </div>
+
+                <div class="payment-methods">
+                    <h4 class="mb-1">পেমেন্ট মাধ্যম</h4>
+                    <div class="payment-option active" data-method="bkash">
+                        <div class="payment-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="payment-info-small">
+                            <h5>বিকাশ</h5>
+                            <p>বিকাশ মাধ্যমে পেমেন্ট করুন</p>
+                        </div>
                     </div>
-                    <button class="btn btn-premium" style="width: 100%;" id="checkoutBtn">
-                        <i class="fas fa-credit-card"></i> চেকআউট
+                    <div class="payment-option" data-method="nagad">
+                        <div class="payment-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="payment-info-small">
+                            <h5>নগদ</h5>
+                            <p>নগদ মাধ্যমে পেমেন্ট করুন</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="customerName">আপনার নাম *</label>
+                    <input type="text" id="customerName" class="form-control" placeholder="আপনার পুরো নাম" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="customerPhone">মোবাইল নম্বর *</label>
+                    <input type="tel" id="customerPhone" class="form-control" placeholder="01XXXXXXXXX" pattern="[0-9]{11}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="transactionId">ট্রানজেকশন আইডি *</label>
+                    <input type="text" id="transactionId" class="form-control" placeholder="TRX123456789" required>
+                </div>
+                
+                <button class="btn btn-success w-full" id="checkoutBtn">
+                    <i class="fas fa-credit-card"></i> অর্ডার কনফার্ম করুন
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <div class="modal" id="sidebarMenu">
+        <div class="modal-content" style="max-width: 280px; margin-left: 0; margin-right: auto; height: 100vh; border-radius: 0 20px 20px 0;">
+            <div class="modal-header">
+                <h3>মেনু</h3>
+                <button class="close-btn" id="closeSidebar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="user-info mb-2" style="background: var(--light); padding: 15px; border-radius: 10px;">
+                    <i class="fas fa-user"></i>
+                    <span id="sidebarUserName">লগইন করুন</span>
+                </div>
+                
+                <div class="nav-tab" style="flex-direction: row; justify-content: flex-start; padding: 12px 0; border-bottom: 1px solid #f0f0f0;">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span>হোম</span>
+                </div>
+                
+                <div class="nav-tab" style="flex-direction: row; justify-content: flex-start; padding: 12px 0; border-bottom: 1px solid #f0f0f0;">
+                    <i class="fas fa-book nav-icon"></i>
+                    <span>বই সমূহ</span>
+                </div>
+                
+                <div class="nav-tab" style="flex-direction: row; justify-content: flex-start; padding: 12px 0; border-bottom: 1px solid #f0f0f0;">
+                    <i class="fas fa-shopping-cart nav-icon"></i>
+                    <span>আমার অর্ডার</span>
+                </div>
+                
+                <div class="nav-tab" style="flex-direction: row; justify-content: flex-start; padding: 12px 0; border-bottom: 1px solid #f0f0f0;">
+                    <i class="fas fa-cog nav-icon"></i>
+                    <span>সেটিংস</span>
+                </div>
+                
+                <div class="nav-tab" style="flex-direction: row; justify-content: flex-start; padding: 12px 0; border-bottom: 1px solid #f0f0f0;">
+                    <i class="fas fa-question-circle nav-icon"></i>
+                    <span>হেল্প</span>
+                </div>
+                
+                <div class="mt-3">
+                    <button class="btn btn-outline w-full" id="sidebarLoginBtn" style="display: none;">
+                        <i class="fas fa-sign-in-alt"></i> লগইন
+                    </button>
+                    <button class="btn btn-danger w-full" id="sidebarLogoutBtn" style="display: none;">
+                        <i class="fas fa-sign-out-alt"></i> লগআউট
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Success Modal -->
+    <div class="modal" id="orderSuccessModal">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <div style="font-size: 4rem; color: var(--success); margin-bottom: 15px;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3 style="color: var(--success); margin-bottom: 10px;">অর্ডার সফল!</h3>
+                <p style="color: #666; margin-bottom: 20px;">আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। অ্যাডমিন অ্যাপ্রুভ করলে ডাউনলোড লিংক পাবেন।</p>
+                <button class="btn btn-success w-full" id="closeOrderSuccess">
+                    <i class="fas fa-check"></i> ঠিক আছে
+                </button>
             </div>
         </div>
     </div>
@@ -926,22 +1528,44 @@
         const premiumBookGrid = document.getElementById('premiumBookGrid');
         const loginModal = document.getElementById('loginModal');
         const cartModal = document.getElementById('cartModal');
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const orderSuccessModal = document.getElementById('orderSuccessModal');
         const userInfo = document.getElementById('userInfo');
         const userName = document.getElementById('userName');
-        const loginBtn = document.getElementById('loginBtn');
         const cartBtn = document.getElementById('cartBtn');
+        const cartBadge = document.getElementById('cartBadge');
+        const menuBtn = document.getElementById('menuBtn');
         const closeLoginModal = document.getElementById('closeLoginModal');
         const closeCartModal = document.getElementById('closeCartModal');
+        const closeSidebar = document.getElementById('closeSidebar');
+        const closeOrderSuccess = document.getElementById('closeOrderSuccess');
         const googleLoginBtn = document.getElementById('googleLoginBtn');
         const bookSearch = document.getElementById('bookSearch');
         const notification = document.getElementById('notification');
         const fabBtn = document.getElementById('fabBtn');
+        const exploreBtn = document.getElementById('exploreBtn');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const profileSection = document.getElementById('profileSection');
+        const navTabs = document.querySelectorAll('.nav-tab');
+        const sidebarLoginBtn = document.getElementById('sidebarLoginBtn');
+        const sidebarLogoutBtn = document.getElementById('sidebarLogoutBtn');
+        const sidebarUserName = document.getElementById('sidebarUserName');
+
+        // Profile Elements
+        const profileName = document.getElementById('profileName');
+        const profileEmail = document.getElementById('profileEmail');
+        const profileUserId = document.getElementById('profileUserId');
+        const profileCreatedAt = document.getElementById('profileCreatedAt');
+        const profileTotalOrders = document.getElementById('profileTotalOrders');
+        const orderHistory = document.getElementById('orderHistory');
 
         // Global variables
         let currentUser = null;
         let books = [];
         let cart = [];
         let currentCategory = 'all';
+        let currentTab = 'home';
+        let userOrders = [];
 
         // Initialize the app
         function initApp() {
@@ -950,6 +1574,8 @@
             setupAuthListener();
             loadBooks();
             loadCartFromLocalStorage();
+            updateCartUI();
+            checkAuthState();
         }
 
         // Firebase Auth Listener
@@ -957,11 +1583,36 @@
             auth.onAuthStateChanged((user) => {
                 currentUser = user;
                 if (user) {
+                    console.log("ইউজার লগইন:", user.email);
                     userInfo.style.display = 'flex';
                     userName.textContent = user.displayName || user.email.split('@')[0];
+                    sidebarUserName.textContent = user.displayName || user.email.split('@')[0];
+                    sidebarLoginBtn.style.display = 'none';
+                    sidebarLogoutBtn.style.display = 'block';
+                    
+                    // Load user data
+                    loadUserProfile(user);
+                    loadUserOrders(user.uid);
+                    
                     showNotification(`স্বাগতম, ${user.displayName || user.email.split('@')[0]}!`, 'success');
                 } else {
+                    console.log("কোন ইউজার লগইন নেই");
                     userInfo.style.display = 'none';
+                    sidebarUserName.textContent = 'লগইন করুন';
+                    sidebarLoginBtn.style.display = 'block';
+                    sidebarLogoutBtn.style.display = 'none';
+                    
+                    // Clear profile data
+                    clearProfileData();
+                }
+            });
+        }
+
+        // Check initial auth state
+        function checkAuthState() {
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    currentUser = user;
                 }
             });
         }
@@ -970,38 +1621,122 @@
         async function loadBooks() {
             try {
                 console.log("বই লোড হচ্ছে...");
+                showNotification('বই লোড হচ্ছে...', 'warning');
+                
+                books = [];
                 
                 // Try Firestore first
-                const snapshot = await db.collection('books').get();
-                books = [];
-                snapshot.forEach(doc => {
-                    const bookData = doc.data();
-                    books.push({ 
-                        id: doc.id, 
-                        ...bookData 
+                try {
+                    const snapshot = await db.collection('books').get();
+                    snapshot.forEach(doc => {
+                        const bookData = doc.data();
+                        books.push({ 
+                            id: doc.id, 
+                            ...bookData 
+                        });
                     });
-                });
+                    console.log("Firestore থেকে বই লোড হয়েছে:", books.length);
+                } catch (firestoreError) {
+                    console.error("Firestore থেকে বই লোড করতে সমস্যা:", firestoreError);
+                }
 
                 // If no books in Firestore, try Realtime Database
                 if (books.length === 0) {
-                    console.log("Firestore এ বই নেই, Realtime Database চেক করা হচ্ছে...");
-                    const rtdbSnapshot = await rtdb.ref('books').once('value');
-                    const rtdbBooks = rtdbSnapshot.val();
-                    
-                    if (rtdbBooks) {
-                        books = Object.keys(rtdbBooks).map(key => ({
-                            id: key,
-                            ...rtdbBooks[key]
-                        }));
+                    try {
+                        const rtdbSnapshot = await rtdb.ref('books').once('value');
+                        const rtdbBooks = rtdbSnapshot.val();
+                        
+                        if (rtdbBooks) {
+                            books = Object.keys(rtdbBooks).map(key => ({
+                                id: key,
+                                ...rtdbBooks[key]
+                            }));
+                            console.log("Realtime Database থেকে বই লোড হয়েছে:", books.length);
+                        }
+                    } catch (rtdbError) {
+                        console.error("Realtime Database থেকে বই লোড করতে সমস্যা:", rtdbError);
                     }
                 }
 
-                console.log("লোড করা বই:", books.length);
+                if (books.length === 0) {
+                    // Add some sample books if no books found
+                    await createSampleBooks();
+                }
+
+                console.log("মোট বই:", books.length);
                 renderBooks();
+                showNotification('বই সফলভাবে লোড হয়েছে!', 'success');
                 
             } catch (error) {
                 console.error("বই লোড করতে সমস্যা:", error);
                 showError("বই লোড করতে সমস্যা হয়েছে। পৃষ্ঠাটি রিফ্রেশ করুন।");
+            }
+        }
+
+        // Create sample books if no books exist
+        async function createSampleBooks() {
+            const sampleBooks = [
+                {
+                    title: "ছোট্ট সোনামণি",
+                    description: "শিশুদের জন্য মজার গল্পের বই",
+                    emoji: "📚",
+                    category: "story",
+                    price: 0,
+                    isPremium: false,
+                    downloadLink: "https://drive.google.com/sample1",
+                    downloadCount: 25,
+                    featured: true,
+                    createdAt: new Date()
+                },
+                {
+                    title: "বিজ্ঞানের আশ্চর্য জগৎ",
+                    description: "বিজ্ঞানের মজার তথ্য নিয়ে বই",
+                    emoji: "🔬",
+                    category: "science",
+                    price: 50,
+                    isPremium: true,
+                    downloadLink: "https://drive.google.com/sample2",
+                    downloadCount: 12,
+                    featured: true,
+                    createdAt: new Date()
+                },
+                {
+                    title: "কমিকস এডভেঞ্চার",
+                    description: "মজার কমিকস বই",
+                    emoji: "🦸",
+                    category: "comics",
+                    price: 30,
+                    isPremium: true,
+                    downloadLink: "https://drive.google.com/sample3",
+                    downloadCount: 18,
+                    featured: false,
+                    createdAt: new Date()
+                },
+                {
+                    title: "ইংরেজি শেখা",
+                    description: "শিশুদের ইংরেজি শিক্ষার বই",
+                    emoji: "📖",
+                    category: "education",
+                    price: 0,
+                    isPremium: false,
+                    downloadLink: "https://drive.google.com/sample4",
+                    downloadCount: 32,
+                    featured: true,
+                    createdAt: new Date()
+                }
+            ];
+
+            try {
+                for (const bookData of sampleBooks) {
+                    await db.collection('books').add(bookData);
+                    await rtdb.ref('books').push(bookData);
+                }
+                console.log("স্যাম্পল বই তৈরি করা হয়েছে");
+                
+                // Reload books
+                await loadBooks();
+            } catch (error) {
+                console.error("স্যাম্পল বই তৈরি করতে সমস্যা:", error);
             }
         }
 
@@ -1012,7 +1747,7 @@
             // Filter books based on search and category
             let filteredBooks = books.filter(book => {
                 const matchesSearch = book.title.toLowerCase().includes(searchTerm) || 
-                                    book.description.toLowerCase().includes(searchTerm);
+                                    (book.description && book.description.toLowerCase().includes(searchTerm));
                 const matchesCategory = currentCategory === 'all' || 
                                       (currentCategory === 'premium' && book.isPremium) ||
                                       (book.category === currentCategory);
@@ -1036,6 +1771,7 @@
                     <div class="loading">
                         <i class="fas fa-book" style="font-size: 2rem; margin-bottom: 10px; opacity: 0.5;"></i>
                         <p>কোন বই পাওয়া যায়নি</p>
+                        ${bookSearch.value ? `<p>"${bookSearch.value}" এর সাথে মিলছে না</p>` : ''}
                     </div>
                 `;
                 return;
@@ -1050,7 +1786,7 @@
         // Create book card element
         function createBookCard(book) {
             const card = document.createElement('div');
-            card.className = `book-card ${book.isPremium ? 'premium' : ''}`;
+            card.className = `book-card ${book.isPremium ? 'premium' : ''} slide-up`;
             
             card.innerHTML = `
                 ${book.isPremium ? '<div class="book-badge"><i class="fas fa-crown"></i> প্রিমিয়াম</div>' : ''}
@@ -1061,7 +1797,7 @@
                     <h3 class="book-title">${book.title}</h3>
                     <div class="book-meta">
                         <span><i class="fas fa-download"></i> ${book.downloadCount || 0}</span>
-                        <span>${book.category || 'সাধারণ'}</span>
+                        <span>${getCategoryName(book.category)}</span>
                     </div>
                     ${book.isPremium ? `<div class="book-price">৳ ${book.price}</div>` : ''}
                     <div class="book-actions">
@@ -1083,19 +1819,38 @@
             return card;
         }
 
+        // Get category name in Bengali
+        function getCategoryName(category) {
+            const categories = {
+                'story': 'গল্প',
+                'education': 'শিক্ষা',
+                'comics': 'কমিকস',
+                'science': 'বিজ্ঞান',
+                'general': 'সাধারণ'
+            };
+            return categories[category] || 'সাধারণ';
+        }
+
         // Setup event listeners
         function setupEventListeners() {
             // Modal controls
-            loginBtn.addEventListener('click', () => loginModal.classList.add('active'));
+            menuBtn.addEventListener('click', () => sidebarMenu.classList.add('active'));
             cartBtn.addEventListener('click', () => {
                 renderCartItems();
                 cartModal.classList.add('active');
             });
             closeLoginModal.addEventListener('click', () => loginModal.classList.remove('active'));
             closeCartModal.addEventListener('click', () => cartModal.classList.remove('active'));
+            closeSidebar.addEventListener('click', () => sidebarMenu.classList.remove('active'));
+            closeOrderSuccess.addEventListener('click', () => orderSuccessModal.classList.remove('active'));
 
             // Google login
             googleLoginBtn.addEventListener('click', signInWithGoogle);
+            sidebarLoginBtn.addEventListener('click', () => {
+                sidebarMenu.classList.remove('active');
+                loginModal.classList.add('active');
+            });
+            sidebarLogoutBtn.addEventListener('click', signOut);
 
             // Book actions
             document.addEventListener('click', function(e) {
@@ -1131,9 +1886,25 @@
                 card.addEventListener('click', function() {
                     const category = this.getAttribute('data-category');
                     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                    document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
                     document.querySelector(`.nav-item[data-category="${category}"]`).classList.add('active');
+                    this.classList.add('active');
                     currentCategory = category;
                     renderBooks();
+                });
+            });
+
+            // Bottom navigation
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const tabName = this.getAttribute('data-tab');
+                    
+                    navTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    currentTab = tabName;
+                    handleTabChange(tabName);
                 });
             });
 
@@ -1142,8 +1913,167 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
+            // Explore button
+            exploreBtn.addEventListener('click', function() {
+                document.querySelector('.nav-item[data-category="all"]').click();
+            });
+
             // Checkout button
-            document.getElementById('checkoutBtn').addEventListener('click', checkoutCart);
+            checkoutBtn.addEventListener('click', processCheckout);
+
+            // Payment method selection
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Close modals on outside click
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('active');
+                    }
+                });
+            });
+        }
+
+        // Handle tab changes
+        function handleTabChange(tabName) {
+            if (tabName === 'home') {
+                profileSection.classList.add('hidden');
+                document.querySelector('.books-section').style.display = 'block';
+                document.querySelectorAll('.books-section')[1].style.display = 'block';
+            } else if (tabName === 'profile') {
+                if (!currentUser) {
+                    loginModal.classList.add('active');
+                    navTabs[0].classList.add('active');
+                    navTabs[2].classList.remove('active');
+                    return;
+                }
+                profileSection.classList.remove('hidden');
+                document.querySelector('.books-section').style.display = 'none';
+                document.querySelectorAll('.books-section')[1].style.display = 'none';
+                
+                // Load profile data
+                loadUserProfile(currentUser);
+                loadUserOrders(currentUser.uid);
+            }
+        }
+
+        // Load user profile
+        function loadUserProfile(user) {
+            profileName.textContent = user.displayName || 'ব্যবহারকারী';
+            profileEmail.textContent = user.email;
+            profileUserId.textContent = user.uid.substring(0, 8) + '...';
+            profileCreatedAt.textContent = new Date(user.metadata.creationTime).toLocaleDateString('bn-BD');
+        }
+
+        // Clear profile data
+        function clearProfileData() {
+            profileName.textContent = 'ব্যবহারকারীর নাম';
+            profileEmail.textContent = 'user@example.com';
+            profileUserId.textContent = '-';
+            profileCreatedAt.textContent = '-';
+            profileTotalOrders.textContent = '0';
+            orderHistory.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-shopping-cart"></i>
+                    <p>আপনার কোন অর্ডার নেই</p>
+                </div>
+            `;
+        }
+
+        // Load user orders
+        async function loadUserOrders(userId) {
+            try {
+                const snapshot = await db.collection('payments')
+                    .where('userId', '==', userId)
+                    .orderBy('timestamp', 'desc')
+                    .get();
+                
+                userOrders = [];
+                snapshot.forEach(doc => {
+                    userOrders.push({ id: doc.id, ...doc.data() });
+                });
+
+                profileTotalOrders.textContent = userOrders.length;
+                renderOrderHistory();
+                
+            } catch (error) {
+                console.error("অর্ডার লোড করতে সমস্যা:", error);
+                orderHistory.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>অর্ডার লোড করতে সমস্যা হয়েছে</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Render order history
+        function renderOrderHistory() {
+            if (userOrders.length === 0) {
+                orderHistory.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>আপনার কোন অর্ডার নেই</p>
+                    </div>
+                `;
+                return;
+            }
+
+            orderHistory.innerHTML = '';
+            userOrders.forEach(order => {
+                const orderCard = createOrderCard(order);
+                orderHistory.appendChild(orderCard);
+            });
+        }
+
+        // Create order card
+        function createOrderCard(order) {
+            const card = document.createElement('div');
+            card.className = 'order-card';
+            
+            const book = books.find(b => b.id === order.bookId);
+            const statusClass = order.status === 'approved' ? 'status-approved' : 
+                              order.status === 'rejected' ? 'status-rejected' : 'status-pending';
+            const statusText = order.status === 'approved' ? 'অনুমোদিত' : 
+                             order.status === 'rejected' ? 'রিজেক্টেড' : 'বিচারাধীন';
+            
+            card.innerHTML = `
+                <div class="order-header">
+                    <div class="order-book">${order.bookTitle}</div>
+                    <div class="order-status ${statusClass}">${statusText}</div>
+                </div>
+                <div class="order-details">
+                    <div class="order-detail">
+                        <div class="label">মূল্য:</div>
+                        <div>৳ ${order.bookPrice}</div>
+                    </div>
+                    <div class="order-detail">
+                        <div class="label">পেমেন্ট মাধ্যম:</div>
+                        <div>${order.paymentMethod === 'bkash' ? 'বিকাশ' : 'নগদ'}</div>
+                    </div>
+                    <div class="order-detail">
+                        <div class="label">ট্রানজেকশন আইডি:</div>
+                        <div>${order.transactionId}</div>
+                    </div>
+                    <div class="order-detail">
+                        <div class="label">অর্ডার তারিখ:</div>
+                        <div>${new Date(order.timestamp?.toDate()).toLocaleDateString('bn-BD')}</div>
+                    </div>
+                </div>
+                ${order.status === 'approved' && book && book.downloadLink ? `
+                    <div class="drive-link">
+                        <div class="label">ডাউনলোড লিংক:</div>
+                        <a href="${book.downloadLink}" target="_blank">${book.downloadLink}</a>
+                    </div>
+                ` : ''}
+            `;
+
+            return card;
         }
 
         // Add to cart function
@@ -1173,38 +2103,24 @@
             showNotification(`"${book.title}" কার্টে যোগ করা হয়েছে`, 'success');
         }
 
+        // Remove from cart
+        function removeFromCart(bookId) {
+            cart = cart.filter(item => item.id !== bookId);
+            saveCartToLocalStorage();
+            updateCartUI();
+            renderCartItems();
+            showNotification('বই কার্ট থেকে সরানো হয়েছে', 'success');
+        }
+
         // Update cart UI
         function updateCartUI() {
             const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
             
-            // Update cart badge if exists
-            let cartBadge = document.querySelector('.cart-badge');
-            if (!cartBadge && totalItems > 0) {
-                cartBadge = document.createElement('div');
-                cartBadge.className = 'cart-badge';
-                cartBadge.style.cssText = `
-                    position: absolute;
-                    top: -5px;
-                    right: -5px;
-                    background: var(--error);
-                    color: white;
-                    border-radius: 50%;
-                    width: 18px;
-                    height: 18px;
-                    font-size: 0.7rem;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                `;
-                cartBtn.style.position = 'relative';
-                cartBtn.appendChild(cartBadge);
-            }
-            
-            if (cartBadge) {
+            if (totalItems > 0) {
+                cartBadge.style.display = 'flex';
                 cartBadge.textContent = totalItems;
-                if (totalItems === 0) {
-                    cartBadge.remove();
-                }
+            } else {
+                cartBadge.style.display = 'none';
             }
         }
 
@@ -1215,8 +2131,8 @@
             
             if (cart.length === 0) {
                 cartItems.innerHTML = `
-                    <div style="text-align: center; padding: 40px 20px; color: #666;">
-                        <i class="fas fa-shopping-cart" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                    <div class="empty-state">
+                        <i class="fas fa-shopping-cart"></i>
                         <p>আপনার কার্ট খালি</p>
                     </div>
                 `;
@@ -1232,23 +2148,15 @@
                 total += itemTotal;
                 
                 const cartItem = document.createElement('div');
-                cartItem.style.cssText = `
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    padding: 15px;
-                    background: var(--light);
-                    border-radius: 10px;
-                    margin-bottom: 10px;
-                `;
+                cartItem.className = 'cart-item';
                 
                 cartItem.innerHTML = `
-                    <div style="font-size: 1.5rem;">${item.emoji}</div>
-                    <div style="flex: 1;">
-                        <div style="font-weight: 600; margin-bottom: 5px;">${item.title}</div>
-                        <div style="color: var(--premium); font-weight: 600;">৳ ${item.price} x ${item.quantity}</div>
+                    <div class="cart-item-emoji">${item.emoji}</div>
+                    <div class="cart-item-details">
+                        <div class="cart-item-title">${item.title}</div>
+                        <div class="cart-item-price">৳ ${item.price} x ${item.quantity}</div>
                     </div>
-                    <button class="btn btn-outline" style="padding: 5px 10px;" data-book-id="${item.id}">
+                    <button class="cart-item-remove" data-book-id="${item.id}">
                         <i class="fas fa-trash"></i>
                     </button>
                 `;
@@ -1259,7 +2167,7 @@
             cartTotal.textContent = `৳ ${total}`;
             
             // Add event listeners to remove buttons
-            document.querySelectorAll('#cartItems .btn-outline').forEach(button => {
+            document.querySelectorAll('.cart-item-remove').forEach(button => {
                 button.addEventListener('click', function() {
                     const bookId = this.getAttribute('data-book-id');
                     removeFromCart(bookId);
@@ -1267,24 +2175,102 @@
             });
         }
 
-        // Remove from cart
-        function removeFromCart(bookId) {
-            cart = cart.filter(item => item.id !== bookId);
-            saveCartToLocalStorage();
-            updateCartUI();
-            renderCartItems();
-            showNotification('বই কার্ট থেকে সরানো হয়েছে', 'success');
-        }
-
-        // Checkout cart
-        function checkoutCart() {
+        // Process checkout
+        async function processCheckout() {
             if (cart.length === 0) {
                 showNotification('কার্টে কোন বই নেই', 'warning');
                 return;
             }
-            
-            showNotification('চেকআউট শীঘ্রই আসছে!', 'success');
-            cartModal.classList.remove('active');
+
+            const customerName = document.getElementById('customerName').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            const transactionId = document.getElementById('transactionId').value;
+            const paymentMethod = document.querySelector('.payment-option.active').getAttribute('data-method');
+
+            // Validate form
+            if (!customerName || !customerPhone || !transactionId) {
+                showNotification('দয়া করে সকল তথ্য প্রদান করুন', 'error');
+                return;
+            }
+
+            if (!/^01[3-9]\d{8}$/.test(customerPhone)) {
+                showNotification('সঠিক মোবাইল নম্বর দিন', 'error');
+                return;
+            }
+
+            try {
+                // Process each item in cart
+                for (const item of cart) {
+                    const book = books.find(b => b.id === item.id);
+                    
+                    const paymentData = {
+                        bookId: item.id,
+                        bookTitle: item.title,
+                        bookPrice: item.price,
+                        quantity: item.quantity,
+                        paymentMethod: paymentMethod,
+                        customerName: customerName,
+                        customerPhone: customerPhone,
+                        transactionId: transactionId,
+                        customerEmail: currentUser.email,
+                        userId: currentUser.uid,
+                        userEmail: currentUser.email,
+                        userName: currentUser.displayName || customerName,
+                        timestamp: new Date(),
+                        status: 'pending'
+                    };
+
+                    await db.collection('payments').add(paymentData);
+                    
+                    // Send email notification
+                    await sendEmailNotification(paymentData);
+                }
+
+                // Clear cart
+                cart = [];
+                saveCartToLocalStorage();
+                updateCartUI();
+                
+                // Close cart modal and show success
+                cartModal.classList.remove('active');
+                orderSuccessModal.classList.add('active');
+                
+                // Reload user orders
+                loadUserOrders(currentUser.uid);
+                
+                showNotification('অর্ডার সফলভাবে জমা হয়েছে!', 'success');
+                
+            } catch (error) {
+                console.error("চেকআউট করতে সমস্যা:", error);
+                showNotification("চেকআউট করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।", 'error');
+            }
+        }
+
+        // Send email notification
+        async function sendEmailNotification(paymentData) {
+            try {
+                console.log("ইমেইল নোটিফিকেশন ডেটা:", paymentData);
+                
+                // Firebase Cloud Functions দিয়ে ইমেইল পাঠানো হবে
+                // For now, just log it
+                const emailResponse = await fetch('https://us-central1-kiddo-kamrul.cloudfunctions.net/sendOrderNotification', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        to: 'kamrulislam2007s@gmail.com',
+                        subject: `নতুন অর্ডার - ${paymentData.bookTitle}`,
+                        orderData: paymentData
+                    })
+                });
+                
+                if (emailResponse.ok) {
+                    console.log('ইমেইল নোটিফিকেশন পাঠানো হয়েছে');
+                }
+            } catch (error) {
+                console.error('ইমেইল পাঠাতে সমস্যা:', error);
+            }
         }
 
         // Save cart to localStorage
@@ -1297,7 +2283,6 @@
             const savedCart = localStorage.getItem('kiddoCart');
             if (savedCart) {
                 cart = JSON.parse(savedCart);
-                updateCartUI();
             }
         }
 
@@ -1308,10 +2293,21 @@
             try {
                 await auth.signInWithPopup(provider);
                 loginModal.classList.remove('active');
+                sidebarMenu.classList.remove('active');
             } catch (error) {
                 console.error("Google লগইন করতে সমস্যা:", error);
                 showNotification("লগইন করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।", 'error');
             }
+        }
+
+        // Sign Out
+        function signOut() {
+            auth.signOut();
+            cart = [];
+            saveCartToLocalStorage();
+            updateCartUI();
+            sidebarMenu.classList.remove('active');
+            showNotification('সফলভাবে লগআউট হয়েছে', 'success');
         }
 
         // Download free book
@@ -1375,6 +2371,17 @@
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', initApp);
+
+        // Service Worker Registration for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function(err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
     </script>
 </body>
 </html>
